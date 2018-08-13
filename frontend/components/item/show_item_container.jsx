@@ -59,7 +59,7 @@ class ShowItem extends React.Component{
           </div>
         </div>
         <div className='right-body'>
-
+          rightbody
         </div>
       </div>
       <img src={window.images.profileIcon} className='profile-icon'/>
