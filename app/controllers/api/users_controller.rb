@@ -51,8 +51,6 @@ class Api::UsersController < ApplicationController
       elsif @user.password.length < 6
         errors[:password]="Must be at least 6 characters."
       end
-      p errors
-      p @user.errors.full_messages
       render json: errors, status:422
     end
   end
