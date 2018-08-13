@@ -1,0 +1,127 @@
+.edit-user{
+  width:auto;
+  margin:15px;
+
+  .edit-head{
+    display:flex;
+    flex-direction:row;
+    justify-content: space-between;
+    >div{
+      display:flex;
+      flex-direction:row;
+      align-items: baseline;
+      >h1{
+        font-size: 24px;
+        line-height: 30px;
+        font-weight: 500;
+        margin-left:30px;
+      }
+      >h2{
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 300;
+        margin-left:30px;
+        color:$text-grey;
+      }
+    }
+    >a{
+      align-self: center;
+      color:$text-darkgrey;
+      font-size: 13px;
+      font-weight:300;
+      padding:4px 11px;
+      background-color:white;
+      border:1px solid $border-grey;
+      margin-right:30px;
+    }
+    >a:hover{
+      background-color:$hover-lightgrey;
+    }
+  }
+
+  >.edit-fields{
+    width:auto;
+    margin:10px;
+    border:1px solid $border-grey;
+    border-radius:5px;
+    >div{
+      padding:15px 0;
+      display:flex;
+      flex-direction: row;
+      margin:0 30px;
+      >h3{
+        display:block;
+        text-align: right;
+        width:200px;
+        font-weight: 700;
+        font-size: 18px;
+        margin: 6px 30px 0 0;
+      }
+      >div{
+
+      }
+    }
+    .edit-picture{
+      >img{
+        height:160px;
+        width:160px;
+      }
+    }
+    .edit-name{
+      border-top:1px solid $border-grey;
+      >div{
+      color:#333;
+        >div{
+          display:flex;
+          flex-direction: row;
+          >label{
+            display:block;
+            margin-right:6px;
+            font-size:12px;
+            font-weight: 300;
+            >input{
+              width:230px;
+              line-height:16px;
+              padding:6px;
+              margin-top:6px;
+              border: 1px solid #959595;
+              border-right: 1px solid #D3D3D3;
+              border-bottom: 1px solid #D3D3D3;
+            }
+          }
+        }
+        >h4{
+          font-size:12px;
+          margin-top:4px;
+        }
+      }
+    }
+    .edit-about{
+      border-top:1px solid $border-grey;
+      >div{
+        >textarea{
+          max-width:480px;
+          min-width:480px;
+          height:219px;
+        }
+      }
+    }
+  }
+  >h4{
+    color:white;
+    margin:auto;
+    background-color:#F56400;
+    padding: 7px 15px 8px;
+    width:105px;
+    border-radius: 3px;
+  }
+  >.no-change{
+    background-color:#ff9d5c;
+  }
+  >.change{
+    background-color:#F56400;
+  }
+  >.change:hover{
+    background-color:#ff9d5c;
+  }
+}

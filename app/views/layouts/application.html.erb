@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Etsyclone</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag 'reset' %>
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+    <script type="text/javascript">
+      window.images={
+        homeIcon: '<%= asset_path('home-icon.png') %>',
+        favIcon:'<%= asset_path('fav-icon.png') %>',
+        shopIcon:'<%= asset_path('shop-icon.png') %>',
+        profileIcon:'<%= asset_path('profile-icon.png') %>',
+        cartIcon:'<%= asset_path('cart-icon.jpg') %>',
+        pencilIcon:'<%= asset_path('pencil-icon.png') %>'
+      };
+    </script>
+    <% if current_user %>
+      <script>
+        window.currentUser = {
+          'id': <%= current_user.id %>,
+          'username':'<%= current_user.username %>',
+          'name': `<%=
+            (if current_user.first_name && current_user.last_name
+              (current_user.first_name+' '+current_user.last_name)
+            elsif current_user.first_name
+              current_user.first_name
+            elsif current_user.last_name
+              current_user.last_name
+            else
+              current_user.username
+            end)
+          %>`
+        };
+      </script>
+    <% end %>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>

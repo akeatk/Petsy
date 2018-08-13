@@ -1,0 +1,126 @@
+// Place all the styles related to the sessions controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.modalBackdrop{
+  z-index: 2;
+   position: fixed;
+   overflow-y: scroll;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  min-height:100vh;
+  background-color: rgba(2,2,2,.6);
+
+  // display:flex;
+  // justify-content:space-around;
+  // align-items: center;
+}
+
+.modalForm{
+  position:static;
+  z-index: 3;
+  margin: 44px auto;
+  background-color:white;;
+  width:360px;
+  height:auto;
+  opacity:1;
+  box-sizing: border-box;
+  border-radius: 3px;
+  padding:18px;
+  color:$overlay-black;
+  line-height:1.6;
+  >h1{
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  >h2{
+    font-size:14px;
+    font-weight:300;
+    padding-bottom: 12px;
+  }
+  >label{
+    display:block;
+    font-size:14px;
+    font-weight:700;
+    margin:6px 0 12px 0;
+    >input{
+      width:292px;
+      font-weight:300;
+      border-radius:4px;
+      padding:10px 16px;
+      font-size:16px;
+      margin:6px 0 6px 0;
+      border:1px solid #E1E3DF;
+    }
+    >input:focus{
+      border-color:$text-grey;
+    }
+    >input:hover{
+      border-color:#adaeaa;
+    }
+  }
+  .red-border{
+    >input,>input:focus{
+      border-color:#C13C27;
+    }
+    >p{
+      color:#C13C27;
+      font-weight:300;
+      letter-spacing: 1px;
+      font-size:14px;
+    }
+  }
+  >h3, h4{
+    display:block;
+    align-content: center;
+    text-align: center;
+    border-radius:4px;
+    width:324px;
+    font-size:16px;
+    font-weight: bold;
+    line-height: 1;
+    padding:16px 0;
+    border:1px solid $border-grey;
+    margin-top:6px;
+  }
+  >h3{
+    background-color:$overlay-orange;
+    color:white;
+  }
+  >h3:hover{
+    background-color:$hover-orange;
+  }
+  >h4{
+    background-color:white;
+    color:black;
+  }
+  >h4:hover{
+    background-color:$hover-lightgrey;
+  }
+  >p{
+    color:#777;
+    font-size: 12px;
+    line-height: inherit;
+    margin-top:18px;
+  }
+  >.or{
+    display:flex;
+    height:25px;
+    margin-bottom:25px;
+    width:100%;
+    border-bottom:1px solid $border-grey;
+    >p{
+      color:$text-grey;
+      font-size:14px;
+      line-height: 1;
+      padding:0 12px;
+      display:block;
+      margin:auto;
+      margin-top:18px;
+      background:white;
+    }
+  }
+}
