@@ -9,6 +9,7 @@ class Form extends React.Component {
     }
     this.handleInput=this.handleInput.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
+    this.clearPW=false;
   }
   handleInput(type){
     return (e)=>(this.setState({[type]:e.target.value}));
@@ -24,8 +25,13 @@ class Form extends React.Component {
     }
   }
   render(){
-    if (this.props.errors['field1'] && !this.props.errors['password'])
-      this.state['password']='';
+    if(this.props.errors['field1'] && !this.props.errors['password'])
+      if(!this.clearPW){
+        this.state['password']='';
+        this.clearPW=true;
+      }
+    else if(!this.props.errors['field1'] || this.props.errors['password'])
+      this.clearPW=false;
     return(
       <form  className='modalForm' onSubmit={this.handleSubmit}>
         <h1>{this.props.title}</h1>
@@ -58,8 +64,9 @@ class Form extends React.Component {
           <p>OR</p>
         </div>
         <h4 onClick={this.props.guestLogin}>Continue as Guest</h4>
-        <p>By
-          clicking Continue as Guest, you will log in as a default guest account,
+        <button type='submit' value=''/>
+        <p>
+          By clicking Continue as Guest, you will log in as a default guest account,
           which will allow you to utilize some functions that may only be accessed while logged in.
           The changes may or may not stay after you log out of the guest account.
         </p>

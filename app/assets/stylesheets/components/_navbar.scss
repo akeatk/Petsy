@@ -94,6 +94,11 @@
           letter-spacing: 1px;
         }
       }
+      .signup-button:hover,.login-button:hover{
+        >p{
+          cursor:pointer;
+        }
+      }
       .signup-button{
         margin-right:9px;
         >p:hover{

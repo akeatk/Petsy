@@ -115,6 +115,9 @@
     width:105px;
     border-radius: 3px;
   }
+  >.change:hover{
+    cursor:pointer;
+  }
   >.no-change{
     background-color:#ff9d5c;
   }

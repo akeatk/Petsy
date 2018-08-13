@@ -45,7 +45,7 @@ class EditUser extends React.Component{
   }
   handleSubmit(e){
     e.preventDefault();
-
+    this.change=false;
     this.props.updateUser(this.state);
     window.scrollTo(0, 0);
   }

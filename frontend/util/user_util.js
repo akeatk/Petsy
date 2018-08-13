@@ -26,4 +26,4 @@ export const getUsername=(username)=>(
     url:`/api/users/${-1}`,
     data:{user:{username}}
   })
-)
+);

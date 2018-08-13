@@ -12,10 +12,6 @@ class Api::UsersController < ApplicationController
     end
   end
 
-  def index
-
-  end
-
   def edit
     @user=User.find(params[:id]);
     if @user
@@ -42,6 +38,8 @@ class Api::UsersController < ApplicationController
         errors[:email]="Can't be blank."
       elsif !User.valid_email?(@user.email)
         errors[:email]="Please enter a valid email address."
+      elsif User.find_by(email:@user.email)
+        errors[:email]='Sorry, the email you have entered is already in use.'
       end
       if @user.first_name.length < 1
         errors[:first_name]= "Can't be blank."

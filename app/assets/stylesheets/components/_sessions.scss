@@ -92,6 +92,7 @@
   }
   >h3:hover{
     background-color:$hover-orange;
+    cursor:pointer;
   }
   >h4{
     background-color:white;
@@ -99,6 +100,7 @@
   }
   >h4:hover{
     background-color:$hover-lightgrey;
+    cursor:pointer;
   }
   >p{
     color:#777;
