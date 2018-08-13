@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   validate :email_format
-  validates :username, :email, :session_token, presence:true, uniqueness:true
+  validates :username, :email, :session_token,:score,:num_scores, presence:true, uniqueness:true
   validates :password_digest, presence:true
   validates :password, length: { minimum: 6 }, allow_nil: true
 
@@ -93,6 +93,8 @@ class User < ApplicationRecord
         self.username = (0...8).map { (65 + rand(26) + (rand(2) * 32)).chr }.join
       end
       self.username = username
+      self.score=0
+      self.num_scores=0
     end
   end
 

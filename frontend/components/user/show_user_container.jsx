@@ -17,8 +17,7 @@ const mapStateToProps = (state,ownProps) => {
   return {
     users:state.entities.users,
     user:foundUsername,
-    currentUserId:state.session.currentUser,
-    about:state.ui.showAbout
+    currentUserId:state.session.currentUser
   };
 };
 
@@ -29,17 +28,28 @@ const MapDispatchToProps = dispatch => ({
 });
 
 class ShowUser extends React.Component{
+  constructor(props){
+    super(props);
+    this.showAbout=false;
+  }
   componentDidMount(){
     this.props.getUsername(this.props.match.params.username);
-    if(this.props.user && this.props.user.about && this.props.user.about.length > 300)
-      this.props.showAbout();
-    else
-      this.props.hideAbout();
 
     let foundUsername;
     Object.keys(this.props.users).map((userId)=>
       this.props.users[userId]).forEach((user)=>{
-        if(user.username == this.props.match.params.username)
+        if(user.username === this.props.match.params.username)
+          foundUsername = user;
+      }
+    );
+    if(!foundUsername)
+      this.props.history.push('/');
+  }
+  componentWillReceiveProps(newProps){
+    let foundUsername;
+    Object.keys(this.props.users).map((userId)=>
+      this.props.users[userId]).forEach((user)=>{
+        if(user.username === newProps.match.params.username)
           foundUsername = user;
       }
     );
@@ -66,16 +76,16 @@ class ShowUser extends React.Component{
     if(!this.props.user.about)
       return null;
     else if(this.props.user.about.length > 300){
-      if(this.props.about)
+      if(this.showAbout)
         return (
           <h3>{this.props.user.about}
-            <p onClick={this.props.hideAbout}>Read Less</p>
+            <p onClick={()=>this.showAbout=false}>Read Less</p>
           </h3>
         );
       else
         return (
           <h3>{this.props.user.about.slice(0,300)}&nbsp;...
-            <p onClick={this.props.showAbout}>Read More</p>
+            <p onClick={()=>this.showAbout=true}>Read More</p>
           </h3>
         );
     }

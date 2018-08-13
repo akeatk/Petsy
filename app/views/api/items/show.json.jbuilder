@@ -13,4 +13,14 @@ json.user do
   else
     json.name @user.username
   end
+  json.items @item_ids
+end
+
+json.items do
+  @items.each do |item|
+    json.set! item.id do
+      json.name item.name
+      json.price item.price
+    end
+  end
 end

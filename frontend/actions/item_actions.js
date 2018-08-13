@@ -3,9 +3,9 @@ import * as ItemAPIUtil from '../util/item_util';
 export const RECEIVE_ITEM = 'RECEIVE_ITEM';
 export const RECEIVE_ITEMS = 'RECEIVE_ITEMS';
 
-const receiveItem = item=>({
+const receiveItem = payload=>({
   type:RECEIVE_ITEM,
-  item
+  payload
 });
 
 const receiveItems = items=>({
@@ -13,16 +13,16 @@ const receiveItems = items=>({
   items
 });
 
-export const getItems=()=>dispatch=>
-  ItemAPIUtil.getItems()
+export const getItems=(sortType,page)=>dispatch=>
+  ItemAPIUtil.getItems(sortType,page)
     .then(items=>dispatch(receiveItems(items)));
 
 export const getItem=userId=>dispatch=>
   ItemAPIUtil.getItem(userId)
     .then(item=>dispatch(receiveItem(item)));
 
-export const editItem=itemId=>dispatch=>
-  ItemAPIUtil.editItem(itemId)
+export const createItem=item=>dispatch=>
+  ItemAPIUtil.createItem(item)
     .then(item=>dispatch(receiveItem(item)));
 
 export const updateItem=item=>dispatch=>

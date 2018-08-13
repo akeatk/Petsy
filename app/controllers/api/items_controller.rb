@@ -2,13 +2,16 @@ class Api::ItemsController < ApplicationController
   def show
     @item=Item.find(params[:id])
     @user=@item.user
+    @items=@user.items.select{|item|item.quantity > 0}
+        .sort{|a,b|b.num_scores <=> a.numscores}[0,8]
+    @item_ids=@item.map{|item| item.id}
     unless @item
       render json: 'no such item found', status:404
     end
   end
 
   def index
-    @items = Item.find(:all, :order => "updated_at asc", :limit => 20, :offset=>0)
+    @items = Item.find(:all, :order => "num_scores desc", :limit => 20, :offset=>0)
   end
 
   def create
@@ -38,7 +41,6 @@ class Api::ItemsController < ApplicationController
   end
 
   def process_errors
-
     errors={}
     unless @item.name && @item.name.length < 1
       errors[:name]=true

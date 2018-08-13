@@ -1,6 +1,7 @@
 class Item < ApplicationRecord
   validates :user_id, :name,:score,:description,:num_scores, presence:true
-  validates :price,:quantity,:numericality => { :greater_than_or_equal_to => 0 }
+  validates :quantity,presence:true,:numericality => { :greater_than_or_equal_to => 0 }
+  validates :price,presence:true,:numericality => { :greater_than => 0 }
 
   belongs_to :user
 
