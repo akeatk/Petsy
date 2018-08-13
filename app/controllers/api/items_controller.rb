@@ -18,7 +18,7 @@ class Api::ItemsController < ApplicationController
     @item=Item.new(create_params)
     unless @item.save
       # upload atleast one image error message?
-      render json: process_errors, status:422
+      render json: process_errors(@item), status:422
     end
   end
 
@@ -40,18 +40,18 @@ class Api::ItemsController < ApplicationController
     params.require(:item).permit(:name,:description,:price,:quantity)
   end
 
-  def process_errors
+  def process_errors(item)
     errors={}
-    unless @item.name && @item.name.length < 1
+    unless item.name && item.name.length < 1
       errors[:name]=true
     end
-    unless @item.description && @item.description < 1
+    unless item.description && item.description < 1
       errors[:description]=true
     end
-    unless @item.price && @item.price < .01
+    unless item.price && item.price < 1
       errors[:price]=true
     end
-    unless @item.quantity && @item.quantity < 1
+    unless item.quantity && item.quantity < 1
       errors[:quantity]=true
     end
     errors
