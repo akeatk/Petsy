@@ -6,40 +6,38 @@ import {getItem} from '../../actions/item_actions';
 
 
 const mapStateToProps = (state,ownProps) => {
+  console.log('mapStateToProps');
+  console.log(state);
   let items=state.entities.items;
-  let item=items[ownProps.match.params.userId];
+  let item= items ? items[parseInt(ownProps.match.params.itemId)] : null;
+  let user= item ? state.entities.user[item.user_id] : null;
+  console.log(items);
+  console.log(ownProps.match.params.itemId);
+  console.log(item);
+  console.log(user);
   return {
     items,
     item,
-    user:state.entities.user[item.user_id],
+    user
   };
 };
 
 const MapDispatchToProps = dispatch => ({
-  getItem: itemId=>dispatch(getItem(itemId)),
+  getItem: itemId=>dispatch(getItem(itemId))
 });
 
 class ShowItem extends React.Component{
   componentDidMount(){
-    this.props.getItem(this.props.match.params.itemId)
-    this.props.getUsername(this.props.match.params.username);
-    if(this.props.user && this.props.user.about && this.props.user.about.length > 300)
-      this.props.showAbout();
-    else
-      this.props.hideAbout();
-
-    let foundUsername;
-    Object.keys(this.props.users).map((userId)=>
-      this.props.users[userId]).forEach((user)=>{
-        if(user.username == this.props.match.params.username)
-          foundUsername = user;
-      }
-    );
-    if(!foundUsername)
+    console.log('did mount');
+    this.props.getItem(this.props.match.params.itemId);
+  }
+  componentDidUpdate(){
+    console.log('did update');
+    if(!this.props.item)
       this.props.history.push('/');
   }
   render(){
-    if(!this.props.user)
+    if(!this.props.item)
       return null;
     return (
     <div className='show-item'>

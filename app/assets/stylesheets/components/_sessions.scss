@@ -102,6 +102,18 @@
     background-color:$hover-lightgrey;
     cursor:pointer;
   }
+  >h5{
+    display:block;
+    align-self:center;
+    text-align: center;
+    margin-top:18px;
+    font-size:16px;
+    color:$logo-orange;
+  }
+  >h5:hover{
+    cursor:pointer;
+    text-decoration: underline;
+  }
   >p{
     color:#777;
     font-size: 12px;

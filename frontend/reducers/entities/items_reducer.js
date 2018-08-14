@@ -9,7 +9,8 @@ export default (state={}, action)=>{
     case RECEIVE_ITEMS:
       return items;//TO BE DECIDED
     case RECEIVE_ITEM:
-      return merge(newState, actions.items, {[actions.item.id]:action.item});
+      return merge(action.payload.items,
+          {[action.payload.item.id]:action.payload.item});
     case RECEIVE_USER:
       return newState;//merge(newState, {[action.user.id]:action.user});
     default:

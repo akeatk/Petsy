@@ -4,7 +4,7 @@ class Api::ItemsController < ApplicationController
     @user=@item.user
     @items=@user.items.select{|item|item.quantity > 0}
         .sort{|a,b|b.num_scores <=> a.numscores}[0,8]
-    @item_ids=@item.map{|item| item.id}
+    @item_ids=@user.item_ids
     unless @item
       render json: 'no such item found', status:404
     end
@@ -37,7 +37,7 @@ class Api::ItemsController < ApplicationController
   private
 
   def item_params
-    params.require(:item).permit(:name,:description,:price,:quantity)
+    params.require(:item).permit(:user_id,:name,:description,:price,:quantity)
   end
 
   def process_errors(item)
@@ -48,7 +48,7 @@ class Api::ItemsController < ApplicationController
     unless item.description && item.description < 1
       errors[:description]=true
     end
-    unless item.price && item.price < 1
+    unless item.price && item.price < 0.01
       errors[:price]=true
     end
     unless item.quantity && item.quantity < 1

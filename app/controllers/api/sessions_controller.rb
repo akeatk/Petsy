@@ -12,7 +12,7 @@ class Api::SessionsController < ApplicationController
       errors[:field1]="Email address is invalid." unless @user
     else
       @user = User.find_by(username:params[:user][:field1])
-      errors[:field1]='Username is invalid.' unless @user
+      errors[:field1]='Email address is invalid.' unless @user
     end
     if @user && @user.is_password?(params[:user][:password])
       login(@user)

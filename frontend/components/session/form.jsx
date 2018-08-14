@@ -52,7 +52,7 @@ class Form extends React.Component {
               type={this.props.fields[idx]==='password' ? 'password' : 'text'}
               onChange={this.handleInput(this.props.fields[idx])}
               value={this.state[this.props.fields[idx]]}
-              autofocus={idx === 0 ? 'true' : 'false'}
+              autoFocus={idx === 0 ? true : false}
             />
             <br/>
             {func()}
@@ -60,6 +60,10 @@ class Form extends React.Component {
           );
         })}
         <h3 onClick={this.handleSubmit}>{this.props.formType}</h3>
+        <h5 onClick={this.props.switch}>
+          {this.props.formType === 'Register' ? 'Already have an account?':
+            "Don't have an account?" }
+        </h5>
         <div className='or'>
           <p>OR</p>
         </div>
