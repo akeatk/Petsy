@@ -57,7 +57,10 @@ class ShowItem extends React.Component{
           </div>
         </div>
         <div className='right-body'>
-          rightbody
+          <div className='item-info'>
+            <h1>Item name<h1>
+            <h2>item price<h2>
+          </div>
         </div>
       </div>
       <img src={window.images.profileIcon} className='profile-icon'/>
