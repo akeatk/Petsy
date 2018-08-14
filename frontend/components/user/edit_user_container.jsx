@@ -25,6 +25,7 @@ class EditUser extends React.Component{
       about:this.props.user.about
     };
     this.change=false;
+    this.changed=false;
     this.handleSubmit=this.handleSubmit.bind(this);
     this.handleInput=this.handleInput.bind(this);
   }
@@ -46,6 +47,7 @@ class EditUser extends React.Component{
   handleSubmit(e){
     e.preventDefault();
     this.change=false;
+    this.changed=true;
     this.props.updateUser(this.state);
     window.scrollTo(0, 0);
   }
@@ -89,6 +91,7 @@ class EditUser extends React.Component{
     }
     return (
     <div className='edit-user'>
+      {this.changed ? <h5>Your changes have been saved.</h5> : null}
       <div className='edit-head'>
         <div>
           <h1>Your Public Profile</h1>

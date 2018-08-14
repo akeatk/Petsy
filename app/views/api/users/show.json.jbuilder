@@ -9,5 +9,7 @@ elsif @user.last_name
 else
   json.name @user.username
 end
+json.score @user.score
+json.num_scores @user.num_scores
 json.about @user.about
 json.createdAt @user.created_at

@@ -1,7 +1,15 @@
 .edit-user{
   width:auto;
   margin:15px;
-
+  >h5{
+    background-color: #D0F4C0;
+    color:#333;
+    font-size: 16px;
+    text-align:center;
+    padding: 18px 0 16px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+  }
   .edit-head{
     display:flex;
     flex-direction:row;
@@ -120,8 +128,8 @@
     width:105px;
     border-radius: 3px;
   }
-  >.change:hover{
-    cursor:pointer;
+  >.no-change:hover{
+    cursor:default;
   }
   >.no-change{
     background-color:#ff9d5c;
@@ -131,5 +139,6 @@
   }
   >.change:hover{
     background-color:#ff9d5c;
+    cursor:pointer;
   }
 }

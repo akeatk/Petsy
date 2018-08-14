@@ -33,10 +33,7 @@ class ShowUser extends React.Component{
     this.state={showAbout:false};
   }
   componentDidMount(){
-    console.log('before get = ',this.props.users);
     this.props.getUsername(this.props.match.params.username);
-
-      console.log('after get = ',this.props.users);
     let foundUsername;
     Object.keys(this.props.users).map((userId)=>
       this.props.users[userId]).forEach((user)=>{

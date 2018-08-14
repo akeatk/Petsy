@@ -6,15 +6,9 @@ import {getItem} from '../../actions/item_actions';
 
 
 const mapStateToProps = (state,ownProps) => {
-  console.log('mapStateToProps');
-  console.log(state);
   let items=state.entities.items;
-  let item= items ? items[parseInt(ownProps.match.params.itemId)] : null;
-  let user= item ? state.entities.user[item.user_id] : null;
-  console.log(items);
-  console.log(ownProps.match.params.itemId);
-  console.log(item);
-  console.log(user);
+  let item= items ? items[ownProps.match.params.itemId] : null;
+  let user= item ? state.entities.users[item.user_id] : null;
   return {
     items,
     item,
@@ -28,11 +22,9 @@ const MapDispatchToProps = dispatch => ({
 
 class ShowItem extends React.Component{
   componentDidMount(){
-    console.log('did mount');
-    this.props.getItem(parseInt(this.props.match.params.itemId));
+    this.props.getItem(this.props.match.params.itemId);
   }
   componentDidUpdate(){
-    console.log('did update');
     if(!this.props.item)
       this.props.history.push('/');
   }
@@ -58,8 +50,8 @@ class ShowItem extends React.Component{
         </div>
         <div className='right-body'>
           <div className='item-info'>
-            <h1>Item name<h1>
-            <h2>item price<h2>
+            <h1>Item name</h1>
+            <h2>item price</h2>
           </div>
         </div>
       </div>
