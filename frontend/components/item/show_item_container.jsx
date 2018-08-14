@@ -29,7 +29,7 @@ const MapDispatchToProps = dispatch => ({
 class ShowItem extends React.Component{
   componentDidMount(){
     console.log('did mount');
-    this.props.getItem(this.props.match.params.itemId);
+    this.props.getItem(parseInt(this.props.match.params.itemId));
   }
   componentDidUpdate(){
     console.log('did update');
