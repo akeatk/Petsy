@@ -5,6 +5,8 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.string :email,null:false
       t.string :password_digest,null:false
       t.string :session_token,null:false
+      t.float :score,null:false
+      t.integer :num_score,null:false
       t.string :first_name
       t.string :last_name
       t.text :about

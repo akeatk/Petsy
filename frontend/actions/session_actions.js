@@ -29,7 +29,7 @@ export const deleteSession= () =>dispatch=>
       (errors)=>dispatch(receiveSessionErrors(errors)));
 
 export const guestLogin= () => dispatch =>
-  SessionAPIUtil.postSession({field1:'a@b.cd',password:'123094812309478'})
+  SessionAPIUtil.postSession({field1:'guest@dot.com',password:'123094812309478'})
     .then((user)=>dispatch(receiveCurrentUser(user)),
       (errors)=>dispatch(receiveSessionErrors(errors)));
 

@@ -8,7 +8,8 @@ export const getUser = (userId) => (
 export const editUser = (userId) =>(
   $.ajax({
     method:'get',
-    url:`/api/users/${userId}/edit`
+    url:`/api/users/${userId}/edit`,
+
   })
 );
 
@@ -16,7 +17,9 @@ export const updateUser=user=>(
   $.ajax({
     method:'patch',
     url:`/api/users/${user.id}`,
-    data:{user}
+    data:{user},
+    contentType:false,
+    processData:false
   })
 );
 

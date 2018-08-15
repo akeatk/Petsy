@@ -3,7 +3,7 @@ class Api::ItemsController < ApplicationController
     @item=Item.find(params[:id])
     @user=@item.user
     @items=@user.items.select{|item|item.quantity > 0}
-        .sort{|a,b|b.num_scores <=> a.numscores}[0,8]
+        .sort{|a,b|b.num_scores <=> a.num_scores}[0,8]
     @item_ids=@user.item_ids
     unless @item
       render json: 'no such item found', status:404

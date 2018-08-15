@@ -1,10 +1,15 @@
 class User < ApplicationRecord
   validate :email_format
-  validates :username, :email, :session_token,:score,:num_scores, presence:true, uniqueness:true
+  validates :username, :email, :session_token,presence:true, uniqueness:true
+  validates :score, :num_scores, presence:true,:numericality => { :greater_than_or_equal_to => 0 }
   validates :password_digest, presence:true
   validates :password, length: { minimum: 6 }, allow_nil: true
 
   has_many :items
+
+  has_one_attached :photo
+  # this will put the url in json
+  # json.photo_url url_for(@user.photo)
 
   after_initialize :ensure_session_token, :ensure_random_username
 

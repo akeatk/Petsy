@@ -4,10 +4,14 @@ import {Link,Redirect,withRouter} from 'react-router-dom';
 import {showLogin} from '../../actions/ui_actions';
 import {editUser,updateUser} from '../../actions/user_actions';
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => {
+  console.log('mapStateToProps');
+  console.log(state.entities.users[state.session.currentUser]);
+  return({
   user:state.entities.users[state.session.currentUser],
   currentUserId:state.session.currentUser
 });
+};
 
 const MapDispatchToProps = dispatch => ({
   editUser: userId=>dispatch(editUser(userId)),
@@ -19,45 +23,55 @@ class EditUser extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      id:this.props.currentUserId,
-      first_name:this.props.user.first_name,
-      last_name:this.props.user.last_name,
-      about:this.props.user.about
+      id:this.props.currentUserId || "",
+      first_name:this.props.user.first_name || "",
+      last_name:this.props.user.last_name || "",
+      about:this.props.user.about || "",
+      photo_url:this.props.user.photo || null,
+      change:false,
+      changed:false
     };
-    this.change=false;
-    this.changed=false;
     this.handleSubmit=this.handleSubmit.bind(this);
     this.handleInput=this.handleInput.bind(this);
   }
   componentDidMount(){
-    this.props.editUser(this.props.currentUserId);
-    this.state={
-      id:this.props.currentUserId,
-      first_name:this.props.user.first_name,
-      last_name:this.props.user.last_name,
-      about:this.props.user.about
-    };
+    this.props.editUser(this.props.currentUserId).then(()=>{
+      this.setState({
+        id:this.props.currentUserId,
+        first_name:this.props.user.first_name,
+        last_name:this.props.user.last_name,
+        about:this.props.user.about,
+        photo_url:this.props.user.photo,
+        change:false,
+        changed:false
+      });
+    });
   }
   handleInput(str){
     return e=>{
-      this.change=true;
+      this.state.change=true;
       this.setState({[str]:e.target.value});
     };
   }
+  handleFile(e){
+    this.state.change=true;
+    this.setState({photo:e.currentTarget.files[0]});
+  }
   handleSubmit(e){
     e.preventDefault();
-    this.change=false;
-    this.changed=true;
-    this.props.updateUser(this.state);
-    window.scrollTo(0, 0);
-  }
-  verifyState(){
-    if(!this.state.first_name)
-      this.state.first_name=this.props.user.first_name;
-    if(!this.state.last_name)
-      this.state.last_name=this.props.user.last_name;
-    if(!this.state.about)
-      this.state.about=this.props.user.about;
+    const formData = new FormData();
+    // photo_url:this.props.user.photo_url
+    formData.append('user[id]',this.state.id);
+    formData.append('user[first_name]',this.state.first_name);
+    formData.append('user[last_name]',this.state.last_name);
+    formData.append('user[about]',this.state.about);
+    formData.append('user[photo]',this.state.photo);
+    this.props.updateUser(formData)
+      .then(()=>{
+        this.setState({change:false});
+        this.setState({changed:true});
+        window.scrollTo(0, 0);
+      });
   }
   nameField(){
     return(
@@ -68,13 +82,13 @@ class EditUser extends React.Component{
             <label>
               First Name
               <br/>
-            <input type='text' value={this.state.first_name || ''}
+            <input type='text' value={this.state.first_name}
                 onChange={this.handleInput('first_name')}/>
             </label>
             <label>
               Last Name
               <br/>
-            <input type='text' value={this.state.last_name || ''}
+            <input type='text' value={this.state.last_name}
                 onChange={this.handleInput('last_name')}/>
             </label>
           </div>
@@ -84,14 +98,10 @@ class EditUser extends React.Component{
     );
   }
   render(){
-    this.verifyState();
-    if(!this.props.currentUserId){
-      this.props.showLogin();
-      return <Redirect to='/'/>;
-    }
+    console.log(this.state);
     return (
     <div className='edit-user'>
-      {this.changed ? <h5>Your changes have been saved.</h5> : null}
+      {this.state.changed ? <h5>Your changes have been saved.</h5> : null}
       <div className='edit-head'>
         <div>
           <h1>Your Public Profile</h1>
@@ -103,17 +113,20 @@ class EditUser extends React.Component{
       <div className='edit-fields'>
         <div className='edit-picture'>
           <h3>Profile Picture</h3>
-          <img src={window.images.profileIcon} className='profile-icon'/>
+          <div>
+            <input type='file' onChange={this.handleFile.bind(this)}/>
+            <img src={window.images.profileIcon} className='profile-icon'/>
+          </div>
         </div>
         {this.nameField()}
         <div className='edit-about'>
           <h3>About</h3>
           <div>
-            <textarea value={this.state.about || ''} onChange={this.handleInput('about')}/>
+            <textarea value={this.state.about} onChange={this.handleInput('about')}/>
           </div>
         </div>
       </div>
-      {this.change ?
+      {this.state.change ?
         <h4 className='change' onClick={this.handleSubmit}>Save Changes</h4> :
         <h4 className='no-change' >Save Changes</h4>
       }
