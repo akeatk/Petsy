@@ -4,6 +4,7 @@ import {Link,withRouter} from 'react-router-dom';
 import {showLogin, showSignup,clickDropdown} from '../../actions/ui_actions';
 import {deleteSession} from '../../actions/session_actions';
 import {getUser} from '../../actions/user_actions';
+import {ProfImg} from '../prof_img';
 
 const mapStateToProps = state => ({
   currentUserId:state.session.currentUser,
@@ -45,8 +46,8 @@ class Form extends React.Component {
                 this.clickProfile;
                 this.props.getUser(this.props.currenUserId);}}>
             <div id='dropdown-profile'>
-              <img src={this.props.currentUser.photo_url || window.images.profileIcon}
-                  className='profile-icon'/>
+              <ProfImg src={this.props.currentUser.photo_url || window.images.profileIcon}
+                 round={true} length='50px'/>
               <div>
                   <h2>
                     {this.props.currentUser.name}</h2>
@@ -86,17 +87,18 @@ class Form extends React.Component {
             </div>
           </div>
 
-          <div className='nav-link'>
+          <Link to='/your/listings/create' className='nav-link'>
             <div className='shop-nav'>
               <img src={window.images.shopIcon}/>
               <p>Your shop</p>
             </div>
-          </div>
+          </Link>
 
           <div className='nav-link' onClick={this.clickProfile}>
             <div className='prof-nav'>
               <div>
-                <img src={this.props.currentUser.photo_url || window.images.profileIcon} className='profile-icon'/>
+                <ProfImg src={this.props.currentUser.photo_url || window.images.profileIcon}
+                  round={true} length='24px'/>
                 <div className='shader'/>
               </div>
               <p>You ▼</p>

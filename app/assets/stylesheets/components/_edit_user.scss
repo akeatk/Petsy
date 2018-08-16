@@ -73,10 +73,8 @@
       >div{
         display:flex;
         flex-direction: column;
-        >img{
+        >div{
           margin-top:18px;
-          height:160px;
-          width:160px;
         }
       }
     }
@@ -138,6 +136,8 @@
   }
   >.no-change{
     background-color:#ff9d5c;
+    text-decoration: line-through;
+    text-decoration-color:$text-grey;
   }
   >.change{
     background-color:#F56400;

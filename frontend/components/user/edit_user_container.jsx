@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Link,Redirect,withRouter} from 'react-router-dom';
 import {showLogin} from '../../actions/ui_actions';
 import {editUser,updateUser} from '../../actions/user_actions';
+import {ProfImg} from '../prof_img';
 
 const mapStateToProps = state => {
   return({
@@ -56,7 +57,12 @@ class EditUser extends React.Component{
     this.state.change=true;
     const file=e.currentTarget.files[0];
     const fileReader=new FileReader();
-    fileReader.onloadend=()=>this.setState({photo:file, photo_url:fileReader.result});
+    fileReader.onloadend=()=>{
+      let img = new Image();
+      img.src=fileReader.result;
+      console.log('width = ',img.width);
+      this.setState({photo:file, photo_url:fileReader.result});
+    };
     if(file){
       fileReader.readAsDataURL(file);
     }
@@ -119,7 +125,8 @@ class EditUser extends React.Component{
           <h3>Profile Picture</h3>
           <div>
             <input type='file' onChange={this.handleFile}/>
-            <img src={this.state.photo_url || window.images.profileIcon} className='profile-icon'/>
+              <ProfImg src={this.state.photo_url || window.images.profileIcon}
+                round={true} length='160px'/>
           </div>
         </div>
         {this.nameField()}

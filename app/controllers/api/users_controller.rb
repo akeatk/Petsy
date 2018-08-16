@@ -60,6 +60,15 @@ class Api::UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @user=User.new(params[:id])
+    if @user
+      if @user.photo.attached?
+        @user.photo.purge
+      end
+    end
+  end
+
   private
 
   def user_params

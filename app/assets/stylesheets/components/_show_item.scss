@@ -1,6 +1,7 @@
 .show-item{
   margin:auto;
   width:980px;
+  padding: 0 18px;
   >.header{
     width:100%;
     display:flex;
@@ -12,11 +13,7 @@
       display:flex;
       flex-direction: row;
       align-items: center;
-      >img{
-        width:75px;
-        height:75px;
-      }
-      >img:hover{
+      >prof-img:hover{
         cursor:pointer;
       }
       >h1{
@@ -134,16 +131,15 @@
           display:flex;
           flex-direction: column;
           align-items: center;
-          >img{
-            height:50px;
-            height:50px;
+          >.prof-img{
             margin-bottom:12px;
           }
-          >img:hover{
+          >.prof-img:hover{
             cursor: pointer;
           }
           >p{
             display:block;
+            font-weight:700;
             font-size:18px;
             font-family: $times-new-roman;
             margin-bottom:18px;

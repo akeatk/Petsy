@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Link,withRouter,Redirect} from 'react-router-dom';
 import {getItem} from '../../actions/item_actions';
 import ReviewStars from '../review_stars';
-
+import {ProfImg} from '../prof_img';
 
 
 const mapStateToProps = (state,ownProps) => {
@@ -24,7 +24,7 @@ const MapDispatchToProps = dispatch => ({
 class ShowItem extends React.Component{
   constructor(props){
     super(props);
-    this.state={showDescription:false};
+    this.state={showDescription:false,quantity:1};
   }
   componentDidMount(){
     this.props.getItem(this.props.match.params.itemId)
@@ -38,18 +38,30 @@ class ShowItem extends React.Component{
           this.props.history.push('/');
         });
   }
+  quantityOptions(quantity){
+    let arr = []
+    for(let i = 1;i <= quantity;i++)
+      arr.push(
+        <option key={i}>
+          {i}
+        </option>
+      );
+    return arr;
+  }
   render(){
     if(!this.props.item || !this.props.user || !this.props.user.item_ids)
       return null;
     if(parseInt(this.props.match.params.itemId) !== this.props.item.id)
       this.props.getItem(this.props.match.params.itemId)
         .then(()=>window.scrollTo(0, 0),()=>this.props.history.push('/'));
+    if(this.props.item.quantity < 1)
+      <Redirect to='/'/>
     return (
     <div className='show-item'>
       <div className='header'>
         <div className='left-header'>
-          <img src={this.props.user.photo_url || window.images.profileIcon}
-            onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
+          <ProfImg src={this.props.user.photo_url || window.images.profileIcon}
+             length='75px' onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
           <h1 onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}>
             {this.props.user.name}
           </h1>
@@ -105,11 +117,17 @@ class ShowItem extends React.Component{
           <div className='item-info'>
             <h1>{this.props.item.name}</h1>
             <h2>${this.props.item.price}</h2>
+            <form>
+              <select defaultValue={1} onChange={(e)=>this.setState({quantity:e.currentTarget.value})}>
+                {this.quantityOptions(this.props.item.quantity)}
+              </select>
+              <h5 onClick={()=>{}}>Add to Cart</h5>
+            </form>
           </div>
           <div className='user-section'>
             <div className='user-info'>
-              <img src={this.props.user.photo_url || window.images.profileIcon}
-                onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
+              <ProfImg src={this.props.user.photo_url || window.images.profileIcon}
+                 length='50px' onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
               <p onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}>
                 {this.props.user.name}
               </p>

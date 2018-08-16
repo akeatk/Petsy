@@ -7,6 +7,8 @@ import GreyScreenContainer from './session/grey_screen_container';
 import ShowUserContainer from './user/show_user_container';
 import EditUserContainer from './user/edit_user_container';
 import ShowItemContainer from './item/show_item_container';
+import CreateItemContainer from './item/create_item_container';
+import UpdateItemContainer from './item/update_item_container';
 import {hideDropdown} from '../actions/ui_actions';
 
 const App = (props) => (
@@ -21,6 +23,8 @@ const App = (props) => (
       <Route path='/listing/:itemId' component={ShowItemContainer}/>
       <Route exact path='/people/:username' component={ShowUserContainer}/>
       <ProtectedRoute exact path='/your/profile' component={EditUserContainer}/>
+        <ProtectedRoute exact path='/your/listings/create' component={CreateItemContainer}/>
+        <ProtectedRoute exact path='/listing/:itemId/update' component={UpdateItemContainer}/>
       <Redirect to="/"/>
     </Switch>
     <div className='temp-body'>

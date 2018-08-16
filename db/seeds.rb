@@ -5,6 +5,8 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+p User.
+# purge all non guest, non seed users
 User.destroy_all
 u1=User.create(email:'guest@dot.com',first_name:'Guest',last_name:'User',
   about:'This is a guest user. The changes you make to this guest user may or may not stay, so in order to have longer lasting changes, you are recommended to create your own account.
@@ -15,6 +17,7 @@ u1=User.create(email:'guest@dot.com',first_name:'Guest',last_name:'User',
 u2=User.create(email:'a@b.cd',first_name:'Steve',last_name:'Bob',
   about:"I like super cats. Cat's not so much.",password:'123456');
 
+# purge all non-seed item photos
 Item.destroy_all
 i1=Item.create(
   user_id:u1.id,

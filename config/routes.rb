@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     resource :session, only: [:create, :destroy]
     resources :users, only: [:create, :show, :update, :edit]
 
-    resources :items, only: [:create, :show, :index, :destroy, :update]
+    resources :items, only: [:create, :show, :index, :destroy,:edit, :update]
   end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

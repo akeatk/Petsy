@@ -17,9 +17,31 @@
 @import "base/*";
 @import "components/*";
 
-.profile-icon{
+.round{
   border:1px solid $border-grey;
   border-radius:50%;
+}
+
+#tall-image{
+  display:flex;
+  justify-content: center;
+  overflow:hidden;
+  >img{
+    margin:auto;
+    align-self: center;
+    height:auto;
+  }
+}
+
+#flat-image{
+  display:flex;
+  justify-content: center;
+  overflow:hidden;
+  >img{
+    margin:auto;
+    align-self: center;
+    width:auto;
+  }
 }
 
 .temp-body{

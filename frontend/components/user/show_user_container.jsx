@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Link,withRouter,Redirect} from 'react-router-dom';
 import {getUsername} from '../../actions/user_actions';
 import {showAbout, hideAbout} from '../../actions/ui_actions';
-
+import {ProfImg} from '../prof_img';
 
 
 const mapStateToProps = (state,ownProps) => {
@@ -97,7 +97,8 @@ class ShowUser extends React.Component{
       return null;
     return (
     <div className='show-user'>
-      <img src={this.props.user.photo_url || window.images.profileIcon} className='profile-icon'/>
+      <ProfImg src={this.props.user.photo_url || window.images.profileIcon}
+         round={true} length='15vw'/>
       <div className='prof-name'>
         <h1>{this.props.user.name}</h1>
         {(this.props.currentUserId &&

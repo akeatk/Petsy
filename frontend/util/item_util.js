@@ -13,19 +13,23 @@ export const getItem = (itemId)=>(
   })
 );
 
-export const createItem = (item)=>(
+export const createItem = (formData)=>(
   $.ajax({
     method:'post',
     url:'/api/items',
-    data:{item}
+    data:formData,
+    contentType:false,
+    processData:false
   })
 );
 
-export const updateItem = (item)=>(
+export const updateItem = (formData)=>(
   $.ajax({
     method:'patch',
-    url:`/api/items/${itemId}`,
-    data:{item}
+    url:`/api/items/${formData.get('item[id]')}`,
+    data:formData,
+    contentType:false,
+    processData:false
   })
 );
 

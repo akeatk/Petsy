@@ -33,6 +33,10 @@ class Api::ItemsController < ApplicationController
     end
   end
 
+  def edit
+
+  end
+
   def update
     @item=Item.find(params[:id])
     unless @item.update(item_params)
