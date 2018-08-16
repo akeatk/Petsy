@@ -18,7 +18,7 @@ const App = (props) => (
     <GreyScreenContainer/>
     <Switch>
       <Route exact path='/' render={()=><p>home page</p>}/>
-      <Route exact path='/listing/:itemId/:name' component={ShowItemContainer}/>
+      <Route path='/listing/:itemId' component={ShowItemContainer}/>
       <Route exact path='/people/:username' component={ShowUserContainer}/>
       <ProtectedRoute exact path='/your/profile' component={EditUserContainer}/>
       <Redirect to="/"/>

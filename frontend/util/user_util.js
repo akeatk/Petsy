@@ -8,20 +8,20 @@ export const getUser = (userId) => (
 export const editUser = (userId) =>(
   $.ajax({
     method:'get',
-    url:`/api/users/${userId}/edit`,
-
+    url:`/api/users/${userId}/edit`
   })
 );
 
-export const updateUser=user=>(
-  $.ajax({
+export const updateUser=formData=>{
+  let userId = formData.get('user[id]');
+  return $.ajax({
     method:'patch',
-    url:`/api/users/${user.id}`,
-    data:{user},
+    url:`/api/users/${userId}`,
+    data:formData,
     contentType:false,
     processData:false
-  })
-);
+  });
+};
 
 export const getUsername=(username)=>(
   $.ajax({

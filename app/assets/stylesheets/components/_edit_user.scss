@@ -1,6 +1,8 @@
 .edit-user{
   width:auto;
-  margin:15px;
+  max-width:1366px;
+  margin:auto;
+  padding:15px;
   >h5{
     background-color: #D0F4C0;
     color:#333;
@@ -60,19 +62,22 @@
       >h3{
         display:block;
         text-align: right;
-        width:200px;
+        min-width:180px;
+        width:25%;
         font-weight: 700;
         font-size: 18px;
         margin: 6px 30px 0 0;
       }
-      >div{
-
-      }
     }
     .edit-picture{
-      >img{
-        height:160px;
-        width:160px;
+      >div{
+        display:flex;
+        flex-direction: column;
+        >img{
+          margin-top:18px;
+          height:160px;
+          width:160px;
+        }
       }
     }
     .edit-name{

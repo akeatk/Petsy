@@ -1,0 +1,198 @@
+.show-item{
+  margin:auto;
+  width:980px;
+  >.header{
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    margin-bottom:56px;
+    margin-top:28px;
+    >.left-header{
+      display:flex;
+      flex-direction: row;
+      align-items: center;
+      >img{
+        width:75px;
+        height:75px;
+      }
+      >img:hover{
+        cursor:pointer;
+      }
+      >h1{
+        margin-left:12px;
+        font-size: 26px;
+        font-weight: 700;
+        font-family: $times-new-roman;
+      }
+      >h1:hover{
+        cursor:pointer;
+        text-decoration: underline;
+      }
+    }
+    >.right-header{
+      display:flex;
+      flex-direction: row;
+      >*{
+        height:69px;
+        width:69px;
+        padding:5px;
+        border:1px solid $border-grey;
+        margin-left:6px;
+        display:flex;
+        flex-direction:row;
+        justify-content: center;
+        align-items: center;
+        border-radius:3px;
+        overflow:hidden;
+      }
+      >*:hover{
+        padding: 4px;
+        border-width: 2px;
+        cursor: pointer;
+      }
+      >.item-count{
+        flex-direction:column;
+        color:$text-black;
+        >h3{
+          font-size:20px;
+          line-height: 1.4;
+        }
+        >h4{
+          font-size:14px;
+        }
+      }
+    }
+  }
+  >.body{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    >.left-body{
+      width:570px;
+      >.item-description{
+        margin-top:12px;
+        padding-top:30px;
+        border-top:1px solid $border-grey;
+        >h3{
+          font-weight: 700;
+          padding-bottom:12px;
+        }
+        >p{
+          font-size:14px;
+          margin-bottom:12px;
+        }
+        >.cutoff{
+          max-height: 273px;
+          overflow: hidden;
+        }
+      }
+      >.item-reviews{
+        margin-top:12px;
+        padding-top:30px;
+        border-top:1px solid $border-grey;
+        >.review-header{
+          display:flex;
+          flex-direction: row;
+          align-items: center;
+          >h3{
+            font-size: 16px;
+            font-weight: 700;
+            padding-right:6px;
+          }
+          >h5{
+            padding-left:6px;
+            font-size: 14px;
+            color:$text-grey;
+          }
+        }
+      }
+    }
+    >.right-body{
+      width:392px;
+      >.item-info{
+        >h1{
+          color:#333;
+          font-size:20px;
+          font-weight:700;
+          line-height: 26px;
+          font-family: $times-new-roman;
+          margin-bottom:12px;
+        }
+        >h2{
+          font-size:20px;
+          font-weight: 700;
+        }
+      }
+      >.user-section{
+        padding-top:30px;
+        width:100%;
+        border-top:1px solid $border-grey;
+        margin-top:30px;
+        >.user-info{
+          width:100%;
+          display:flex;
+          flex-direction: column;
+          align-items: center;
+          >img{
+            height:50px;
+            height:50px;
+            margin-bottom:12px;
+          }
+          >img:hover{
+            cursor: pointer;
+          }
+          >p{
+            display:block;
+            font-size:18px;
+            font-family: $times-new-roman;
+            margin-bottom:18px;
+          }
+          >p:hover{
+            cursor: pointer;
+            text-decoration: underline;
+          }
+        }
+        >.user-items{
+          width:100%;
+          display:flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          >a{
+            >div{
+              display:flex;
+              margin:3px;
+              flex-direction: column;
+              >*:first-child{
+                overflow:hidden;
+                height:150px;
+                width:185px;
+                border:2px solid white;
+                display:flex;
+                justify-content: center;
+                align-items: center;
+                border-radius:3px;
+                overflow:hidden;
+              }
+              >h3{
+                font-size:14px;
+                padding-top:6px;
+              }
+              >h4{
+                font-size:14px;
+                font-weight:700;
+                padding-top: 6px;
+              }
+            }
+            >div:hover{
+              cursor: pointer;
+              >*:first-child{
+                border-color:$border-grey;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

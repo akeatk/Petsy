@@ -31,3 +31,17 @@
   max-height: 100vh;
   overflow: hidden;
 }
+
+#review-stars{
+  display:flex;
+  flex-direction:row;
+  align-items: center;
+  padding-bottom:2px;
+  >img{
+    height:16px;
+    width:16px;
+  }
+}
+body{
+  min-width: 800px;
+}

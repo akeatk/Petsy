@@ -16,8 +16,8 @@ export const editUser=userId=>dispatch=>
   UserAPIUtil.editUser(userId)
     .then(user=>dispatch(receiveUser(user)));
 
-export const updateUser=user=>dispatch=>
-  UserAPIUtil.updateUser(user)
+export const updateUser=formData=>dispatch=>
+  UserAPIUtil.updateUser(formData)
     .then(user=>dispatch(receiveUser(user)));
 
 export const getUsername=username=>dispatch=>

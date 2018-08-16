@@ -33,14 +33,17 @@ class ShowUser extends React.Component{
     this.state={showAbout:false};
   }
   componentDidMount(){
-    this.props.getUsername(this.props.match.params.username);
-    let foundUsername;
-    Object.keys(this.props.users).map((userId)=>
-      this.props.users[userId]).forEach((user)=>{
-        if(user.username === this.props.match.params.username)
-          foundUsername = user;
-      }
-    );
+    this.props.getUsername(this.props.match.params.username)
+      .then(()=>{
+        let foundUsername;
+        Object.keys(this.props.users).map((userId)=>
+          this.props.users[userId]).forEach((user)=>{
+            if(user.username === this.props.match.params.username)
+              foundUsername = user;
+          }
+        );
+      });
+
   }
   componentDidUpdate(){
     let foundUsername;
@@ -94,7 +97,7 @@ class ShowUser extends React.Component{
       return null;
     return (
     <div className='show-user'>
-      <img src={window.images.profileIcon} className='profile-icon'/>
+      <img src={this.props.user.photo_url || window.images.profileIcon} className='profile-icon'/>
       <div className='prof-name'>
         <h1>{this.props.user.name}</h1>
         {(this.props.currentUserId &&

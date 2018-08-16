@@ -3,8 +3,19 @@ class Api::ItemsController < ApplicationController
     @item=Item.find(params[:id])
     @user=@item.user
     @items=@user.items.select{|item|item.quantity > 0}
-        .sort{|a,b|b.num_scores <=> a.num_scores}[0,8]
-    @item_ids=@user.item_ids
+        .sort{|a,b|b.num_scores * b.score <=> a.num_scores * a.score}
+    @item_count=@items.length
+    @items=@items[0,8]
+    @item_ids=@items.map{|item| item.id}
+    @photos=@item.photos
+    @photo_ids={}
+    @photo_ids[@item.id]=[@photos.map{|photo|photo.id}]
+    @items.each do |item|
+      photos=item.photos
+      @photos += photos
+      @photo_ids[item.id]=photos.map{|photo|photo.id}
+    end
+    @items.uniq!
     unless @item
       render json: 'no such item found', status:404
     end

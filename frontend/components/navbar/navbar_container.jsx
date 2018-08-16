@@ -45,7 +45,7 @@ class Form extends React.Component {
                 this.clickProfile;
                 this.props.getUser(this.props.currenUserId);}}>
             <div id='dropdown-profile'>
-              <img src={window.images.profileIcon}
+              <img src={this.props.currentUser.photo_url || window.images.profileIcon}
                   className='profile-icon'/>
               <div>
                   <h2>
@@ -96,7 +96,7 @@ class Form extends React.Component {
           <div className='nav-link' onClick={this.clickProfile}>
             <div className='prof-nav'>
               <div>
-                <img src={window.images.profileIcon} className='profile-icon'/>
+                <img src={this.props.currentUser.photo_url || window.images.profileIcon} className='profile-icon'/>
                 <div className='shader'/>
               </div>
               <p>You ▼</p>

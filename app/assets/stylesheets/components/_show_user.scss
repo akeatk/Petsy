@@ -1,7 +1,9 @@
 .show-user{
   width:auto;
+  max-width: 1366px;
   display:flex;
   flex-direction: row;
+  margin:auto;
   padding:30px;
   >img{
     display:block;

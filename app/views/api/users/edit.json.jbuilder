@@ -1,6 +1,6 @@
 json.id @user.id
 json.username @user.username
-json.photo @user.photo.attached? ? url_for(@user.photo) : nil
+json.photo_url @user.photo.attached? ? url_for(@user.photo) : nil
 if @user.first_name && @user.last_name
   json.name (@user.first_name+" "+@user.last_name)
 elsif @user.first_name

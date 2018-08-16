@@ -5,8 +5,6 @@ import {showLogin} from '../../actions/ui_actions';
 import {editUser,updateUser} from '../../actions/user_actions';
 
 const mapStateToProps = state => {
-  console.log('mapStateToProps');
-  console.log(state.entities.users[state.session.currentUser]);
   return({
   user:state.entities.users[state.session.currentUser],
   currentUserId:state.session.currentUser
@@ -27,12 +25,13 @@ class EditUser extends React.Component{
       first_name:this.props.user.first_name || "",
       last_name:this.props.user.last_name || "",
       about:this.props.user.about || "",
-      photo_url:this.props.user.photo || null,
+      photo_url:this.props.user.photo_url || null,
       change:false,
       changed:false
     };
     this.handleSubmit=this.handleSubmit.bind(this);
     this.handleInput=this.handleInput.bind(this);
+    this.handleFile=this.handleFile.bind(this);
   }
   componentDidMount(){
     this.props.editUser(this.props.currentUserId).then(()=>{
@@ -41,7 +40,7 @@ class EditUser extends React.Component{
         first_name:this.props.user.first_name,
         last_name:this.props.user.last_name,
         about:this.props.user.about,
-        photo_url:this.props.user.photo,
+        photo_url:this.props.user.photo_url || null,
         change:false,
         changed:false
       });
@@ -55,21 +54,27 @@ class EditUser extends React.Component{
   }
   handleFile(e){
     this.state.change=true;
-    this.setState({photo:e.currentTarget.files[0]});
+    const file=e.currentTarget.files[0];
+    const fileReader=new FileReader();
+    fileReader.onloadend=()=>this.setState({photo:file, photo_url:fileReader.result});
+    if(file){
+      fileReader.readAsDataURL(file);
+    }
   }
   handleSubmit(e){
     e.preventDefault();
     const formData = new FormData();
-    // photo_url:this.props.user.photo_url
+    // photo_url:this.props.user.photo
     formData.append('user[id]',this.state.id);
     formData.append('user[first_name]',this.state.first_name);
     formData.append('user[last_name]',this.state.last_name);
     formData.append('user[about]',this.state.about);
-    formData.append('user[photo]',this.state.photo);
+    if(this.state.photo)
+      formData.append('user[photo]',this.state.photo);
+
     this.props.updateUser(formData)
       .then(()=>{
-        this.setState({change:false});
-        this.setState({changed:true});
+        this.setState({change:false,changed:true});
         window.scrollTo(0, 0);
       });
   }
@@ -98,7 +103,6 @@ class EditUser extends React.Component{
     );
   }
   render(){
-    console.log(this.state);
     return (
     <div className='edit-user'>
       {this.state.changed ? <h5>Your changes have been saved.</h5> : null}
@@ -114,8 +118,8 @@ class EditUser extends React.Component{
         <div className='edit-picture'>
           <h3>Profile Picture</h3>
           <div>
-            <input type='file' onChange={this.handleFile.bind(this)}/>
-            <img src={window.images.profileIcon} className='profile-icon'/>
+            <input type='file' onChange={this.handleFile}/>
+            <img src={this.state.photo_url || window.images.profileIcon} className='profile-icon'/>
           </div>
         </div>
         {this.nameField()}

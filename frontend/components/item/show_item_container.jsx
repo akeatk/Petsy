@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link,withRouter,Redirect} from 'react-router-dom';
 import {getItem} from '../../actions/item_actions';
+import ReviewStars from '../review_stars';
 
 
 
@@ -21,20 +22,62 @@ const MapDispatchToProps = dispatch => ({
 });
 
 class ShowItem extends React.Component{
-  componentDidMount(){
-    this.props.getItem(this.props.match.params.itemId);
+  constructor(props){
+    super(props);
+    this.state={showDescription:false};
   }
-  componentDidUpdate(){
-    if(!this.props.item)
-      this.props.history.push('/');
+  componentDidMount(){
+    this.props.getItem(this.props.match.params.itemId)
+      .then(()=>window.scrollTo(0, 0),()=>this.props.history.push('/'));
+  }
+  componentWillReceiveProps(newProps){
+    if(newProps.match.params.itemId !== this.props.match.params.itemId)
+      this.props.getItem(newProps.match.params.itemId)
+        .then(()=>window.scrollTo(0, 0),()=>{
+          window.scrollTo(0, 0);
+          this.props.history.push('/');
+        });
   }
   render(){
-    if(!this.props.item)
+    if(!this.props.item || !this.props.user || !this.props.user.item_ids)
       return null;
+    if(parseInt(this.props.match.params.itemId) !== this.props.item.id)
+      this.props.getItem(this.props.match.params.itemId)
+        .then(()=>window.scrollTo(0, 0),()=>this.props.history.push('/'));
     return (
     <div className='show-item'>
       <div className='header'>
-        <img src={window.images.profileIcon} className='profile-icon'/>
+        <div className='left-header'>
+          <img src={this.props.user.photo_url || window.images.profileIcon}
+            onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
+          <h1 onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}>
+            {this.props.user.name}
+          </h1>
+        </div>
+        <div className='right-header'>
+          {this.props.user.item_ids.slice(0,4).map(itemId=>
+            <p key={itemId} onClick={()=>
+              {
+                let name=this.props.items[itemId].name;
+                if(name.length > 45){
+                  name=name.slice(0,45).split(' ');
+                  name.pop();
+                  name=name.join('-');
+                }
+                else
+                  name=name.split(' ').join('-');
+                this.props.history.push(`/listing/${itemId}/${name}`);
+              }
+            }>
+              {this.props.items[itemId].name}
+            </p>)
+          }
+          <div className='item-count'
+              onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}>
+            <h3>{this.props.user.item_count}</h3>
+            <h4>items</h4>
+          </div>
+        </div>
       </div>
       <div className='body'>
         <div className='left-body'>
@@ -42,20 +85,64 @@ class ShowItem extends React.Component{
             item images
           </div>
           <div className='item-description'>
-            item description
+            <h3>Description</h3>
+            <p className={this.state.showDescription ? '' : 'cutoff'}>
+              {this.props.item.description}
+            </p>
           </div>
           <div className='item-reviews'>
-            item reviews
+            <div className='review-header'>
+              <h3>Reviews</h3>
+              <ReviewStars score={this.props.item.score}/>
+              <h5>({this.props.item.num_scores})</h5>
+            </div>
+            <div className='reviews'>
+              reviews
+            </div>
           </div>
         </div>
         <div className='right-body'>
           <div className='item-info'>
-            <h1>Item name</h1>
-            <h2>item price</h2>
+            <h1>{this.props.item.name}</h1>
+            <h2>${this.props.item.price}</h2>
+          </div>
+          <div className='user-section'>
+            <div className='user-info'>
+              <img src={this.props.user.photo_url || window.images.profileIcon}
+                onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
+              <p onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}>
+                {this.props.user.name}
+              </p>
+            </div>
+            <div className='user-items'>
+              {this.props.user.item_ids.map(itemId=>{
+                  let name=this.props.items[itemId].name;
+                  if(name.length > 45){
+                    name=name.slice(0,45).split(' ');
+                    name.pop();
+                    name=name.join('-');
+                  }
+                  else
+                    name=name.split(' ').join('-');
+                  return (
+                    <Link key={itemId} to={`/listing/${itemId}/${name}`}>
+                      <div>
+                        <div/>
+                        <h3>
+                          {this.props.items[itemId].name.slice(0,25)}
+                          {this.props.items[itemId].name.length > 25 ? '...' : null}
+                        </h3>
+                        <h4>${this.props.items[itemId].price}</h4>
+                      </div>
+                    </Link>
+                  );
+                })
+              }
+            </div>
           </div>
         </div>
       </div>
-      <img src={window.images.profileIcon} className='profile-icon'/>
+
     </div>
     );
   }

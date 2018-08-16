@@ -23,6 +23,13 @@ class Api::UsersController < ApplicationController
 
   def update
     @user=User.find(params[:id])
+    photo = params[:user][:photo]
+    if @user && photo
+      if @user.photo.attached?
+        @user.photo.purge
+      end
+      @user.photo.attach(photo)
+    end
     if @user.update(edit_params)
       render :edit
     end
@@ -59,6 +66,6 @@ class Api::UsersController < ApplicationController
     params.require(:user).permit(:email,:first_name,:password)
   end
   def edit_params
-    params.require(:user).permit(:first_name,:last_name,:about,:photo)
+    params.require(:user).permit(:first_name,:last_name,:about)
   end
 end

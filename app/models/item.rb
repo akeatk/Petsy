@@ -5,6 +5,8 @@ class Item < ApplicationRecord
 
   belongs_to :user
 
+  has_many_attached :photos
+
   after_initialize :initialize_defaults
 
   private
