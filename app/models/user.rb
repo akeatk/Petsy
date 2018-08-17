@@ -102,6 +102,7 @@ class User < ApplicationRecord
       self.score=0
       self.num_scores=0
     end
+    nil
   end
 
   def email_format
