@@ -6,7 +6,8 @@ end
 json.photos do
   @photos.each do |photo|
     json.set! photo.id do
-      json.extract url_for(photo)
+      json.id photo.id
+      json.image_url url_for(photo)
     end
   end
 end

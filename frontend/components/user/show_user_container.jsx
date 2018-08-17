@@ -112,7 +112,7 @@ class ShowUser extends React.Component{
             let item = this.props.items[itemId];
             let photo = this.props.photos[item.photo_ids[0]];
             return (
-              <Link key={itemId} to={`/listing/${itemId}/${name}`}>
+              <Link key={itemId} to={`/listing/${itemId}`}>
                 <div>
                   <div>
                     <img src={photo.photo_url}/>

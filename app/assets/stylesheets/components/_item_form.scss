@@ -85,4 +85,40 @@
       }
     }
   }
+
+  >.item-photos{
+    >div{
+      >.image-previews{
+        display:flex;
+        flex-direction: row;
+        flex-wrap:wrap;
+
+        >*{
+          margin:3px;
+        }
+
+        >.file-box{
+          display:flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: center;
+          width:100px;
+          height:100px;
+          max-width:100px;
+          max-height:100px;
+          min-width:100px;
+          min-height:100px;
+          border:2px solid black;
+          >input{
+            display:flex;
+            flex-wrap: wrap;
+            align-items: center;
+            max-width:78px;
+            margin:0;
+            overflow:hidden;
+          }
+        }
+      }
+    }
+  }
 }

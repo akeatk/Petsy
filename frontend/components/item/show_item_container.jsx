@@ -26,11 +26,14 @@ const MapDispatchToProps = dispatch => ({
 class ShowItem extends React.Component{
   constructor(props){
     super(props);
-    this.state={showDescription:false,quantity:1,currentImg:0};
+    this.state={loaded:false,showDescription:false,quantity:1,currentImg:0};
   }
   componentDidMount(){
     this.props.getItem(this.props.match.params.itemId)
-      .then(()=>window.scrollTo(0, 0),()=>this.props.history.push('/'));
+      .then(()=>{
+        this.setState({loaded:true});
+        window.scrollTo(0, 0);
+      },()=>this.props.history.push('/'));
   }
   componentWillReceiveProps(newProps){
     if(newProps.match.params.itemId !== this.props.match.params.itemId)
@@ -51,6 +54,8 @@ class ShowItem extends React.Component{
     return arr;
   }
   render(){
+    if(!this.state.loaded)
+      return null;
     if(!this.props.item || !this.props.user || !this.props.user.item_ids)
       return null;
     if(parseInt(this.props.match.params.itemId) !== this.props.item.id)
@@ -80,7 +85,7 @@ class ShowItem extends React.Component{
                 }
                 else
                   name=name.split(' ').join('-');
-                this.props.history.push(`/listing/${itemId}/${name}`);
+                this.props.history.push(`/listing/${itemId}`);
               }
             }/>)
           }
@@ -117,7 +122,8 @@ class ShowItem extends React.Component{
           <div className='item-info'>
             <h1>{this.props.item.name}</h1>
             <h2>${this.props.item.price}</h2>
-            {(this.props.currentUserId == this.props.item.user_id) ? <h4 onClick={()=>this.props.history.push('/')}>Edit page</h4> : null}
+            {(this.props.currentUserId == this.props.item.user_id) ?
+              <h4 onClick={()=>this.props.history.push(`/listing/${this.props.match.params.itemId}/edit`)}>Edit page</h4> : null}
             <form>
               <select defaultValue={1} onChange={(e)=>this.setState({quantity:e.currentTarget.value})}>
                 {this.quantityOptions(this.props.item.quantity)}
@@ -144,7 +150,7 @@ class ShowItem extends React.Component{
                   else
                     name=name.split(' ').join('-');
                   return (
-                    <Link key={itemId} to={`/listing/${itemId}/${name}`}>
+                    <Link key={itemId} to={`/listing/${itemId}`}>
                       <div>
                         <ProfImg key={itemId}
                           src={this.props.photos[this.props.items[itemId].photo_ids[0]].photo_url}

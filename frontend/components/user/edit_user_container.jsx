@@ -60,7 +60,6 @@ class EditUser extends React.Component{
     fileReader.onloadend=()=>{
       let img = new Image();
       img.src=fileReader.result;
-      console.log('width = ',img.width);
       this.setState({photo:file, photo_url:fileReader.result});
     };
     if(file){
@@ -125,8 +124,8 @@ class EditUser extends React.Component{
           <h3>Profile Picture</h3>
           <div>
             <input type='file' onChange={this.handleFile}/>
-              <ProfImg src={this.state.photo_url || window.images.profileIcon}
-                round={true} length='160px'/>
+            <ProfImg src={this.state.photo_url || window.images.profileIcon}
+              round={true} length='160px'/>
           </div>
         </div>
         {this.nameField()}

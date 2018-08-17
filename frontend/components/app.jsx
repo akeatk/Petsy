@@ -19,7 +19,8 @@ const App = (props) => (
     <GreyScreenContainer/>
     <Switch>
       <Route exact path='/' component={ItemSplashContainer}/>
-      <Route path='/listing/:itemId' component={ShowItemContainer}/>
+      <Route exact path='/listing/:itemId/edit' component={UpdateItemContainer}/>
+      <Route exact path='/listing/:itemId' component={ShowItemContainer}/>
       <Route exact path='/people/:username' component={ShowUserContainer}/>
       <ProtectedRoute exact path='/your/profile' component={EditUserContainer}/>
       <ProtectedRoute exact path='/your/listings/create' component={CreateItemContainer}/>

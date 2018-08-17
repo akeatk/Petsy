@@ -128,6 +128,37 @@
           font-size:20px;
           font-weight: 700;
         }
+        >h4{
+          font-size:20px;
+          padding: 6px;
+          margin: 20px auto;
+          width:86px;
+          border-radius: 3px;
+          border:1px solid $text-grey;
+        }
+        >h4:hover{
+          background-color: $hover-lightgrey;
+          cursor: pointer;
+        }
+        >form{
+          >select{
+            font-size: 14px;
+            padding:3px;
+            margin-bottom:6px;
+            border:1px solid $text-grey;
+          }
+          >h5{
+            font-size:20px;
+            padding: 6px;
+            width:103px;
+            border-radius: 3px;
+            border:1px solid $text-grey;
+          }
+          >h5:hover{
+            background-color: $hover-lightgrey;
+            cursor: pointer;
+          }
+        }
       }
       >.user-section{
         padding-top:30px;
