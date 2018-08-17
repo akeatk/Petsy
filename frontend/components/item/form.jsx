@@ -4,7 +4,15 @@ import {Link, Redirect} from 'react-router-dom';
 class Form extends React.Component{
   constructor(props){
     super(props);
-    this.state=props.item;
+    this.state={//finish this after create is done
+      user_id:this.props.item.user_id,
+      name:this.props.item.name,
+      price:this.props.item.price,
+      quantity:this.props.item.quantity,
+      description:this.props.item.description,
+      photos:[],
+      photo_ids:this.props.item.photo_ids
+    };
   }
   componentDidMount(){
     if(this.props.title==='Update your listing')

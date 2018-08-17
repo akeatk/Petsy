@@ -27,8 +27,8 @@ class ItemSplash extends React.Component{
     console.log('comp did mount');
     this.props.getItems(0,0)
       .then(()=>{
-        window.scrollTo(0, 0)
-        this.setState({loaded:true})
+        window.scrollTo(0, 0);
+        this.setState({loaded:true});
       },()=>this.props.history.push('/'));
   }
   render(){

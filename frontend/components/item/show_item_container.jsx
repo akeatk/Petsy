@@ -14,7 +14,8 @@ const mapStateToProps = (state,ownProps) => {
     items,
     item,
     user,
-    photos:state.entities.photos
+    photos:state.entities.photos,
+    currentUserId:state.session.currentUser
   };
 };
 
@@ -55,8 +56,6 @@ class ShowItem extends React.Component{
     if(parseInt(this.props.match.params.itemId) !== this.props.item.id)
       this.props.getItem(this.props.match.params.itemId)
         .then(()=>window.scrollTo(0, 0),()=>this.props.history.push('/'));
-    if(this.props.item.quantity < 1)
-      return <Redirect to='/'/>;
     return (
     <div className='show-item'>
       <div className='header'>
@@ -118,6 +117,7 @@ class ShowItem extends React.Component{
           <div className='item-info'>
             <h1>{this.props.item.name}</h1>
             <h2>${this.props.item.price}</h2>
+            {(this.props.currentUserId == this.props.item.user_id) ? <h4 onClick={()=>this.props.history.push('/')}>Edit page</h4> : null}
             <form>
               <select defaultValue={1} onChange={(e)=>this.setState({quantity:e.currentTarget.value})}>
                 {this.quantityOptions(this.props.item.quantity)}
