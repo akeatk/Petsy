@@ -67,6 +67,14 @@
     justify-content: space-between;
     >.left-body{
       width:570px;
+      >.item-images{
+        box-sizing: border-box;
+        border:5px solid $hover-lightgrey;
+        >img{
+          width:100%;
+          height:auto;
+        }
+      }
       >.item-description{
         margin-top:12px;
         padding-top:30px;
@@ -183,7 +191,7 @@
             >div:hover{
               cursor: pointer;
               >*:first-child{
-                border-color:$border-grey;
+                border-color:$text-grey;
               }
             }
           }

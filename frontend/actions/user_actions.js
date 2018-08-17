@@ -2,24 +2,24 @@ import * as UserAPIUtil from '../util/user_util';
 
 export const RECEIVE_USER = 'RECEIVE_USER';
 
-const receiveUser = user=>({
+const receiveUser = payload=>({
   type:RECEIVE_USER,
-  user
+  payload
 });
 
 
 export const getUser=userId=>dispatch=>
   UserAPIUtil.getUser(userId)
-    .then(user=>dispatch(receiveUser(user)));
+    .then(payload=>dispatch(receiveUser(payload)));
 
 export const editUser=userId=>dispatch=>
   UserAPIUtil.editUser(userId)
-    .then(user=>dispatch(receiveUser(user)));
+    .then(payload=>dispatch(receiveUser(payload)));
 
 export const updateUser=formData=>dispatch=>
   UserAPIUtil.updateUser(formData)
-    .then(user=>dispatch(receiveUser(user)));
+    .then(payload=>dispatch(receiveUser(payload)));
 
 export const getUsername=username=>dispatch=>
   UserAPIUtil.getUsername(username)
-    .then(user=>dispatch(receiveUser(user)));
+    .then(payload=>dispatch(receiveUser(payload)));

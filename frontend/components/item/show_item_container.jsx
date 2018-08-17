@@ -13,7 +13,8 @@ const mapStateToProps = (state,ownProps) => {
   return {
     items,
     item,
-    user
+    user,
+    photos:state.entities.photos
   };
 };
 
@@ -24,7 +25,7 @@ const MapDispatchToProps = dispatch => ({
 class ShowItem extends React.Component{
   constructor(props){
     super(props);
-    this.state={showDescription:false,quantity:1};
+    this.state={showDescription:false,quantity:1,currentImg:0};
   }
   componentDidMount(){
     this.props.getItem(this.props.match.params.itemId)
@@ -39,7 +40,7 @@ class ShowItem extends React.Component{
         });
   }
   quantityOptions(quantity){
-    let arr = []
+    let arr = [];
     for(let i = 1;i <= quantity;i++)
       arr.push(
         <option key={i}>
@@ -55,7 +56,7 @@ class ShowItem extends React.Component{
       this.props.getItem(this.props.match.params.itemId)
         .then(()=>window.scrollTo(0, 0),()=>this.props.history.push('/'));
     if(this.props.item.quantity < 1)
-      <Redirect to='/'/>
+      return <Redirect to='/'/>;
     return (
     <div className='show-item'>
       <div className='header'>
@@ -68,7 +69,9 @@ class ShowItem extends React.Component{
         </div>
         <div className='right-header'>
           {this.props.user.item_ids.slice(0,4).map(itemId=>
-            <p key={itemId} onClick={()=>
+            <ProfImg key={itemId}
+              src={this.props.photos[this.props.items[itemId].photo_ids[0]].photo_url}
+              length='69px' onClick={()=>
               {
                 let name=this.props.items[itemId].name;
                 if(name.length > 45){
@@ -80,9 +83,7 @@ class ShowItem extends React.Component{
                   name=name.split(' ').join('-');
                 this.props.history.push(`/listing/${itemId}/${name}`);
               }
-            }>
-              {this.props.items[itemId].name}
-            </p>)
+            }/>)
           }
           <div className='item-count'
               onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}>
@@ -94,7 +95,7 @@ class ShowItem extends React.Component{
       <div className='body'>
         <div className='left-body'>
           <div className='item-images'>
-            item images
+            <img src={this.props.photos[this.props.item.photo_ids[this.state.currentImg]].photo_url}/>
           </div>
           <div className='item-description'>
             <h3>Description</h3>
@@ -145,7 +146,9 @@ class ShowItem extends React.Component{
                   return (
                     <Link key={itemId} to={`/listing/${itemId}/${name}`}>
                       <div>
-                        <div/>
+                        <ProfImg key={itemId}
+                          src={this.props.photos[this.props.items[itemId].photo_ids[0]].photo_url}
+                          length='185px' />
                         <h3>
                           {this.props.items[itemId].name.slice(0,25)}
                           {this.props.items[itemId].name.length > 25 ? '...' : null}

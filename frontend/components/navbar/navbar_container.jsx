@@ -27,7 +27,8 @@ class Form extends React.Component {
     this.test=this.test.bind(this);
   }
   componentWillMount(){
-    this.props.getUser(this.props.currentUserId);
+    if(this.props.currentUserId)
+      this.props.getUser(this.props.currentUserId);
   }
   clickProfile(e){
     e.stopPropagation();
@@ -44,7 +45,7 @@ class Form extends React.Component {
               autoFocus='{this.props.dropdown}'
               onClick={()=>{
                 this.clickProfile;
-                this.props.getUser(this.props.currenUserId);}}>
+                this.props.getUser(this.props.currentUserId);}}>
             <div id='dropdown-profile'>
               <ProfImg src={this.props.currentUser.photo_url || window.images.profileIcon}
                  round={true} length='50px'/>

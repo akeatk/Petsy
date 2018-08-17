@@ -22,11 +22,28 @@ class Api::ItemsController < ApplicationController
   end
 
   def index
-    @items = Item.find(:all, :order => "num_scores desc", :limit => 20, :offset=>0)
+    # @items = Item.find(:all, :order => "num_scores desc", :limit => 20, :offset=>0)
+    @items=Item.all
+
+    if @item
+      @items=@item.select{|item|item.quantity > 0}
+        .sort{|a,b|b.num_scores * b.score <=> a.num_scores * a.score}
+      @photo_ids={};
+      @photos=[]
+      @items.each do |item|
+        photo=item.photos.first
+        @photos += photo
+        @photo_ids[item.id]=[photo.id]
+      end
+      render :index
+    else
+      render json: 'bad call to index somehow...', status:404
+    end
   end
 
   def create
     @item=Item.new(create_params)
+    @images=params[:item][:photos]
     unless @item.save
       # upload atleast one image error message?
       render json: process_errors(@item), status:422
@@ -34,7 +51,12 @@ class Api::ItemsController < ApplicationController
   end
 
   def edit
-
+    @item=Item.find(params[:id])
+    @photos=@item.photos
+    @photo_ids=@photos.map{|photo|photo.id}
+    if @item
+      render :edit
+    end
   end
 
   def update

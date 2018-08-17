@@ -24,10 +24,10 @@
 
 #tall-image{
   display:flex;
-  justify-content: center;
+  flex-direction:row;
+  align-items: center;
   overflow:hidden;
   >img{
-    margin:auto;
     align-self: center;
     height:auto;
   }
@@ -35,10 +35,10 @@
 
 #flat-image{
   display:flex;
-  justify-content: center;
+  flex-direction:column;
+  align-items: center;
   overflow:hidden;
   >img{
-    margin:auto;
     align-self: center;
     width:auto;
   }

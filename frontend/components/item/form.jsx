@@ -1,5 +1,5 @@
 import React from 'react';
-import {Redirect} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 
 class Form extends React.Component{
   constructor(props){
@@ -8,39 +8,40 @@ class Form extends React.Component{
   }
   componentDidMount(){
     if(this.props.title==='Update your listing')
-      this.props.getItem(this.props.match.params.itemId)
+      this.props.getEdit(this.props.match.params.itemId)
         .then(this.setState({//finish this after create is done
-          user_id:null,
-          name:null,
-          price:null,
-          quantity:null,
-          description:null,
-          photos:null
+          user_id:this.props.item.user_id,
+          name:this.props.item.name,
+          price:this.props.item.price,
+          quantity:this.props.item.quantity,
+          description:this.props.item.description,
+          photos:[],
+          photo_ids:this.props.item.photo_ids
         }));
   }
   render(){
+    if(!this.props.item)
+      return null;
     if(this.props.currentUserId && this.props.item.user_id &&
         this.props.currentUserId !== this.props.item.user_id)
-      return <Redirect to='/'/>
+      return <Redirect to='/'/>;
     return(
       <form className='item-form'>
         <h1>{this.props.title}</h1>
         <div className='item-photos'>
-          <div>
-            <h2>Photos</h2>
-            <h3>Add as many as you can so buyers can see every detail.</h3>
-          </div>
+          <h2>Photos</h2>
+          <h3>Add as many as you can so buyers can see every detail.</h3>
           <div>
             <div>
-              <h2>Photos *</h2>
+              <h4>Photos *</h4>
               <p>Use up to ten photos to show your item's most important qualities.</p>
               <p/>
               <p>Tips:</p>
               <p/>
-              <p>Use natural light and no flash.</p>
-              <p>Include a common object for scale.</p>
-              <p>Show the item being held, worn, or used.</p>
-              <p>Shoot against a clean, simple background.</p>
+              <p>* Use natural light and no flash.</p>
+              <p>* Include a common object for scale.</p>
+              <p>* Show the item being held, worn, or used.</p>
+              <p>* Shoot against a clean, simple background.</p>
             </div>
 
             <div>

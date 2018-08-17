@@ -1,0 +1,88 @@
+.item-form{
+  margin:auto;
+  padding: 0 18px;
+  min-height:1366px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  >h1{
+    font-size:26px;
+    padding: 50px 0;
+    font-weight: 700;
+  }
+  >div{//classnamed=item-****
+    border:1px solid $border-grey;
+    border-radius: 6px;
+    padding: 30px;
+    width:900px;
+    max-width:900px;
+    margin:0 auto;
+    margin-bottom:18px;
+    box-sizing: border-box;
+    display:flex;
+    flex-direction:column;
+    >h2{
+      font-size: 20px;
+    }
+    >h3{
+      margin-top: 6px;
+      font-size: 14px;
+      color:$text-grey;
+    }
+    >div{
+      width:100%;
+      display:flex;
+      flex-direction:row;
+      padding-top:30px;
+      >div:first-child{
+        width:250px;
+        min-width:250px;
+        max-width:250px;
+        padding-right:30px;
+        >h4{
+          font-size:14px;
+          font-weight: 700;
+          margin-bottom:6px;
+        }
+        >p{
+          font-size:12px;
+          color:$text-grey;
+          line-height: 1.4;
+        }
+      }
+      >div:nth-child(2){
+        width:100%;
+        >input{
+          border-radius:3px;
+          font-size:14px;
+          padding: 9px 12px;
+          border:1px solid $text-grey;
+        }
+        >input:hover{
+          border-color:$text-darkgrey;
+        }
+        >input:focus{
+          border-color:black;
+        }
+
+        >textarea{
+          width:520;
+          min-width:520px;
+          max-width:520px;
+          height:200px;
+          min-height:50px;
+          padding: 9px 12px;
+          font-size:14px;
+          border-radius:3px;
+          border:1px solid $text-grey;
+        }
+        >textarea:hover{
+          border-color:$text-darkgrey;
+        }
+        >textarea:focus{
+          border-color:black;
+        }
+      }
+    }
+  }
+}

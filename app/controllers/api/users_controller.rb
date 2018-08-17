@@ -3,12 +3,25 @@ class Api::UsersController < ApplicationController
     if params[:id].to_i < 0
       @user=User.find_by(username:params[:user][:username])
     else
-      @user=User.find_by(id:params[:id]);
+      @user=User.find(params[:id]);
     end
     if @user
+      @items=@user.items.select{|item|item.quantity > 0}
+          .sort{|a,b|b.num_scores * b.score <=> a.num_scores * a.score}
+      @item_count=@items.length
+      @item_ids=@items.map{|item| item.id}
+      @photos=[]
+      @photo_ids={}
+      @items.each do |item|
+        photos=item.photos
+        @photo_ids[item.id]=photos.map{|photo|photo.id}
+        @photos += photos
+      end
+      @items.uniq!
+      @photos.uniq!
       render :show
     else
-      render json:{}
+      render json:'not found user',status:404
     end
   end
 
@@ -16,8 +29,6 @@ class Api::UsersController < ApplicationController
     @user=User.find(params[:id]);
     if @user
       render :edit
-    else
-      render json:{}
     end
   end
 

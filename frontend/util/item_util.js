@@ -23,6 +23,13 @@ export const createItem = (formData)=>(
   })
 );
 
+export const getEditItem=itemId=>(
+  $.ajax({
+    method:'get',
+    url:`/api/items/${itemId}/edit`
+  })
+);
+
 export const updateItem = (formData)=>(
   $.ajax({
     method:'patch',

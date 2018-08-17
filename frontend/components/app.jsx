@@ -14,8 +14,6 @@ import {hideDropdown} from '../actions/ui_actions';
 const App = (props) => (
   <div onClick={props.dropdown ? props.hideDropdown : null}
       className={props.greyScreen==='none' ? '' : 'no-scroll'}>
-    {/* <Route path="/" component={NavBarContainer} /> */}
-    {/* <Route exact path="/" component={Home} /> */}
     <NavbarContainer/>
     <GreyScreenContainer/>
     <Switch>
@@ -23,8 +21,8 @@ const App = (props) => (
       <Route path='/listing/:itemId' component={ShowItemContainer}/>
       <Route exact path='/people/:username' component={ShowUserContainer}/>
       <ProtectedRoute exact path='/your/profile' component={EditUserContainer}/>
-        <ProtectedRoute exact path='/your/listings/create' component={CreateItemContainer}/>
-        <ProtectedRoute exact path='/listing/:itemId/update' component={UpdateItemContainer}/>
+      <ProtectedRoute exact path='/your/listings/create' component={CreateItemContainer}/>
+      <ProtectedRoute exact path='/listing/:itemId/update' component={UpdateItemContainer}/>
       <Redirect to="/"/>
     </Switch>
     <div className='temp-body'>
