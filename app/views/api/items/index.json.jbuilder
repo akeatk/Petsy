@@ -12,15 +12,14 @@ end
 json.users do
   @users.each do |user|
     json.set! user.id do
-      json.username @user.username
-      if @user.first_name && @user.last_name
-        json.name (@user.first_name+" "+@user.last_name)
-      elsif @user.first_name
-        json.name @user.first_name
-      elsif @user.last_name
-        json.name @user.last_name
+      if user.first_name && user.last_name
+        json.name (user.first_name+" "+user.last_name)
+      elsif user.first_name
+        json.name user.first_name
+      elsif user.last_name
+        json.name user.last_name
       else
-        json.name @user.username
+        json.name user.username
       end
     end
   end

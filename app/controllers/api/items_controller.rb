@@ -22,17 +22,21 @@ class Api::ItemsController < ApplicationController
   end
 
   def index
+    offset=params[:offset].to_i || 0
     # @items = Item.find(:all, :order => "num_scores desc", :limit => 20, :offset=>0)
     @items=Item.all
 
-    if @item
-      @items=@item.select{|item|item.quantity > 0}
+    if @items
+      @items=@items.select{|item|item.quantity > 0}
         .sort{|a,b|b.num_scores * b.score <=> a.num_scores * a.score}
+      @items=@items[offset,offset + 20]
       @photo_ids={};
       @photos=[]
+      @users=[]
       @items.each do |item|
+        @users<<item.user
         photo=item.photos.first
-        @photos += photo
+        @photos << photo
         @photo_ids[item.id]=[photo.id]
       end
       render :index

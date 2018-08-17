@@ -1,8 +1,8 @@
-export const getItems = (sortType,page)=>(
+export const getItems = (sortType,offset)=>(
   $.ajax({
     method:'get',
-    url:`/api/items/`,
-    data:{sortType,page}
+    url:`/api/items`,
+    data:{sortType,offset}
   })
 );
 

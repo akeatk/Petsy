@@ -9,6 +9,7 @@ import EditUserContainer from './user/edit_user_container';
 import ShowItemContainer from './item/show_item_container';
 import CreateItemContainer from './item/create_item_container';
 import UpdateItemContainer from './item/update_item_container';
+import ItemSplashContainer from './item/item_splash_container';
 import {hideDropdown} from '../actions/ui_actions';
 
 const App = (props) => (
@@ -17,7 +18,7 @@ const App = (props) => (
     <NavbarContainer/>
     <GreyScreenContainer/>
     <Switch>
-      <Route exact path='/' render={()=><p>home page</p>}/>
+      <Route exact path='/' component={ItemSplashContainer}/>
       <Route path='/listing/:itemId' component={ShowItemContainer}/>
       <Route exact path='/people/:username' component={ShowUserContainer}/>
       <ProtectedRoute exact path='/your/profile' component={EditUserContainer}/>

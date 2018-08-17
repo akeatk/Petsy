@@ -9,9 +9,9 @@ const receiveItem = payload=>({
   payload
 });
 
-const receiveItems = items=>({
+const receiveItems = payload=>({
   type:RECEIVE_ITEMS,
-  items
+  payload
 });
 
 const receiveEditItem = item=>({
@@ -19,9 +19,9 @@ const receiveEditItem = item=>({
   item
 });
 
-export const getItems=(sortType,page)=>dispatch=>
-  ItemAPIUtil.getItems(sortType,page)
-    .then(items=>dispatch(receiveItems(items)));
+export const getItems=(sortType,offset)=>dispatch=>
+  ItemAPIUtil.getItems(sortType,offset)
+    .then(payload=>dispatch(receiveItems(payload)));
 
 export const getItem=userId=>dispatch=>
   ItemAPIUtil.getItem(userId)
