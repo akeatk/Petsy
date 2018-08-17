@@ -99,10 +99,13 @@ class User < ApplicationRecord
         self.username = (0...8).map { (65 + rand(26) + (rand(2) * 32)).chr }.join
       end
       self.username = username
+    end
+    unless self.score
       self.score=0
+    end
+    unless self.num_scores
       self.num_scores=0
     end
-    nil
   end
 
   def email_format
