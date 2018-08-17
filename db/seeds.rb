@@ -29,7 +29,7 @@ u3.save!
 # purge all non-seed item photos
 Item.destroy_all
 i1=Item.create(
-  user_id:u1.id,
+  user_id:u3.id,
   name:"Blue Cat",
   description:"This cat has super powers, allegedly.",
   quantity:5,
@@ -46,7 +46,7 @@ i1.photos.attach(io:file,filename:'blue-cat-3.jpg')
 i1.save!
 
 i2=Item.create(
-  user_id:u1.id,
+  user_id:u2.id,
   name:"ferret",
   description:"The is allegedly a normal cat. Things may vary",
   quantity:2,
@@ -67,7 +67,7 @@ i2.photos.attach(io:file,filename:'ferret-5.jpg')
 i2.save!
 
 i3=Item.create(
-  user_id:u1.id,
+  user_id:u2.id,
   name:"Normal Dog",
   description:"This is a very normal dog, though that makes it not very normal compared to most things.",
   quantity:14,
@@ -84,7 +84,7 @@ i3.photos.attach(io:file,filename:'lab-dog-3.jpg')
 i3.save!
 
 i4=Item.create(
-  user_id:u1.id,
+  user_id:u2.id,
   name:"Super Cat",
   description:"The dog is super, more super than most dogs and definitely more super than most things.",
   quantity:3,
