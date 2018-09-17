@@ -4,7 +4,6 @@ import {Link,withRouter,Redirect} from 'react-router-dom';
 import {getItem} from '../../actions/item_actions';
 import ReviewStars from '../review_stars';
 import StaticImg from '../static_img';
-import DisplayImg from '../display_img';
 
 
 const mapStateToProps = (state,ownProps) => {
@@ -39,17 +38,18 @@ class ShowItem extends React.Component{
       },()=>this.props.history.push('/'));
   }
   componentWillReceiveProps(newProps){
-    if(newProps.match.params.itemId !== this.props.match.params.itemId)
+    if(newProps.match.params.itemId !== this.props.match.params.itemId){
       this.props.getItem(newProps.match.params.itemId)
         .then(()=>{
-            window.scrollTo(0, 0)
-            this.setState({currentImg:0})
+            window.scrollTo(0, 0);
           },
           ()=>{
             window.scrollTo(0, 0);
             this.props.history.push('/');
           }
         );
+      this.setState({currentImg:0});
+    }
   }
   getLeftImg(){
     if(this.state.currentImg - 1 >= 0)
@@ -106,8 +106,7 @@ class ShowItem extends React.Component{
       <div className='body'>
         <div className='left-body'>
           <div className='item-images'>
-            <DisplayImg src={this.props.photos[this.props.item.photo_ids[this.state.currentImg]].photo_url}
-              width='560px'/>
+            <img src={this.props.photos[this.props.item.photo_ids[this.state.currentImg]].photo_url}/>
             <h3>
               <p className={this.state.currentImg - 1 >= 0 ? 'arrow' : ''}
                 onClick={this.getLeftImg}>{'<'}</p>
