@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Link,Redirect,withRouter} from 'react-router-dom';
 import {showLogin} from '../../actions/ui_actions';
 import {editUser,updateUser} from '../../actions/user_actions';
-import {ProfImg} from '../prof_img';
+import StaticImg from '../static_img';
 
 const mapStateToProps = state => {
   return({
@@ -124,8 +124,8 @@ class EditUser extends React.Component{
           <h3>Profile Picture</h3>
           <div>
             <input type='file' onChange={this.handleFile}/>
-            <ProfImg src={this.state.photo_url || window.images.profileIcon}
-              round={true} length='160px'/>
+            <StaticImg src={this.state.photo_url || window.images.profileIcon}
+              round={true} width='160px' height='160px'/>
           </div>
         </div>
         {this.nameField()}

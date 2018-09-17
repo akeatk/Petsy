@@ -9,14 +9,14 @@ export default (state={}, action)=>{
   let newState = merge({}, state);
   switch(action.type){
     case RECEIVE_EDIT_ITEM:
-      return merge(newState,{[action.payload.item.id]:action.payload.item});
+      return {[action.payload.item.id]:action.payload.item};
     case RECEIVE_ITEMS:
-      return merge(newState,action.payload.items);//TO BE DECIDED
+      return action.payload.items;
     case RECEIVE_ITEM:
       return merge(action.payload.items,
           {[action.payload.item.id]:action.payload.item});
     case RECEIVE_USER:
-      return merge(newState,action.payload.items) || state;//merge(newState, {[action.user.id]:action.user});
+      return action.payload.items || {};//merge(newState, {[action.user.id]:action.user});
     case LOGOUT_CURRENT_USER:
       return state;
     default:

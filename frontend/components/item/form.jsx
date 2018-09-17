@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import {ProfImg} from '../prof_img';
+import StaticImg from '../static_img';
 
 class Form extends React.Component{
   constructor(props){
@@ -15,7 +15,9 @@ class Form extends React.Component{
       new_files:[],
       photo_ids:null,
       photo_urls:[],
-      loaded:false
+      loaded:false,
+      remove:[],
+      errors:{}
     };
     this.handleFile=this.handleFile.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
@@ -49,20 +51,67 @@ class Form extends React.Component{
     const file=e.currentTarget.files[0];
     const fileReader=new FileReader();
     fileReader.onloadend=()=>{
-      this.setState({
-        photo_urls:this.state.photo_urls.concat([fileReader.result]),
-        new_files:this.state.new_files.concat([file])
-      });
+      if(!this.state.photo_urls.includes(fileReader.result) &&
+        this.state.photo_urls.length < 10)
+      {
+        this.setState({
+          photo_urls:this.state.photo_urls.concat([fileReader.result]),
+          new_files:this.state.new_files.concat([file])
+        });
+      }
     };
     if(file){
       fileReader.readAsDataURL(file);
     }
   }
+  handleDelete(url){
+    let idx = this.state.photo_urls.indexOf(url);
+    if(idx >= 0){
+      this.state.photo_urls.splice(idx,1);
+      if(idx < this.state.photos.length){
+        this.state.remove.push(this.state.photos[idx]);
+        this.state.photos.splice(idx,1);
+      }
+      else
+        this.state.new_files.splice(idx - this.state.photo_urls.length, 1);
+
+      this.setState({loaded:true});
+    }
+  }
   handleSubmit(e){
     e.preventDefault();
+    let valid = true;
+    let errors = {};
+    if((this.props.title==="Update your listing" &&
+        this.state.photos.length < 1 &&
+        this.state.new_files.length < 1) ||
+        this.state.new_files.length < 1){
+      errors['photos']='Please upload at least one photo.'
+      valid = false;
+    }
+    if(this.state.name.length < 1){
+      errors['name']=true;
+      valid = false;
+    }
+    if(this.state.description.length < 1){
+      errors['description']=true;
+      valid = false;
+    }
+    if((Math.floor(parseFloat(this.state.price)*100))/100 <= 0){
+      errors['price']=true;
+      valid = false;
+    }
+    if(parseInt(this.state.quantity) < 1){
+      errors['quantity']=true;
+      valid = false;
+    }
+
+    if(!valid)
+      return this.setState({errors:errors});
+
     const formData = new FormData();
     // photo_url:this.props.user.photo
-    if(this.props.title==='Update your listing'){
+    if(this.props.title==="Update your listing"){
       formData.append('item[id]',this.props.item.id);
     }
     formData.append('item[user_id]',this.props.currentUserId);
@@ -75,12 +124,19 @@ class Form extends React.Component{
         formData.append(`new_files[]`,file);
       });
     }
+    if(this.state.remove.length > 0)
+      this.state.remove.forEach((fileId)=>{
+        formData.append(`remove[]`,fileId);
+      });
     this.props.action(formData)
       .then((action)=>{
-
         this.props.history.push(`/listing/${action.payload.item.id}`);
         // this.props.history.push(`/api`)
       });
+  }
+  findPic(e){
+    e.preventDefault();
+    document.getElementById('file-input').click();
   }
   render(){
     if(!this.state.loaded)
@@ -97,23 +153,43 @@ class Form extends React.Component{
           <div>
             <div>
               <h4>Photos *</h4>
-              <p>Use up to ten photos to show your item's most important qualities.</p>
+              <p>Use up to ten photos to show the animal's most important qualities.</p>
               <p/>
               <p>Tips:</p>
               <p/>
               <p>* Use natural light and no flash.</p>
               <p>* Include a common object for scale.</p>
-              <p>* Show the item being held, worn, or used.</p>
+              <p>* Show the animal in its natural habitat.</p>
               <p>* Shoot against a clean, simple background.</p>
             </div>
 
             <div className='image-previews'>
-              {this.state.photo_urls.map((url)=>(
-                  <ProfImg key={url} src={url}
-                     length='100px'/>
-              ))}
-              <div className='file-box'>
-                <input type='file' onChange={this.handleFile}/>
+              {this.state.errors['photos'] ?
+                <h5 className='error-message'>
+                  {this.state.errors['photos']}
+                </h5> : null
+              }
+              <div>
+                {this.state.photo_urls.map((url,idx)=>(
+                  <div key={url}>
+                    <StaticImg src={url}
+                       height='100px' width='100px'/>
+                    <img src={window.images.trashIcon}
+                      onClick={
+                        ()=>this.handleDelete(url)
+                      }
+                    />
+                 </div>
+                ))}
+                {this.state.photo_urls.length < 10 ?
+                  <div className='file-box'>
+                    <input id='file-input' type='file' onChange={this.handleFile}/>
+                    <div onClick={this.findPic}>
+                      <img src={window.images.camIcon}/>
+                      <h3>Add a photo</h3>
+                    </div>
+                  </div> : null}
+                {null}
               </div>
             </div>
           </div>
@@ -121,11 +197,11 @@ class Form extends React.Component{
 
         <div className='item-details'>
           <h2>Listing Details</h2>
-          <h3>Tell the world all about your item and why they’ll love it.</h3>
+          <h3>Tell the world all about the animal and why they’ll love it.</h3>
           <div>
             <div>
               <h4>Title *</h4>
-              <p>Include keywords that buyers would use to search for your item.</p>
+              <p>Include keywords that buyers would use to search for your listing.</p>
             </div>
             <div>
               <input type='text' value={this.state.name} onChange={this.handleInput('name')}/>
@@ -134,11 +210,9 @@ class Form extends React.Component{
           <div>
             <div>
               <h4>Description *</h4>
-              <p>Start with a brief overview that describes your item's finest features.</p>
+              <p>Start with a brief overview that describes the animal's finest features.</p>
               <p/>
-              <p>List details like dimensions and key features in easy-to-read bullet points.</p>
-              <p/>
-              <p>Tell buyers a bit about your process or the story behind this item.</p>
+              <p>List details in easy-to-read bullet points.</p>
             </div>
             <div>
               <textarea value={this.state.description} onChange={this.handleInput('description')}/>
@@ -151,7 +225,7 @@ class Form extends React.Component{
           <div>
             <div>
               <h4>Price *</h4>
-              <p>Factor in the costs of materials and labor, plus any related business expenses. Consider the total price buyers will pay too—including shipping.</p>
+              <p>Factor in the costs of materials and labor, plus any related business expenses.</p>
             </div>
             <div>
               <input type='text' value={this.state.price} onChange={this.handleInput('price')}/>
@@ -160,7 +234,7 @@ class Form extends React.Component{
           <div>
             <div>
               <h4>Quantity *</h4>
-              <p>For quantities greater than one, this listing will renew automatically until it sells out. You’ll be charged a $0.20 USD listing fee each time.</p>
+              <p>For quantities greater than one, this listing will renew automatically until it sells out.</p>
             </div>
             <div>
               <input type='text' value={this.state.quantity} onChange={this.handleInput('quantity')}/>

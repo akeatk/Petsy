@@ -12,11 +12,9 @@ export default (state={}, action)=>{
     case RECEIVE_ITEMS:
       return action.payload.photos || {};
     case RECEIVE_ITEM:
-      return merge(newState,action.payload.photos) || {};//get rid of or after you seed data
+      return action.payload.photos || {};
     case RECEIVE_USER:
-      return merge(newState,action.payload.photos);
-    case LOGOUT_CURRENT_USER:
-      return state;
+      return merge(newState,action.payload.photos) || {};
     default:
       return state;
   }

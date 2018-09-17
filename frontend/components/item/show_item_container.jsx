@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Link,withRouter,Redirect} from 'react-router-dom';
 import {getItem} from '../../actions/item_actions';
 import ReviewStars from '../review_stars';
-import {ProfImg} from '../prof_img';
+import StaticImg from '../static_img';
 
 
 const mapStateToProps = (state,ownProps) => {
@@ -65,17 +65,17 @@ class ShowItem extends React.Component{
     <div className='show-item'>
       <div className='header'>
         <div className='left-header'>
-          <ProfImg src={this.props.user.photo_url || window.images.profileIcon}
-             length='75px' onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
+          <StaticImg src={this.props.user.photo_url || window.images.profileIcon}
+             height='75px' width='75px' onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
           <h1 onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}>
             {this.props.user.name}
           </h1>
         </div>
         <div className='right-header'>
           {this.props.user.item_ids.slice(0,4).map(itemId=>
-            <ProfImg key={itemId}
+            <StaticImg key={itemId}
               src={this.props.photos[this.props.items[itemId].photo_ids[0]].photo_url}
-              length='69px' onClick={()=>
+              height='69px' width='69px' onClick={()=>
               {
                 let name=this.props.items[itemId].name;
                 if(name.length > 45){
@@ -133,8 +133,8 @@ class ShowItem extends React.Component{
           </div>
           <div className='user-section'>
             <div className='user-info'>
-              <ProfImg src={this.props.user.photo_url || window.images.profileIcon}
-                 length='50px' onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
+              <StaticImg src={this.props.user.photo_url || window.images.profileIcon}
+                 height='50px' width='50px' onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
               <p onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}>
                 {this.props.user.name}
               </p>
@@ -152,9 +152,9 @@ class ShowItem extends React.Component{
                   return (
                     <Link key={itemId} to={`/listing/${itemId}`}>
                       <div>
-                        <ProfImg key={itemId}
+                        <StaticImg key={itemId}
                           src={this.props.photos[this.props.items[itemId].photo_ids[0]].photo_url}
-                          length='185px' />
+                          height='185px' width='185px'/>
                         <h3>
                           {this.props.items[itemId].name.slice(0,25)}
                           {this.props.items[itemId].name.length > 25 ? '...' : null}

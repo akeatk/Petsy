@@ -13,7 +13,6 @@
  *= require_self
  */
 
-@import "reset.css";
 @import "base/*";
 @import "components/*";
 
@@ -42,11 +41,6 @@
     align-self: center;
     width:auto;
   }
-}
-
-.temp-body{
-  width:900px;
-  height:3000px;
 }
 
 .no-scroll{

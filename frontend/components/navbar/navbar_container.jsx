@@ -4,7 +4,7 @@ import {Link,withRouter} from 'react-router-dom';
 import {showLogin, showSignup,clickDropdown} from '../../actions/ui_actions';
 import {deleteSession} from '../../actions/session_actions';
 import {getUser} from '../../actions/user_actions';
-import {ProfImg} from '../prof_img';
+import StaticImg from '../static_img';
 
 const mapStateToProps = state => ({
   currentUserId:state.session.currentUser,
@@ -47,8 +47,8 @@ class Form extends React.Component {
                 this.clickProfile;
                 this.props.getUser(this.props.currentUserId);}}>
             <div id='dropdown-profile'>
-              <ProfImg src={this.props.currentUser.photo_url || window.images.profileIcon}
-                 round={true} length='50px'/>
+              <StaticImg src={this.props.currentUser.photo_url || window.images.profileIcon}
+                 round={true} width='50px' height='50px'/>
               <div>
                   <h2>
                     {this.props.currentUser.name}</h2>
@@ -98,8 +98,8 @@ class Form extends React.Component {
           <div className='nav-link' onClick={this.clickProfile}>
             <div className='prof-nav'>
               <div>
-                <ProfImg src={this.props.currentUser.photo_url || window.images.profileIcon}
-                  round={true} length='24px'/>
+                <StaticImg src={this.props.currentUser.photo_url || window.images.profileIcon}
+                  round={true} width='24px' height='24px'/>
                 <div className='shader'/>
               </div>
               <p>You ▼</p>
@@ -139,7 +139,7 @@ class Form extends React.Component {
       <div className='navbar'>
         <div>
           <div className='left-nav'>
-            <Link to='/'><p className='logo'>Etsyclone</p></Link>
+            <Link to='/'><p className='logo'>Petsy</p></Link>
           </div>
 
           {this.rightNav()}
