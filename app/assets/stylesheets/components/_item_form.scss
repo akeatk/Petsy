@@ -1,7 +1,6 @@
 .item-form{
   margin:auto;
   padding: 0 18px;
-  min-height:1366px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -14,8 +13,9 @@
     border:1px solid $border-grey;
     border-radius: 6px;
     padding: 30px;
-    width:900px;
-    max-width:900px;
+    width:100%;
+    max-width:1200px;
+    min-width:800px;
     margin:0 auto;
     margin-bottom:18px;
     box-sizing: border-box;
@@ -92,33 +92,94 @@
         display:flex;
         flex-direction: row;
         flex-wrap:wrap;
+        >div{
+          >*{
+            margin:3px;
+            border-radius: 3px;
+            border: 1px solid $border-grey;
+            overflow: hidden;
+            height:100px;
+            width:100px;
+            >img{
+              display:none;
+              position:relative;
+              height:35px;
+              width:35px;
+              margin:0;
+              padding:0;
+              top:-40px;
+              right:-32.5px;
+              background-color:white;
+              border:1px solid $border-grey;
+              border-radius: 3px;
+            }
+            >img:hover{
+              background-color: $border-grey;
+              border-color: $border-grey;
+            }
+          }
+          >*:hover{
+            >img{
+              display:block;
+            }
+            >img:hover{
+              cursor: pointer;
+            }
+          }
 
-        >*{
-          margin:3px;
-        }
-
-        >.file-box{
-          display:flex;
-          flex-wrap: wrap;
-          align-items: center;
-          justify-content: center;
-          width:100px;
-          height:100px;
-          max-width:100px;
-          max-height:100px;
-          min-width:100px;
-          min-height:100px;
-          border:2px solid black;
-          >input{
+          >.file-box{
             display:flex;
             flex-wrap: wrap;
             align-items: center;
-            max-width:78px;
-            margin:0;
-            overflow:hidden;
+            justify-content: center;
+            border-color:#FFCDB9;
+            background-color:#FFF3ED;
+            >input{
+              display:flex;
+              flex-wrap: wrap;
+              align-items: center;
+              max-width: 0;
+              max-height: 0;
+              margin:0;
+              overflow:hidden;
+            }
+            >div{
+              height:100%;
+              width:100%;
+              display:flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              >img{
+                height:30px;
+                width:30px;
+              }
+              >h3{
+                margin-top:10px;
+                color:#FFA400;
+              }
+            }
+            >div:hover{
+              cursor:pointer;
+            }
           }
         }
       }
+    }
+  }
+  .item-footer{
+    border-color:white;
+    padding:0;
+    >h4{
+      color:white;
+      margin:auto;
+      background-color:#F56400;
+      padding: 7px 15px 8px;
+      border-radius: 3px;
+    }
+    >h4:hover{
+      background-color:#ff9d5c;
+      cursor:pointer;
     }
   }
 }

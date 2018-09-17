@@ -74,9 +74,6 @@ class Api::ItemsController < ApplicationController
       #--------------------------------------
 
       render :show
-    else
-      # upload atleast one image error message?
-      render json: process_errors(@item), status:422
     end
   end
 
@@ -90,14 +87,23 @@ class Api::ItemsController < ApplicationController
   end
 
   def update
-    @item=Item.find(params[:id])
-    files=params[:item][:new_files]
-    unless @item.update(item_params)
-      render json: process_errors(@item), status:422
+    @item=Item.find(params[:item][:id])
+    files=params[:new_files]
+    remove=params[:remove]
+    @item.assign_attributes(item_params)
+    return nil unless @item.valid?
+    photos = @item.photos
+    if photos && remove
+      photos.each do |photo|
+        photo.purge if remove.include? photo.id.to_s
+      end
     end
-    files.each do |file|
-      @item.photos.attach(file);
+    if files
+      files.each do |file|
+        @item.photos.attach(file);
+      end
     end
+    @item.save
     #--------------------------------------
     @user=@item.user
     @items=@user.items.select{|item|item.quantity > 0}
@@ -127,22 +133,5 @@ class Api::ItemsController < ApplicationController
 
   def item_params
     params.require(:item).permit(:user_id,:name,:description,:price,:quantity)
-  end
-
-  def process_errors(item)
-    errors={}
-    unless item.name && item.name.length < 1
-      errors[:name]=true
-    end
-    unless item.description && item.description.length < 1
-      errors[:description]=true
-    end
-    unless item.price && item.price < 0.01
-      errors[:price]=true
-    end
-    unless item.quantity && item.quantity < 1
-      errors[:quantity]=true
-    end
-    errors
   end
 end

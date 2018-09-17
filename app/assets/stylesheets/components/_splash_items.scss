@@ -11,7 +11,6 @@
         margin:3px;
         flex-direction: column;
         >*:first-child{
-          overflow:hidden;
           height:150px;
           width:185px;
           border:2px solid white;
@@ -19,6 +18,7 @@
           justify-content: center;
           align-items: center;
           border-radius:3px;
+          box-sizing:border-box;
           overflow:hidden;
         }
         >h3{

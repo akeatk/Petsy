@@ -29,7 +29,7 @@ u3.save!
 # purge all non-seed item photos
 Item.destroy_all
 i1=Item.create(
-  user_id:u3.id,
+  user_id:u1.id,
   name:"Blue Cat",
   description:"This cat has super powers, allegedly.",
   quantity:5,

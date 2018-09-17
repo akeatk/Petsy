@@ -27,8 +27,6 @@ const App = (props) => (
       <ProtectedRoute exact path='/listing/:itemId/update' component={UpdateItemContainer}/>
       <Redirect to="/"/>
     </Switch>
-    <div className='temp-body'>
-    </div>
   </div>
 );
 

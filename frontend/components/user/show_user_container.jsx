@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Link,withRouter,Redirect} from 'react-router-dom';
 import {getUsername} from '../../actions/user_actions';
 import {showAbout, hideAbout} from '../../actions/ui_actions';
-import {ProfImg} from '../prof_img';
+import StaticImg from '../static_img';
 
 
 const mapStateToProps = (state,ownProps) => {
@@ -93,8 +93,8 @@ class ShowUser extends React.Component{
     return (
       <div className='user-show-page'>
         <div className='show-user'>
-          <ProfImg src={this.props.user.photo_url || window.images.profileIcon}
-             length='15vw'/>
+          <StaticImg src={this.props.user.photo_url || window.images.profileIcon}
+             width='15vw' height='15vw'/>
           <div className='prof-name'>
             <h1>{this.props.user.name}</h1>
             {(this.props.currentUserId &&
@@ -114,9 +114,7 @@ class ShowUser extends React.Component{
             return (
               <Link key={itemId} to={`/listing/${itemId}`}>
                 <div>
-                  <div>
-                    <img src={photo.photo_url}/>
-                  </div>
+                  <StaticImg src={photo.photo_url} width='15vw' height='12vw'/>
                   <h3>
                     {this.props.items[itemId].name.slice(0,25)}
                     {this.props.items[itemId].name.length > 25 ? '...' : null}

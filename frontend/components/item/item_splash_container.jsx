@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link,withRouter} from 'react-router-dom';
 import {getItems} from '../../actions/item_actions';
-import {ProfImg} from '../prof_img';
+import StaticImg from '../static_img';
 
 
 const mapStateToProps = (state) => {
@@ -21,8 +21,6 @@ class ItemSplash extends React.Component{
   constructor(props){
     super(props);
     this.state={offset:0,loaded:false};
-  }
-  componentDidMount(){
   }
   render(){
     if( !this.state.loaded){
@@ -45,9 +43,9 @@ class ItemSplash extends React.Component{
           return (
             <Link key={itemId} to={`/listing/${itemId}`}>
               <div>
-                <ProfImg key={itemId}
+                <StaticImg key={itemId}
                   src={photo.photo_url}
-                  length='185px' />
+                  width='185px' height='185px' />
                 <div>
                 </div>
                 <h3>
