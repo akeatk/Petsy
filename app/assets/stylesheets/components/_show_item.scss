@@ -31,26 +31,26 @@
       display:flex;
       flex-direction: row;
       >*{
-        height:69px;
-        width:69px;
-        padding:5px;
+        height:75px;
+        width:75px;
         border:1px solid $border-grey;
         margin-left:6px;
         display:flex;
         flex-direction:row;
         justify-content: center;
         align-items: center;
+        border:2px solid white;
         border-radius:3px;
         overflow:hidden;
       }
       >*:hover{
-        padding: 4px;
-        border-width: 2px;
+        border-color:$text-grey;
         cursor: pointer;
       }
       >.item-count{
         flex-direction:column;
         color:$text-black;
+        border-color:$border-grey;
         >h3{
           font-size:20px;
           line-height: 1.4;
@@ -58,6 +58,9 @@
         >h4{
           font-size:14px;
         }
+      }
+      >.item-count:hover{
+        border-color:$text-grey;
       }
     }
   }
@@ -68,11 +71,44 @@
     >.left-body{
       width:570px;
       >.item-images{
-        box-sizing: border-box;
-        border:5px solid $hover-lightgrey;
-        >img{
-          width:100%;
-          height:auto;
+        position:relative;
+        display:flex;
+        flex-direction:column;
+        align-items: center;
+        >h3{
+          display:flex;
+          width:105px;;
+          margin:0;
+          padding:0;
+          border-radius: 6px;
+          overflow:hidden;
+          border:2px solid $border-grey;
+          background-color:$border-grey;
+          >p{
+            display:block;
+            height:50px;
+            width:auto;
+            font-weight: 700;
+            font-size:56px;
+            color:$border-grey;
+            margin:0;
+            padding-bottom:10px;
+            padding-left:10px;
+            padding-right:10px;
+            background-color: white;
+          }
+          >.arrow:hover{
+            background-color: $hover-lightgrey;
+            color:$text-grey;
+            cursor:pointer;
+          }
+          *:first-child{
+            margin-right:2px;
+          }
+        }
+        >div{
+          box-sizing: border-box;
+          border:5px solid $hover-lightgrey;
         }
       }
       >.item-description{
@@ -179,7 +215,7 @@
           >p{
             display:block;
             font-weight:700;
-            font-size:18px;
+            font-size:27px;
             font-family: $times-new-roman;
             margin-bottom:18px;
           }

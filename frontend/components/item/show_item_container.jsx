@@ -4,6 +4,7 @@ import {Link,withRouter,Redirect} from 'react-router-dom';
 import {getItem} from '../../actions/item_actions';
 import ReviewStars from '../review_stars';
 import StaticImg from '../static_img';
+import DisplayImg from '../display_img';
 
 
 const mapStateToProps = (state,ownProps) => {
@@ -27,6 +28,8 @@ class ShowItem extends React.Component{
   constructor(props){
     super(props);
     this.state={loaded:false,showDescription:false,quantity:1,currentImg:0};
+    this.getLeftImg=this.getLeftImg.bind(this);
+    this.getRightImg=this.getRightImg.bind(this);
   }
   componentDidMount(){
     this.props.getItem(this.props.match.params.itemId)
@@ -38,10 +41,23 @@ class ShowItem extends React.Component{
   componentWillReceiveProps(newProps){
     if(newProps.match.params.itemId !== this.props.match.params.itemId)
       this.props.getItem(newProps.match.params.itemId)
-        .then(()=>window.scrollTo(0, 0),()=>{
-          window.scrollTo(0, 0);
-          this.props.history.push('/');
-        });
+        .then(()=>{
+            window.scrollTo(0, 0)
+            this.setState({currentImg:0})
+          },
+          ()=>{
+            window.scrollTo(0, 0);
+            this.props.history.push('/');
+          }
+        );
+  }
+  getLeftImg(){
+    if(this.state.currentImg - 1 >= 0)
+      this.setState({currentImg:this.state.currentImg - 1});
+  }
+  getRightImg(){
+    if(this.state.currentImg + 1 < this.props.item.photo_ids.length)
+      this.setState({currentImg:this.state.currentImg + 1});
   }
   quantityOptions(quantity){
     let arr = [];
@@ -73,33 +89,31 @@ class ShowItem extends React.Component{
         </div>
         <div className='right-header'>
           {this.props.user.item_ids.slice(0,4).map(itemId=>
-            <StaticImg key={itemId}
-              src={this.props.photos[this.props.items[itemId].photo_ids[0]].photo_url}
-              height='69px' width='69px' onClick={()=>
-              {
-                let name=this.props.items[itemId].name;
-                if(name.length > 45){
-                  name=name.slice(0,45).split(' ');
-                  name.pop();
-                  name=name.join('-');
-                }
-                else
-                  name=name.split(' ').join('-');
-                this.props.history.push(`/listing/${itemId}`);
-              }
-            }/>)
+            <Link key={itemId} to={`/listing/${itemId}`}>
+              <StaticImg key={itemId}
+                src={this.props.photos[this.props.items[itemId].photo_ids[0]].photo_url}
+                height='75px' width='75px'/>
+              </Link>
+            )
           }
           <div className='item-count'
               onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}>
             <h3>{this.props.user.item_count}</h3>
-            <h4>items</h4>
+            <h4>{this.props.user.item_ids.length === 1 ? 'item' : 'items' }</h4>
           </div>
         </div>
       </div>
       <div className='body'>
         <div className='left-body'>
           <div className='item-images'>
-            <img src={this.props.photos[this.props.item.photo_ids[this.state.currentImg]].photo_url}/>
+            <DisplayImg src={this.props.photos[this.props.item.photo_ids[this.state.currentImg]].photo_url}
+              width='560px'/>
+            <h3>
+              <p className={this.state.currentImg - 1 >= 0 ? 'arrow' : ''}
+                onClick={this.getLeftImg}>{'<'}</p>
+              <p className={this.state.currentImg + 1 < this.props.item.photo_ids.length ? 'arrow' : ''}
+                onClick={this.getRightImg}>{'>'}</p>
+            </h3>
           </div>
           <div className='item-description'>
             <h3>Description</h3>
@@ -134,7 +148,7 @@ class ShowItem extends React.Component{
           <div className='user-section'>
             <div className='user-info'>
               <StaticImg src={this.props.user.photo_url || window.images.profileIcon}
-                 height='50px' width='50px' onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
+                 height='90px' width='90px' onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
               <p onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}>
                 {this.props.user.name}
               </p>

@@ -49,9 +49,11 @@ class Api::ItemsController < ApplicationController
     @item=Item.new(item_params)
     files=params[:new_files] || []
     if @item.valid?
-
+      i = 0
       files.each do |file|
         @item.photos.attach(file);
+        i+= 1
+        break if i == 10
       end
       @photos=@item.photos
       @photo_ids=@photos.map{|photo|photo.id}

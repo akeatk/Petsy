@@ -15,7 +15,7 @@ u1=User.create(email:'guest@dot.com',first_name:'Guest',last_name:'User',
   password:'123094812309478')
 
 u2=User.create(email:'a@b.cd',first_name:'Bubble',last_name:'Turtle',
-  about:"I like super cats. Cat's not so much.",password:'123456');
+  about:"I like super cats. Cats, not so much.",password:'123456');
 file=EzDownload.open('https://s3-us-west-1.amazonaws.com/etsyclone-dev/defaults/bubble-turtle.jpg')
 u2.photo.attach(io:file,filename:'bubble-turtle.jpg')
 u2.save!

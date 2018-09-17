@@ -9,7 +9,7 @@ class Form extends React.Component{
       user_id:'',
       name:'',
       price:'',
-      quantity:'',
+      quantity:'1',
       description:'',
       photos:[],
       new_files:[],
@@ -17,7 +17,7 @@ class Form extends React.Component{
       photo_urls:[],
       loaded:false,
       remove:[],
-      errors:{}
+      errors:{bad:false}
     };
     this.handleFile=this.handleFile.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
@@ -65,7 +65,7 @@ class Form extends React.Component{
     }
   }
   handleDelete(url){
-    let idx = this.state.photo_urls.indexOf(url);
+    const idx = this.state.photo_urls.indexOf(url);
     if(idx >= 0){
       this.state.photo_urls.splice(idx,1);
       if(idx < this.state.photos.length){
@@ -73,41 +73,39 @@ class Form extends React.Component{
         this.state.photos.splice(idx,1);
       }
       else
-        this.state.new_files.splice(idx - this.state.photo_urls.length, 1);
+        this.state.new_files.splice(idx - this.state.photos.length + 1, 1);
 
       this.setState({loaded:true});
     }
   }
   handleSubmit(e){
     e.preventDefault();
-    let valid = true;
-    let errors = {};
-    if((this.props.title==="Update your listing" &&
-        this.state.photos.length < 1 &&
-        this.state.new_files.length < 1) ||
-        this.state.new_files.length < 1){
+    let errors = {bad:false};
+    if((this.state.photos.length < 1 && this.state.new_files.length < 1)){
       errors['photos']='Please upload at least one photo.'
-      valid = false;
+      errors['bad'] = false;
     }
     if(this.state.name.length < 1){
       errors['name']=true;
-      valid = false;
+      errors['bad'] = true;
     }
     if(this.state.description.length < 1){
       errors['description']=true;
-      valid = false;
+      errors['bad'] = true;
     }
-    if((Math.floor(parseFloat(this.state.price)*100))/100 <= 0){
+    if(!parseFloat(this.state.price) || (Math.floor(parseFloat(this.state.price)*100))/100 < 0){
       errors['price']=true;
-      valid = false;
+      errors['bad'] = true;
     }
-    if(parseInt(this.state.quantity) < 1){
+    if(!parseInt(this.state.quantity) || parseInt(this.state.quantity) < 1){
       errors['quantity']=true;
-      valid = false;
+      errors['bad'] = true;
     }
 
-    if(!valid)
+    if(errors['bad']){
+      window.scrollTo(0, 0);
       return this.setState({errors:errors});
+    }
 
     const formData = new FormData();
     // photo_url:this.props.user.photo
@@ -147,6 +145,8 @@ class Form extends React.Component{
     return(
       <form className='item-form'>
         <h1>{this.props.title}</h1>
+        {this.state.errors['bad'] ?
+          <h2>Fill out all of the fields correctly in order to save and continue.</h2> : null}
         <div className='item-photos'>
           <h2>Photos</h2>
           <h3>Add as many as you can so buyers can see every detail.</h3>
@@ -189,7 +189,6 @@ class Form extends React.Component{
                       <h3>Add a photo</h3>
                     </div>
                   </div> : null}
-                {null}
               </div>
             </div>
           </div>
@@ -204,7 +203,7 @@ class Form extends React.Component{
               <p>Include keywords that buyers would use to search for your listing.</p>
             </div>
             <div>
-              <input type='text' value={this.state.name} onChange={this.handleInput('name')}/>
+              <input className={this.state.errors['name'] ? "missing-field" : ""} type='text' value={this.state.name} onChange={this.handleInput('name')}/>
             </div>
           </div>
           <div>
@@ -215,7 +214,7 @@ class Form extends React.Component{
               <p>List details in easy-to-read bullet points.</p>
             </div>
             <div>
-              <textarea value={this.state.description} onChange={this.handleInput('description')}/>
+              <textarea className={this.state.errors['description'] ? "missing-field" : ""} value={this.state.description} onChange={this.handleInput('description')}/>
             </div>
           </div>
         </div>
@@ -228,7 +227,7 @@ class Form extends React.Component{
               <p>Factor in the costs of materials and labor, plus any related business expenses.</p>
             </div>
             <div>
-              <input type='text' value={this.state.price} onChange={this.handleInput('price')}/>
+              <input className={this.state.errors['price'] ? "missing-field" : ""} type='text' value={this.state.price} onChange={this.handleInput('price')}/>
             </div>
           </div>
           <div>
@@ -237,7 +236,7 @@ class Form extends React.Component{
               <p>For quantities greater than one, this listing will renew automatically until it sells out.</p>
             </div>
             <div>
-              <input type='text' value={this.state.quantity} onChange={this.handleInput('quantity')}/>
+              <input className={this.state.errors['quantity'] ? "missing-field" : ""} type='text' value={this.state.quantity} onChange={this.handleInput('quantity')}/>
             </div>
           </div>
         </div>
