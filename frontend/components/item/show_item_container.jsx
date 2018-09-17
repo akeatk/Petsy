@@ -39,6 +39,7 @@ class ShowItem extends React.Component{
   }
   componentWillReceiveProps(newProps){
     if(newProps.match.params.itemId !== this.props.match.params.itemId){
+      this.setState({currentImg:0});
       this.props.getItem(newProps.match.params.itemId)
         .then(()=>{
             window.scrollTo(0, 0);
@@ -48,7 +49,6 @@ class ShowItem extends React.Component{
             this.props.history.push('/');
           }
         );
-      this.setState({currentImg:0});
     }
   }
   getLeftImg(){

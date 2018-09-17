@@ -12,8 +12,8 @@ class Api::ItemsController < ApplicationController
     @photo_ids[@item.id]=[@photos.map{|photo|photo.id}]
     @items.each do |item|
       photos=item.photos
-      @photos += photos
-      @photo_ids[item.id]=photos.map{|photo|photo.id}
+      @photos += [photos[0]]
+      @photo_ids[item.id]=[photos[0].id]
     end
     @items.uniq!
     unless @item
