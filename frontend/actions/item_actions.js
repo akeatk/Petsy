@@ -20,32 +20,32 @@ const receiveEditItem = payload=>({
   payload
 });
 
-export const getItems=(sortType,offset)=>dispatch=>
+export const receiveItemErrors=(errors)=>({
+type:RECEIVE_ITEM_ERRORS,
+errors:errors.responseJSON
+});
+
+export const getItems=(sortType,offset)=> dispatch=>
   ItemAPIUtil.getItems(sortType,offset)
     .then(payload=>dispatch(receiveItems(payload)));
 
-export const getItem=userId=>dispatch=>
+export const getItem=userId=> dispatch=>
   ItemAPIUtil.getItem(userId)
     .then(item=>dispatch(receiveItem(item)));
 
-export const getEditItem=userId=>dispatch=>
+export const getEditItem=userId=> dispatch=>
   ItemAPIUtil.getEditItem(userId)
     .then(payload=>dispatch(receiveEditItem(payload)));
 
-export const createItem=item=>dispatch=>
+export const createItem=item=> dispatch=>
   ItemAPIUtil.createItem(item)
     .then(item=>dispatch(receiveItem(item)),
       (errors)=>dispatch(receiveItemErrors));
 
-export const updateItem=item=>dispatch=>
+export const updateItem=item=> dispatch=>
   ItemAPIUtil.updateItem(item)
     .then(item=>dispatch(receiveItem(item)),
       (errors)=>dispatch(receiveItemErrors));
 
-export const deleteItem=itemId=>dispatch=>
+export const deleteItem=itemId=> dispatch=>
   ItemAPIUtil.deleteItem(itemId);
-
-export const receiveItemErrors=(errors)=>({
-  type:RECEIVE_ITEM_ERRORS,
-  errors:errors.responseJSON
-});

@@ -60,8 +60,8 @@ class Api::CartItemsController < ApplicationController
     #     key = cart_item_id
     #     value = quantity
 
-    @cart_items = CartItem.where(id: params[:cart_items].keys)
-    @items = Item.where(id: @cart_items.map{|e| e.item_id})
+    @cart_items = CartItem.where(user_id: params[:user_id])
+    @items = Item.where(id: @cart_items.map{|e| e.item_id}.uniq)
 
     items = {}
     @items.uniq.each do |item|
@@ -72,12 +72,26 @@ class Api::CartItemsController < ApplicationController
     errors={}
 
     @cart_items.each do |cart_item|
+      if params[:cart_items][cart_item.id]
+        cart_item.quantity = params[:cart_items][cart_item.id]
+        return unless cart_item.save
+      end
       if cart_item.quantity > @items[cart_item.item_id].quantity
         errors[cart_item.item_id] = @items[cart_item.item_id].quantity
       end
     end
 
-    render json:errors, status:422 if errors.keys.length > 0
+    if errors.keys.length > 0
+      render json:errors, status:422
+    else
+      @cart_items.each do |cart_item|
+        item = @items[cart_item.item_id]
+        item.quantity -= cart_item.quantity
+        return unless item.save
+        cart_item.bought = true
+        return unless cart_item.save
+      end
+    end
   end
 
   private

@@ -9,7 +9,7 @@ export const getItems = (sortType,offset)=>(
 export const getItem = (itemId)=>(
   $.ajax({
     method:'get',
-    url:`api/items/${itemId}`
+    url:`/api/items/${itemId}`
   })
 );
 
