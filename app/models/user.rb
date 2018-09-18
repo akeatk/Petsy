@@ -7,6 +7,7 @@ class User < ApplicationRecord
 
   has_many :items
   has_many :reviews
+  has_many :cart_items
 
   has_one_attached :photo
   # this will put the url in json

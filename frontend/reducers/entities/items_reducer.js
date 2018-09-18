@@ -16,7 +16,7 @@ export default (state={}, action)=>{
       return merge(action.payload.items,
           {[action.payload.item.id]:action.payload.item});
     case RECEIVE_USER:
-      return action.payload.items || {};//merge(newState, {[action.user.id]:action.user});
+      return merge(newState,action.payload.items) || {};//merge(newState, {[action.user.id]:action.user});
     case LOGOUT_CURRENT_USER:
       return state;
     default:

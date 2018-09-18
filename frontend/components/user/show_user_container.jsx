@@ -51,6 +51,7 @@ class ShowUser extends React.Component{
       });
 
   }
+
   formatDate(date) {
     const months = {
       0: 'January',1: 'February',2: 'March',3: 'April',
@@ -88,8 +89,22 @@ class ShowUser extends React.Component{
       return (<h3>{this.props.user.about}</h3>);
   }
   render(){
-    if(!this.props.user || !this.props.user.item_ids)
+    if(!this.props.user || !this.props.user.item_ids || !this.props.items){
+        this.props.getUsername(this.props.match.params.username)
+          .then(()=>{
+            let foundUsername;
+            Object.keys(this.props.users).map((userId)=>
+              this.props.users[userId]).forEach((user)=>{
+                if(user.username === this.props.match.params.username)
+                  foundUsername = user;
+              }
+            );
+            if(!foundUsername)
+              this.props.history.push('/');
+            this.setState({user:this.props.user});
+          });
       return null;
+    }
     return (
       <div className='user-show-page'>
         <div className='show-user'>

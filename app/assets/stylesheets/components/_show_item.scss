@@ -98,6 +98,9 @@
             padding-right:10px;
             background-color: white;
           }
+          >p:hover{
+            cursor:default;
+          }
           >.arrow:hover{
             background-color: $hover-lightgrey;
             color:$text-grey;

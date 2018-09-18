@@ -137,12 +137,14 @@ class ShowItem extends React.Component{
             <h2>${this.props.item.price}</h2>
             {(this.props.currentUserId == this.props.item.user_id) ?
               <h4 onClick={()=>this.props.history.push(`/listing/${this.props.match.params.itemId}/edit`)}>Edit page</h4> : null}
-            <form>
-              <select defaultValue={1} onChange={(e)=>this.setState({quantity:e.currentTarget.value})}>
-                {this.quantityOptions(this.props.item.quantity)}
-              </select>
-              <h5 onClick={()=>{}}>Add to Cart</h5>
-            </form>
+            {(this.props.currentUserId == this.props.item.user_id) ? null :
+              <form>
+                <select defaultValue={1} onChange={(e)=>this.setState({quantity:e.currentTarget.value})}>
+                  {this.quantityOptions(this.props.item.quantity)}
+                </select>
+                <h5 onClick={()=>{}}>Add to Cart</h5>
+              </form>
+            }
           </div>
           <div className='user-section'>
             <div className='user-info'>

@@ -4,7 +4,9 @@ class Item < ApplicationRecord
   validates :price,presence:true,:numericality => { :greater_than => 0 }
 
   belongs_to :user
+
   has_many :reviews
+  has_many :cart_items
 
   has_many_attached :photos
 

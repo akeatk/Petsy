@@ -4,13 +4,13 @@ class CartItem < ApplicationRecord
 
   belongs_to :user
   belongs_to :item
-  
+
   after_initialize :initialize_defaults
 
   private
 
   def initialize_defaults
-    if self.bought.nil?
+    unless self.bought
       self.bought = false
     end
   end
