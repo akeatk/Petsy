@@ -73,46 +73,52 @@
       >.item-images{
         position:relative;
         display:flex;
-        flex-direction:column;
+        flex-direction:row;
         align-items: center;
-        >h3{
+        height:auto;
+        >img{
+          width:570px;
+          height:auto;
+        }
+        >div{
           display:flex;
-          width:105px;;
           margin:0;
-          margin-top:8px;
+          width:0;
+          height:100%;
           padding:0;
-          border-radius: 6px;
-          overflow:hidden;
-          border:2px solid $border-grey;
-          background-color:$border-grey;
-          >p{
-            display:block;
-            height:50px;
-            width:auto;
-            font-weight: 700;
-            font-size:56px;
-            color:$border-grey;
-            margin:0;
-            padding-bottom:10px;
-            padding-left:10px;
-            padding-right:10px;
-            background-color: white;
-          }
-          >p:hover{
-            cursor:default;
-          }
-          >.arrow:hover{
-            background-color: $hover-lightgrey;
-            color:$text-grey;
-            cursor:pointer;
-          }
-          *:first-child{
-            margin-right:2px;
+          >div{
+            >p{
+              position:relative;
+              z-index:10;
+              display:block;
+              height:50px;
+              width:auto;
+              font-weight: 700;
+              font-size:56px;
+              color:$text-grey;
+              margin:0;
+              padding-bottom:10px;
+              padding-left:10px;
+              padding-right:10px;
+              background-color: white;
+              border-radius: 6px;
+              opacity:.4;
+              right:5px;
+            }
+            >.arrow:hover{
+              cursor:pointer;
+              opacity:.6;
+            }
           }
         }
-        >img{
-          width:560px;
-          height:auto;
+        >.right-arrow{
+          height:100%;
+          justify-content: flex-end;
+          >div{
+            >p{
+              right:-5px;
+            }
+          }
         }
       }
       >.item-description{
@@ -237,6 +243,7 @@
             >div{
               display:flex;
               margin:3px;
+              padding:0;
               flex-direction: column;
               >*:first-child{
                 overflow:hidden;

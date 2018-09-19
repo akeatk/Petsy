@@ -7,7 +7,7 @@ export default (state={}, action)=>{
   let newState = merge({}, state);
   switch(action.type){
     case RECEIVE_CART_ITEMS:
-      return action.payload.cart_items;
+      return action.payload.cart_items || {};
     case LOGOUT_CURRENT_USER:
       return {};
     default:

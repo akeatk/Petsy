@@ -10,6 +10,7 @@ import ShowItemContainer from './item/show_item_container';
 import CreateItemContainer from './item/create_item_container';
 import UpdateItemContainer from './item/update_item_container';
 import ItemSplashContainer from './item/item_splash_container';
+import CartItemsContainer from './cart_item/cart_items_container';
 import {hideDropdown} from '../actions/ui_actions';
 
 const App = (props) => (
@@ -25,6 +26,7 @@ const App = (props) => (
       <ProtectedRoute exact path='/your/profile' component={EditUserContainer}/>
       <ProtectedRoute exact path='/your/listings/create' component={CreateItemContainer}/>
       <ProtectedRoute exact path='/listing/:itemId/update' component={UpdateItemContainer}/>
+      <ProtectedRoute exact path='/cart' component={CartItemsContainer}/>
       <Redirect to="/"/>
     </Switch>
   </div>

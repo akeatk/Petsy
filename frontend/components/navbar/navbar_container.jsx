@@ -107,12 +107,12 @@ class Form extends React.Component {
             {this.profileDropdown()}
           </div>
 
-          <div className='nav-link'>
+          <Link to='/cart' className='nav-link'>
             <div className='cart-nav'>
               <img src={window.images.cartIcon}/>
               <p className='text-grey'>Cart</p>
             </div>
-          </div>
+          </Link>
         </div>
       );
     else
@@ -123,13 +123,6 @@ class Form extends React.Component {
           </div>
           <div className='login-button'>
             <p onClick={this.props.showLogin}>Sign in</p>
-          </div>
-
-          <div className='nav-link'>
-            <div className='cart-nav'>
-              <img src={window.images.cartIcon}/>
-              <p className='text-grey'>Cart</p>
-            </div>
           </div>
         </div>
       );

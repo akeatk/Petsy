@@ -1,6 +1,6 @@
 import * as CartItemUtil from '../util/cart_item_util.js';
 
-exporst const RECEIVE_CART_ITEMS = 'RECEIVE_CART_ITEMS';
+export const RECEIVE_CART_ITEMS = 'RECEIVE_CART_ITEMS';
 
 const receiveCartItems = payload =>({
   type:RECEIVE_CART_ITEMS,

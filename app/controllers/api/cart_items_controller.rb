@@ -1,21 +1,21 @@
 class Api::CartItemsController < ApplicationController
   def index
-    @cart_items = CartItem.where('user_id = ?', params[:user_id])
+    @cart_items = CartItem.where(user_id:params[:user_id] , bought:false)
     @cart_items = [] unless @cart_items
 
-    @items = Item.where(id: @cart_items.map{|e| e.item_id}.uniq!)
+    @items = Item.where(id: @cart_items.map{|e| e.item_id}.uniq)
     @items = [] unless @items
-    @items.uniq!
+    @items=@items.uniq
 
-    @users = User.where(id: @items.map{|e| e.user_id}.uniq!)
+    @users = User.where(id: @items.map{|e| e.user_id}.uniq)
     @users = [] unless @users
-    @users.uniq!
+    @users=@users.uniq
 
     @photos = []
 
     @item_photo_id={}
     @items.each do |item|
-      unless item_photo_id[item.id]
+      unless @item_photo_id[item.id]
         photo = item.photos[0]
         @photos << photo
         @item_photo_id[item.id]=photo.id
@@ -24,14 +24,14 @@ class Api::CartItemsController < ApplicationController
 
     @user_photo_id={}
     @users.each do |user|
-      unless user_photo_id[user.id]
+      unless @user_photo_id[user.id]
         photo = user.photo
         @photos << photo
         @user_photo_id[user.id]=photo.id
       end
     end
 
-    @photos.uniq!
+    @photos=@photos.uniq
 
     render :index
   end
@@ -42,6 +42,10 @@ class Api::CartItemsController < ApplicationController
       item_id:params[:cart_item][:item_id],
       bought:false
     )
+    if Item.find(params[:cart_item][:item_id]).user_id == params[:cart_item][:user_id]
+      render json:'bad input',status:422
+    end
+
     unless cart_item.length > 0
       cart_item = CartItem.new(cart_item_params)
     else

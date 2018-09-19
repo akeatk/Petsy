@@ -13,9 +13,9 @@ class Api::UsersController < ApplicationController
       @photos=[]
       @photo_ids={}
       @items.each do |item|
-        photos=item.photos
-        @photo_ids[item.id]=photos.map{|photo|photo.id}
-        @photos += photos
+        photo=item.photos[0]
+        @photo_ids[item.id]=[photo.id]
+        @photos += [photo]
       end
       @items.uniq!
       @photos.uniq!

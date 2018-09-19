@@ -54,10 +54,14 @@ class ShowItem extends React.Component{
   getLeftImg(){
     if(this.state.currentImg - 1 >= 0)
       this.setState({currentImg:this.state.currentImg - 1});
+    else
+      this.setState({currentImg:this.props.item.photo_ids.length - 1});
   }
   getRightImg(){
     if(this.state.currentImg + 1 < this.props.item.photo_ids.length)
       this.setState({currentImg:this.state.currentImg + 1});
+    else
+      this.setState({currentImg:0});
   }
   quantityOptions(quantity){
     let arr = [];
@@ -82,7 +86,7 @@ class ShowItem extends React.Component{
       <div className='header'>
         <div className='left-header'>
           <StaticImg src={this.props.user.photo_url || window.images.profileIcon}
-             height='75px' width='75px' onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
+             height='75px' width='75px' round={true} onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
           <h1 onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}>
             {this.props.user.name}
           </h1>
@@ -106,13 +110,17 @@ class ShowItem extends React.Component{
       <div className='body'>
         <div className='left-body'>
           <div className='item-images'>
+            <div>
+              <div>
+                <p className='arrow' onClick={this.getLeftImg}>{'<'}</p>
+              </div>
+            </div>
             <img src={this.props.photos[this.props.item.photo_ids[this.state.currentImg]].photo_url}/>
-            <h3>
-              <p className={this.state.currentImg - 1 >= 0 ? 'arrow' : ''}
-                onClick={this.getLeftImg}>{'<'}</p>
-              <p className={this.state.currentImg + 1 < this.props.item.photo_ids.length ? 'arrow' : ''}
-                onClick={this.getRightImg}>{'>'}</p>
-            </h3>
+            <div className='right-arrow'>
+              <div>
+                <p className='arrow' onClick={this.getRightImg}>{'>'}</p>
+              </div>
+            </div>
           </div>
           <div className='item-description'>
             <h3>Description</h3>
@@ -149,7 +157,7 @@ class ShowItem extends React.Component{
           <div className='user-section'>
             <div className='user-info'>
               <StaticImg src={this.props.user.photo_url || window.images.profileIcon}
-                 height='90px' width='90px' onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
+                 height='90px' width='90px' round={true} onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}/>
               <p onClick={()=>this.props.history.push(`/people/${this.props.user.username}`)}>
                 {this.props.user.name}
               </p>

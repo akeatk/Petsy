@@ -33,7 +33,7 @@ const MapDispatchToProps = dispatch => ({
 class ShowUser extends React.Component{
   constructor(props){
     super(props);
-    this.state={showAbout:false,user:this.props.user};
+    this.state={showAbout:false,user:this.props.user,loaded:false};
   }
   componentDidMount(){
     this.props.getUsername(this.props.match.params.username)
@@ -47,7 +47,7 @@ class ShowUser extends React.Component{
         );
         if(!foundUsername)
           this.props.history.push('/');
-        this.setState({user:this.props.user});
+        this.setState({user:this.props.user,loaded:true});
       });
 
   }
@@ -89,27 +89,28 @@ class ShowUser extends React.Component{
       return (<h3>{this.props.user.about}</h3>);
   }
   render(){
-    if(!this.props.user || !this.props.user.item_ids || !this.props.items){
-        this.props.getUsername(this.props.match.params.username)
-          .then(()=>{
-            let foundUsername;
-            Object.keys(this.props.users).map((userId)=>
-              this.props.users[userId]).forEach((user)=>{
-                if(user.username === this.props.match.params.username)
-                  foundUsername = user;
-              }
-            );
-            if(!foundUsername)
-              this.props.history.push('/');
-            this.setState({user:this.props.user});
-          });
+    if(!this.props.user || !this.props.user.item_ids || !this.props.items ||
+        !this.props.user.item_ids || !this.state.loaded) {
+      this.props.getUsername(this.props.match.params.username)
+        .then(()=>{
+          let foundUsername;
+          Object.keys(this.props.users).map((userId)=>
+            this.props.users[userId]).forEach((user)=>{
+              if(user.username === this.props.match.params.username)
+                foundUsername = user;
+            }
+          );
+          if(!foundUsername)
+            this.props.history.push('/');
+          this.setState({user:this.props.user});
+        });
       return null;
     }
     return (
       <div className='user-show-page'>
         <div className='show-user'>
           <StaticImg src={this.props.user.photo_url || window.images.profileIcon}
-             width='15vw' height='15vw'/>
+             width='15vw' height='15vw' round={true}/>
           <div className='prof-name'>
             <h1>{this.props.user.name}</h1>
             {(this.props.currentUserId &&
