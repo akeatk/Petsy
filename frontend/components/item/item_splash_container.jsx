@@ -53,7 +53,7 @@ class ItemSplash extends React.Component{
                   {name.length > 25 ? '...' : null}
                 </h3>
                 <h4>{username}</h4>
-                <h5>${item.price}</h5>
+                <h5>${parseFloat(item.price).toFixed(2)} per pet</h5>
               </div>
             </Link>
           );

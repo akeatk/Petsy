@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Link,withRouter,Redirect} from 'react-router-dom';
 import {getItem} from '../../actions/item_actions';
 import {createCartItem} from '../../actions/cart_item_actions';
+import {showLogin} from '../../actions/ui_actions';
 import ReviewStars from '../review_stars';
 import StaticImg from '../static_img';
 
@@ -22,7 +23,8 @@ const mapStateToProps = (state,ownProps) => {
 
 const MapDispatchToProps = dispatch => ({
   getItem: itemId=>dispatch(getItem(itemId)),
-  createCartItem: cart_item=>dispatch(createCartItem(cart_item))
+  createCartItem: cart_item=>dispatch(createCartItem(cart_item)),
+  showLogin:()=>dispatch(showLogin())
 });
 
 class ShowItem extends React.Component{
@@ -77,6 +79,11 @@ class ShowItem extends React.Component{
     return arr;
   }
   addToCart(){
+    if(!this.props.currentUserId){
+      this.props.showLogin();
+      return;
+    }
+
     let cart_item = {};
     cart_item['quantity']=this.state.quantity;
     cart_item['item_id']=this.props.item.id;
@@ -151,11 +158,13 @@ class ShowItem extends React.Component{
         <div className='right-body'>
           <div className='item-info'>
             <h1>{this.props.item.name}</h1>
-            <h2>${parseFloat(this.props.item.price).toFixed(2)}</h2>
+            <h2>${parseFloat(this.props.item.price).toFixed(2)} per pet</h2>
             {(this.props.currentUserId == this.props.item.user_id) ?
               <h4 onClick={()=>this.props.history.push(`/listing/${this.props.match.params.itemId}/edit`)}>Edit page</h4> : null}
             {(this.props.currentUserId == this.props.item.user_id) ? null :
               <form>
+                Quantity
+                <br/>
                 <select defaultValue={1} onChange={(e)=>this.setState({quantity:e.currentTarget.value})}>
                   {this.quantityOptions(this.props.item.quantity)}
                 </select>
@@ -201,7 +210,6 @@ class ShowItem extends React.Component{
           </div>
         </div>
       </div>
-
     </div>
     );
   }

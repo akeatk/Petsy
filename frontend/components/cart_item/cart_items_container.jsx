@@ -44,8 +44,10 @@ class ShowCartItems extends React.Component{
   handleSubmit(){
     this.props.updateCartItems(this.state.cart_items).then(
       ()=>{
-        if(Object.keys(this.props.cart_items).length > 0)
+        if(Object.keys(this.props.cart_items).length > 0){
           this.state.error=true;
+          window.scrollTo(0, 0);
+        }
         this.setState({verifier:false});
       }
     );
