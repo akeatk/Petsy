@@ -14,10 +14,18 @@ export const createCartItem = cart_item=>(
   })
 );
 
-export const updateCartItems = (user_id,cart_items)=>(
+export const updateCartItems = (cart_items)=>(
   $.ajax({
     method:'patch',
     url:`/api/cart_items/${undefined}`,
-    data:{user_id, cart_items}
+    data:{cart_items}
+  })
+);
+
+
+export const deleteCartItem = id=>(
+  $.ajax({
+    method:'delete',
+    url:`/api/cart_items/${id}`
   })
 );

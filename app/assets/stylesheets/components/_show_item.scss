@@ -188,15 +188,24 @@
         }
         >form{
           >select{
-            font-size: 14px;
-            padding:3px;
-            margin-bottom:6px;
+            cursor:pointer;
+            padding:3px 6px;
             border:1px solid $text-grey;
+            border-radius:6px;
+            font-size:18px;
+            >option{
+              font-size:18px;
+            }
+          }
+          >select:focus{
+            border-color:black;
           }
           >h5{
+            margin-top:50px;
+            display:block;
             font-size:20px;
             padding: 6px;
-            width:103px;
+            text-align: center;
             border-radius: 3px;
             border:1px solid $text-grey;
           }

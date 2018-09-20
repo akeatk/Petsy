@@ -227,7 +227,7 @@ class Form extends React.Component{
               <p>Factor in the costs of materials and labor, plus any related business expenses.</p>
             </div>
             <div>
-              <input className={this.state.errors['price'] ? "missing-field" : ""} type='text' value={this.state.price} onChange={this.handleInput('price')}/>
+              $ <input className={this.state.errors['price'] ? "missing-field" : ""} type='text' value={this.state.price} onChange={this.handleInput('price')}/>
             </div>
           </div>
           <div>

@@ -1,14 +1,12 @@
 .show-user{
-  width:100%;
-  max-width: 1366px;
   display:flex;
   flex-direction: row;
   justify-content: flex-start;
   margin:auto;
   padding:30px;
   >.prof-name{
-    width:24%;
-    min-width:24%;
+    width:20vw;
+    min-width:20vw;
     padding: 0 18px;
     >h1{
       font-size: 26px;
@@ -37,6 +35,7 @@
   }
   >.prof-about{
     line-height:1.71429;
+    width:50vw;
     >h2{
       font-size:18px;
       font-weight: 700;

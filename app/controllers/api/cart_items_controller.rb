@@ -1,6 +1,6 @@
 class Api::CartItemsController < ApplicationController
   def index
-    @cart_items = CartItem.where(user_id:params[:user_id] , bought:false)
+    @cart_items = CartItem.where(user_id:current_user.id, bought:false)
     @cart_items = [] unless @cart_items
 
     @items = Item.where(id: @cart_items.map{|e| e.item_id}.uniq)
@@ -22,15 +22,6 @@ class Api::CartItemsController < ApplicationController
       end
     end
 
-    @user_photo_id={}
-    @users.each do |user|
-      unless @user_photo_id[user.id]
-        photo = user.photo
-        @photos << photo
-        @user_photo_id[user.id]=photo.id
-      end
-    end
-
     @photos=@photos.uniq
 
     render :index
@@ -38,19 +29,27 @@ class Api::CartItemsController < ApplicationController
 
   def create
     cart_item = CartItem.where(
-      user_id:params[:cart_item][:user_id],
+      user_id:current_user.id,
       item_id:params[:cart_item][:item_id],
       bought:false
     )
-    if Item.find(params[:cart_item][:item_id]).user_id == params[:cart_item][:user_id]
+    if Item.find(params[:cart_item][:item_id]).user_id == current_user.id
       render json:'bad input',status:422
     end
 
     unless cart_item.length > 0
-      cart_item = CartItem.new(cart_item_params)
+      cart_item = CartItem.new(
+        user_id:current_user.id,
+        item_id:params[:cart_item][:item_id],
+        quantity:params[:cart_item][:quantity]
+      )
     else
       cart_item=cart_item[0]
-      cart_item.quantity += params[:cart_item][:quantity]
+      cart_item.quantity = params[:cart_item][:quantity].to_i
+
+      if(Item.find(cart_item.item_id).quantity < cart_item.quantity)
+        cart_item.quantity = Item.find(cart_item.item_id).quantity
+      end
     end
     render json:'bad input',status:422 unless cart_item.save
   end
@@ -58,13 +57,12 @@ class Api::CartItemsController < ApplicationController
   def update
     # takes in user id, array of cart item id's matched with quantities
     # params:
-    #   user_id:
-    #     int
     #   cart_items: hash
     #     key = cart_item_id
     #     value = quantity
 
-    @cart_items = CartItem.where(user_id: params[:user_id])
+    @cart_items = CartItem.where(user_id:current_user.id, id:params[:cart_items].keys)
+    return unless @cart_items.length > 0
     @items = Item.where(id: @cart_items.map{|e| e.item_id}.uniq)
 
     items = {}
@@ -75,18 +73,50 @@ class Api::CartItemsController < ApplicationController
 
     errors={}
 
+            10.times{puts 'askdlkfjahs'}
+            p params[:cart_items]
+            p params[:cart_items][13]
+            10.times{puts 'askdlkfjahs'}
     @cart_items.each do |cart_item|
-      if params[:cart_items][cart_item.id]
-        cart_item.quantity = params[:cart_items][cart_item.id]
-        return unless cart_item.save
-      end
+      cart_item.quantity = params[:cart_items][cart_item.id.to_s].to_i
+
+              10.times{puts 'askdlkfjahs'}
+              p cart_item
+              10.times{puts 'askdlkfjahs'}
+      return unless cart_item.save
+
       if cart_item.quantity > @items[cart_item.item_id].quantity
         errors[cart_item.item_id] = @items[cart_item.item_id].quantity
       end
     end
 
     if errors.keys.length > 0
-      render json:errors, status:422
+      @cart_items = CartItem.where(user_id:current_user.id, bought:false)
+      @cart_items = [] unless @cart_items
+
+      @items = Item.where(id: @cart_items.map{|e| e.item_id}.uniq)
+      @items = [] unless @items
+      @items=@items.uniq
+
+      @users = User.where(id: @items.map{|e| e.user_id}.uniq)
+      @users = [] unless @users
+      @users=@users.uniq
+
+      @photos = []
+
+      @item_photo_id={}
+      @items.each do |item|
+        unless @item_photo_id[item.id]
+          photo = item.photos[0]
+          @photos << photo
+          @item_photo_id[item.id]=photo.id
+        end
+      end
+
+      @photos=@photos.uniq
+
+      render :index
+      return
     else
       @cart_items.each do |cart_item|
         item = @items[cart_item.item_id]
@@ -96,10 +126,64 @@ class Api::CartItemsController < ApplicationController
         return unless cart_item.save
       end
     end
+
+    @cart_items = CartItem.where(user_id:current_user.id, bought:false)
+    @cart_items = [] unless @cart_items
+
+    @items = Item.where(id: @cart_items.map{|e| e.item_id}.uniq)
+    @items = [] unless @items
+    @items=@items.uniq
+
+    @users = User.where(id: @items.map{|e| e.user_id}.uniq)
+    @users = [] unless @users
+    @users=@users.uniq
+
+    @photos = []
+
+    @item_photo_id={}
+    @items.each do |item|
+      unless @item_photo_id[item.id]
+        photo = item.photos[0]
+        @photos << photo
+        @item_photo_id[item.id]=photo.id
+      end
+    end
+
+    @photos=@photos.uniq
+
+    render :index
   end
 
-  private
-  def cart_item_params
-    params.require(:cart_item).permit(:user_id, :item_id, :quantity)
+  def destroy
+    @cart_item = CartItem.find(params[:id])
+    if @cart_item.user_id == current_user.id
+      @cart_item.destroy
+
+      @cart_items = CartItem.where(user_id:current_user.id, bought:false)
+      @cart_items = [] unless @cart_items
+
+      @items = Item.where(id: @cart_items.map{|e| e.item_id}.uniq)
+      @items = [] unless @items
+      @items=@items.uniq
+
+      @users = User.where(id: @items.map{|e| e.user_id}.uniq)
+      @users = [] unless @users
+      @users=@users.uniq
+
+      @photos = []
+
+      @item_photo_id={}
+      @items.each do |item|
+        unless @item_photo_id[item.id]
+          photo = item.photos[0]
+          @photos << photo
+          @item_photo_id[item.id]=photo.id
+        end
+      end
+
+      @photos=@photos.uniq
+
+      render :index
+    end
   end
 end

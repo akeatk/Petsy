@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link,withRouter,Redirect} from 'react-router-dom';
 import {getItem} from '../../actions/item_actions';
+import {createCartItem} from '../../actions/cart_item_actions';
 import ReviewStars from '../review_stars';
 import StaticImg from '../static_img';
 
@@ -20,7 +21,8 @@ const mapStateToProps = (state,ownProps) => {
 };
 
 const MapDispatchToProps = dispatch => ({
-  getItem: itemId=>dispatch(getItem(itemId))
+  getItem: itemId=>dispatch(getItem(itemId)),
+  createCartItem: cart_item=>dispatch(createCartItem(cart_item))
 });
 
 class ShowItem extends React.Component{
@@ -29,6 +31,7 @@ class ShowItem extends React.Component{
     this.state={loaded:false,showDescription:false,quantity:1,currentImg:0};
     this.getLeftImg=this.getLeftImg.bind(this);
     this.getRightImg=this.getRightImg.bind(this);
+    this.addToCart=this.addToCart.bind(this);
   }
   componentDidMount(){
     this.props.getItem(this.props.match.params.itemId)
@@ -72,6 +75,12 @@ class ShowItem extends React.Component{
         </option>
       );
     return arr;
+  }
+  addToCart(){
+    let cart_item = {};
+    cart_item['quantity']=this.state.quantity;
+    cart_item['item_id']=this.props.item.id;
+    this.props.createCartItem(cart_item).then(()=>this.props.history.push('/cart'));
   }
   render(){
     if(!this.state.loaded)
@@ -142,7 +151,7 @@ class ShowItem extends React.Component{
         <div className='right-body'>
           <div className='item-info'>
             <h1>{this.props.item.name}</h1>
-            <h2>${this.props.item.price}</h2>
+            <h2>${parseFloat(this.props.item.price).toFixed(2)}</h2>
             {(this.props.currentUserId == this.props.item.user_id) ?
               <h4 onClick={()=>this.props.history.push(`/listing/${this.props.match.params.itemId}/edit`)}>Edit page</h4> : null}
             {(this.props.currentUserId == this.props.item.user_id) ? null :
@@ -150,7 +159,7 @@ class ShowItem extends React.Component{
                 <select defaultValue={1} onChange={(e)=>this.setState({quantity:e.currentTarget.value})}>
                   {this.quantityOptions(this.props.item.quantity)}
                 </select>
-                <h5 onClick={()=>{}}>Add to Cart</h5>
+                <h5 onClick={()=>this.addToCart()}>Add to Cart</h5>
               </form>
             }
           </div>

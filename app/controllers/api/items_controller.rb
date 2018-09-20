@@ -49,6 +49,7 @@ class Api::ItemsController < ApplicationController
 
   def create
     @item=Item.new(item_params)
+    @item.user_id = current_user.id
     files=params[:new_files] || []
     if @item.valid?
       i = 0
@@ -92,6 +93,7 @@ class Api::ItemsController < ApplicationController
 
   def update
     @item=Item.find(params[:item][:id])
+      render json:'error', status:422 unless current_user.id == @item.user_id
     files=params[:new_files]
     remove=params[:remove]
     @item.assign_attributes(item_params)

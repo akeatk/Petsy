@@ -23,6 +23,7 @@ end
 json.users do
   @users.each do |user|
     json.set! user.id do
+      json.username user.username
       if user.first_name && user.last_name
         json.name (user.first_name+" "+user.last_name)
       elsif user.first_name
@@ -32,7 +33,7 @@ json.users do
       else
         json.name user.username
       end
-      json.photo_id @user_photo_id[user.id]
+      json.photo_url user.photo.attached? ? url_for(user.photo) : nil
     end
   end
 end
