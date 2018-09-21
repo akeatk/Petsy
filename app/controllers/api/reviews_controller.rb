@@ -1,5 +1,7 @@
 class Api::ReviewsController < ApplicationController
   def create
+    @purchase = CartItem.where(user_id:current_user.id, item_id:params[:review][:item_id],bought:true)
+    render json:'error', status:422 if @purchase.length < 1
     @review = Item.find(params[:review][:item_id]).reviews
       .find_by(user_id: current_user.id)
 
@@ -52,19 +54,15 @@ class Api::ReviewsController < ApplicationController
     if @review.update(review_params)
       item = @review.item
       item.score=(item.score.to_f * item.num_scores.to_i - old_score.to_i + @review.score.to_i)/(item.num_scores.to_i)
-      unless item.save
-        render json: 'error', status:422
-        return
-      end
+      item.save
 
       user=item.user
       user.score=(user.score.to_f * user.num_scores.to_i - old_score.to_i + @review.score.to_i)/(user.num_scores.to_i)
-      unless user.save
-        render json: 'error', status:422
-        return
-      end
+      user.save
 
       render :show
+    else
+      render json:'error', status:422
     end
   end
 
@@ -78,18 +76,12 @@ class Api::ReviewsController < ApplicationController
       item = @review.item
       item.score=(item.score * item.num_scores - @review.score)/(item.num_scores-1)
       item.num_scores = item.num_scores -1
-      unless item.save
-        render json: 'error', status:422
-        return
-      end
+      item.save
 
       user=item.user
       user.score=(user.score * user.num_scores - @review.score)/(user.num_scores-1)
       user.num_scores = user.num_scores-1
-      unless user.save
-        render json: 'error', status:422
-        return
-      end
+      user.save
 
       @review.destroy
     else

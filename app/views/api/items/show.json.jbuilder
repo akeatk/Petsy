@@ -70,3 +70,5 @@ json.reviews do
     end
   end
 end
+
+json.purchase @purchase

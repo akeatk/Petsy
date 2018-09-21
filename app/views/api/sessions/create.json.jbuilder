@@ -9,3 +9,4 @@ elsif @user.last_name
 else
   json.name @user.username
 end
+json.logged_in true

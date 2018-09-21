@@ -8,19 +8,18 @@ const receiveReview=(review)=>({
   review
 });
 
-const deleteReview=(reviewId)=>({
-  type:DELETE_REVIEW,
-  reviewId
+const deleteReview=()=>({
+  type:DELETE_REVIEW
 });
 
-export const createReview=(review)=>dispatch
+export const createReview=(review)=> dispatch =>
   ReviewUtil.createReview(review)
-    .then((review)=>dispatch(receiveReview(review)));
+    .then((reviews)=>dispatch(receiveReview(reviews)));
 
-export const updateReview=(review)=>dispatch
+export const updateReview=(review)=> dispatch =>
   ReviewUtil.updateReview(review)
-    .then((review)=>dispatch(receiveReview(review)));
+    .then((reviews)=>dispatch(receiveReview(reviews)));
 
-export const deleteReview=(reviewId)=>dispatch
+export const removeReview=(reviewId)=> dispatch =>
   ReviewUtil.deleteReview(reviewId)
-    .then(()=>dispatch(deleteReview(reviewId));
+    .then(()=>dispatch(deleteReview()));

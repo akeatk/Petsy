@@ -16,6 +16,11 @@ export default (state={}, action)=>{
     case RECEIVE_ITEMS:
       return merge(newState,action.payload.users);
     case RECEIVE_ITEM:
+      // newState = {};
+      // Object.keys(state).forEach((id)=>{
+      //   if(state[id]['logged_in'])
+      //     newState[id]=state[id];
+      // });
       return merge(newState,{[action.payload.user.id]:action.payload.user},action.payload.users||{});
     case RECEIVE_CART_ITEMS:
       return merge(newState,action.payload.users);

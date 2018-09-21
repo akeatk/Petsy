@@ -1,5 +1,6 @@
 class Api::ItemsController < ApplicationController
   def show
+    @purchase = CartItem.where(user_id:current_user.id, item_id:params[:item_id],bought:true).length > 0
     @item=Item.find(params[:id])
     @user=@item.user
 
