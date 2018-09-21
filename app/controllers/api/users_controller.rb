@@ -6,7 +6,7 @@ class Api::UsersController < ApplicationController
       @user=User.find(params[:id]);
     end
     if @user
-      @items=@user.items.select{|item|item.quantity > 0}
+      @items=@user.items
           .sort{|a,b|b.num_scores * b.score <=> a.num_scores * a.score}
       @item_count=@items.length
       @item_ids=@items.map{|item| item.id}

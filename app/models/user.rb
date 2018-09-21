@@ -6,8 +6,11 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 6 }, allow_nil: true
 
   has_many :items
-  has_many :reviews
   has_many :cart_items
+
+  has_many :reviews,
+    through: :items,
+    source: :reviews
 
   has_one_attached :photo
   # this will put the url in json

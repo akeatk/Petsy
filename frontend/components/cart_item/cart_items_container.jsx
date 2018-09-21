@@ -122,8 +122,8 @@ class ShowCartItems extends React.Component{
             <div className='grey-screen' onClick={()=>this.setState({verifier:false})}>
               <div onClick={(e)=>e.stopPropagation()}>
                 <h2>Due to the nature of petting animals, we will not be charging you for this transaction.</h2>
-                <h2>Do you still want to submit your purchases?</h2>
-                <h3 onClick={this.handleSubmit}>Submit purchases</h3>
+                <h2>Do you still want to submit your purchase{cartItems.length === 1 ? '' : 's'}?</h2>
+                <h3 onClick={this.handleSubmit}>Submit purchase{cartItems.length === 1 ? '' : 's'}</h3>
               </div>
             </div>
           </div>

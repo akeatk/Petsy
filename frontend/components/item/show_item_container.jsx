@@ -42,7 +42,7 @@ class ShowItem extends React.Component{
         window.scrollTo(0, 0);
       },()=>this.props.history.push('/'));
   }
-  componentWillReceiveProps(newProps){
+  componentWillReceiveProps(newProps){//componentDidUpdate
     if(newProps.match.params.itemId !== this.props.match.params.itemId){
       this.setState({currentImg:0});
       this.props.getItem(newProps.match.params.itemId)
@@ -161,7 +161,7 @@ class ShowItem extends React.Component{
             <h2>${parseFloat(this.props.item.price).toFixed(2)} per pet</h2>
             {(this.props.currentUserId == this.props.item.user_id) ?
               <h4 onClick={()=>this.props.history.push(`/listing/${this.props.match.params.itemId}/edit`)}>Edit page</h4> : null}
-            {(this.props.currentUserId == this.props.item.user_id) ? null :
+            {(this.props.currentUserId != this.props.item.user_id && this.props.item.quantity > 0) ?
               <form>
                 Quantity
                 <br/>
@@ -169,8 +169,9 @@ class ShowItem extends React.Component{
                   {this.quantityOptions(this.props.item.quantity)}
                 </select>
                 <h5 onClick={()=>this.addToCart()}>Add to Cart</h5>
-              </form>
+              </form> : null
             }
+            {this.props.item.quantity > 0 ? null : <h3>Out of Stock</h3>}
           </div>
           <div className='user-section'>
             <div className='user-info'>

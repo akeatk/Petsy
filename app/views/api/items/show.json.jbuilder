@@ -36,3 +36,37 @@ json.photos do
     end
   end
 end
+
+
+
+json.users do
+  @users.each do |user|
+    json.set! user.id do
+      json.username user.username
+      if user.first_name && user.last_name
+        json.name (user.first_name+" "+user.last_name)
+      elsif user.first_name
+        json.name user.first_name
+      elsif user.last_name
+        json.name user.last_name
+      else
+        json.name user.username
+      end
+      json.photo_url user.photo.attached? ? url_for(user.photo) : nil
+    end
+  end
+end
+
+if @review
+  json.review do
+    json.extract! @review, :user_id, :body, :score, :created_at
+  end
+end
+
+json.reviews do
+  @reviews.each do |review|
+    json.set! review.id do
+      json.extract! review, :user_id, :item_id, :body, :score, :created_at
+    end
+  end
+end

@@ -2,10 +2,31 @@ class Api::ItemsController < ApplicationController
   def show
     @item=Item.find(params[:id])
     @user=@item.user
+
+    @review = nil
+    @review = @item.reviews.find_by(user_id: current_user.id) if current_user
+    cuid = current_user ? current_user.id : nil
+    @reviews = @item.reviews.select{|r|r.user_id != cuid}
+    @reviews = @reviews.map{|e| e}
+    @reviews.sort!{|a,b| b.created_at<=>a.created_at}
+
+    existing_review_ids=@reviews.map{|rev| rev.id}
+    if @reviews.length < 4
+      reviews = @user.reviews.select do |r|
+        r.user_id != cuid &&
+        !existing_review_ids.include?(r.id)
+      end
+      @reviews += reviews.sort{|a,b|b.created_at<=>a.created_at}[0...4-@reviews.length]
+    end
+
+    @users = User.where(id:@reviews.map{|r| r.user_id}.uniq)
+    ritems = Item.where(id: @reviews.map{|r|r.item_id}.uniq)
+
     @items=@user.items.select{|item|item.quantity > 0}
         .sort{|a,b|b.num_scores * b.score <=> a.num_scores * a.score}
     @item_count=@items.length
     @items=@items[0,8]
+    @items += ritems.reject{|r| @items.map{|i|i.id}.include? r.id}
     @item_ids=@items.map{|item| item.id}
     @photos=@item.photos
     @photo_ids={}
@@ -60,7 +81,10 @@ class Api::ItemsController < ApplicationController
       end
       @photos=@item.photos
       @photo_ids=@photos.map{|photo|photo.id}
-      @item.save
+      unless @item.save
+        render json: 'error', status:422
+        return
+      end
       #--------------------------------------
       @user=@item.user
       @items=@user.items.select{|item|item.quantity > 0}
