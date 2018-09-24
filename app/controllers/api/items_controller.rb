@@ -5,7 +5,6 @@ class Api::ItemsController < ApplicationController
     @item=Item.find(params[:id])
     @user=@item.user
 
-    @review = nil
     @review = @item.reviews.find_by(user_id: cuid)
     @reviews = @item.reviews.select{|r|r.user_id != cuid}
     @reviews = @reviews.map{|e| e}

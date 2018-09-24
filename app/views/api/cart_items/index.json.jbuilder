@@ -3,9 +3,17 @@ json.cart_items do
     json.set! item.id do
       json.item_id item.item_id
       json.quantity item.quantity
-      json.bought item.bought
     end
   end
+end
+
+json.past_purchases do
+  @past_purchases.length.times do |idx|
+    json.set! idx do
+      json.extract! @past_purchases[idx], :item_id, :user_id, :updated_at, :quantity
+    end
+  end
+  json.length @past_purchases.length
 end
 
 json.items do

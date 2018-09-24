@@ -22,15 +22,15 @@ class ItemSplash extends React.Component{
     super(props);
     this.state={offset:0,loaded:false};
   }
+  componentDidMount(){
+    this.props.getItems(0,0)
+      .then(()=>{
+        window.scrollTo(0, 0);
+        this.setState({loaded:true});
+      },()=>this.props.history.push('/'));
+  }
   render(){
-    if( !this.state.loaded){
-      this.props.getItems(0,0)
-        .then(()=>{
-          window.scrollTo(0, 0);
-          this.setState({loaded:true});
-        },()=>this.props.history.push('/'));
-    }
-    if(!this.props.items || !this.state.loaded)
+    if( !this.state.loaded || !this.props.items || !this.state.loaded)
       return null;
     return (
     <div className='item-index'>

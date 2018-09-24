@@ -9,8 +9,10 @@ export default (state={}, action)=>{
   switch(action.type){
     case RECEIVE_ITEM:
       return merge(
-        {current:action.payload.review},
-        action.payload.reviews,
+        {current:(action.payload.review ? action.payload.review.id : null)},
+        {review_ids: Object.keys(action.payload.reviews || {})},
+        action.payload.reviews || {},
+        (action.payload.review ? {[action.payload.review.id]:action.payload.review} : {}),
         {purchase:action.payload.purchase}
       );
     case RECEIVE_REVIEW:

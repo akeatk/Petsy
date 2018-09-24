@@ -21,7 +21,9 @@ export default (state={}, action)=>{
       //   if(state[id]['logged_in'])
       //     newState[id]=state[id];
       // });
-      return merge(newState,{[action.payload.user.id]:action.payload.user},action.payload.users||{});
+      newState = merge(newState,{[action.payload.user.id]:action.payload.user},action.payload.users||{});
+      newState[action.payload.user.id]['item_ids']=action.payload.user.item_ids;
+      return newState;
     case RECEIVE_CART_ITEMS:
       return merge(newState,action.payload.users);
     default:

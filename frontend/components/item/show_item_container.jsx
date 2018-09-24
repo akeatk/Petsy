@@ -43,6 +43,13 @@ class ShowItem extends React.Component{
       },()=>this.props.history.push('/'));
   }
   componentWillReceiveProps(newProps){//componentDidUpdate
+    if(newProps.currentUserId != this.props.currentUserId){
+      this.props.getItem(this.props.match.params.itemId)
+        .then(()=>{
+          this.setState({loaded:true});
+          window.scrollTo(0, 0);
+        },()=>this.props.history.push('/'));
+    }
     if(newProps.match.params.itemId !== this.props.match.params.itemId){
       this.setState({currentImg:0});
       this.props.getItem(newProps.match.params.itemId)
@@ -110,7 +117,7 @@ class ShowItem extends React.Component{
         <div className='right-header'>
           {this.props.user.item_ids.slice(0,4).map(itemId=>
             <Link key={itemId} to={`/listing/${itemId}`}>
-              <StaticImg key={itemId}
+              <StaticImg
                 src={this.props.photos[this.props.items[itemId].photo_ids[0]].photo_url}
                 height='75px' width='75px'/>
               </Link>
@@ -194,7 +201,7 @@ class ShowItem extends React.Component{
                   return (
                     <Link key={itemId} to={`/listing/${itemId}`}>
                       <div>
-                        <StaticImg key={itemId}
+                        <StaticImg
                           src={this.props.photos[this.props.items[itemId].photo_ids[0]].photo_url}
                           height='185px' width='185px'/>
                         <h3>

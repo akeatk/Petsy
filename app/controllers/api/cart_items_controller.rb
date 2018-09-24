@@ -4,7 +4,10 @@ class Api::CartItemsController < ApplicationController
     @cart_items = CartItem.where(user_id:cuid, bought:false)
     @cart_items = [] unless @cart_items
 
-    @items = Item.where(id: @cart_items.map{|e| e.item_id}.uniq)
+    @past_purchases = CartItem.where(user_id:cuid, bought:true).order(updated_at: :desc)
+    @past_purchases=[] unless @past_purchases
+
+    @items = Item.where(id: (@cart_items.map{|e| e.item_id} + @past_purchases.map{|e|e.item_id}).uniq)
     @items = [] unless @items
     @items=@items.uniq
 
@@ -97,7 +100,10 @@ class Api::CartItemsController < ApplicationController
       @cart_items = CartItem.where(user_id:cuid, bought:false)
       @cart_items = [] unless @cart_items
 
-      @items = Item.where(id: @cart_items.map{|e| e.item_id}.uniq)
+      @past_purchases = CartItem.where(user_id:cuid, bought:true).order(updated_at: :desc)
+      @past_purchases=[] unless @past_purchases
+
+      @items = Item.where(id: (@cart_items.map{|e| e.item_id} + @past_purchases.map{|e|e.item_id}).uniq)
       @items = [] unless @items
       @items=@items.uniq
 
@@ -129,11 +135,13 @@ class Api::CartItemsController < ApplicationController
         return unless cart_item.save
       end
     end
-
     @cart_items = CartItem.where(user_id:cuid, bought:false)
     @cart_items = [] unless @cart_items
 
-    @items = Item.where(id: @cart_items.map{|e| e.item_id}.uniq)
+    @past_purchases = CartItem.where(user_id:cuid, bought:true).order(updated_at: :desc)
+    @past_purchases=[] unless @past_purchases
+
+    @items = Item.where(id: (@cart_items.map{|e| e.item_id} + @past_purchases.map{|e|e.item_id}).uniq)
     @items = [] unless @items
     @items=@items.uniq
 
@@ -166,7 +174,10 @@ class Api::CartItemsController < ApplicationController
       @cart_items = CartItem.where(user_id:cuid, bought:false)
       @cart_items = [] unless @cart_items
 
-      @items = Item.where(id: @cart_items.map{|e| e.item_id}.uniq)
+      @past_purchases = CartItem.where(user_id:cuid, bought:true).order(updated_at: :desc)
+      @past_purchases=[] unless @past_purchases
+
+      @items = Item.where(id: (@cart_items.map{|e| e.item_id} + @past_purchases.map{|e|e.item_id}).uniq)
       @items = [] unless @items
       @items=@items.uniq
 
