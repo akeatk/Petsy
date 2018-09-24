@@ -1,12 +1,12 @@
 class Api::ItemsController < ApplicationController
   def show
-    @purchase = CartItem.where(user_id:current_user.id, item_id:params[:item_id],bought:true).length > 0
+    cuid = current_user ? current_user.id : nil
+    @purchase = CartItem.where(user_id:cuid, item_id:params[:id],bought:true).length > 0
     @item=Item.find(params[:id])
     @user=@item.user
 
     @review = nil
-    @review = @item.reviews.find_by(user_id: current_user.id) if current_user
-    cuid = current_user ? current_user.id : nil
+    @review = @item.reviews.find_by(user_id: cuid)
     @reviews = @item.reviews.select{|r|r.user_id != cuid}
     @reviews = @reviews.map{|e| e}
     @reviews.sort!{|a,b| b.created_at<=>a.created_at}
