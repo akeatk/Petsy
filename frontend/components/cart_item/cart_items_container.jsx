@@ -7,6 +7,8 @@ import StaticImg from '../static_img';
 
 const mapStateToProps = (state,ownProps) => ({
     cart_items: state.entities.cart_items,
+    cart_ids:state.entities.cart_items.cart_ids,
+    past_ids:state.entities.cart_items.past_ids,
     items:state.entities.items,
     users:state.entities.users,
     photos:state.entities.photos,
@@ -33,7 +35,7 @@ class ShowCartItems extends React.Component{
   componentDidMount(){
     this.props.getCartItems(this.props.currentUserId)
       .then(()=>{
-        Object.keys(this.props.cart_items).forEach((idx)=>{
+        this.props.cart_ids.forEach((idx)=>{
           let ci = this.props.cart_items[idx];
           let item = this.props.items[ci.item_id]
           this.state.cart_items[idx]= parseInt(ci.quantity) <= parseInt(item.quantity) ? parseInt(ci.quantity) : 1;
@@ -44,7 +46,7 @@ class ShowCartItems extends React.Component{
   handleSubmit(){
     this.props.updateCartItems(this.state.cart_items).then(
       ()=>{
-        if(Object.keys(this.props.cart_items).length > 0){
+        if(this.props.cart_ids.length > 0){
           this.state.error=true;
           window.scrollTo(0, 0);
         }
@@ -55,7 +57,7 @@ class ShowCartItems extends React.Component{
   render(){
     if(!this.state.loaded)
       return <div></div>
-    const cartItems = Object.keys(this.props.cart_items);
+    const cartItems = this.props.cart_ids;
     if(cartItems.length > 0)
       return (
         <div className='shopping-cart'>

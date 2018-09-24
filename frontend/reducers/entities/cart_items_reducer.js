@@ -8,7 +8,12 @@ export default (state={}, action)=>{
   switch(action.type){
     case RECEIVE_CART_ITEMS:
     case RECEIVE_BAD_SUBMIT:
-      return action.payload.cart_items || {};
+      return merge(
+        action.payload.cart_items,
+        action.payload.past_purchases,
+        {past_ids:action.payload.past_purchases ? Object.keys(action.payload.past_purchases) : []},
+        {cart_ids:action.payload.cart_items ? Object.keys(action.payload.cart_items) : []}
+      ) || {};
     case LOGOUT_CURRENT_USER:
       return {};
     default:

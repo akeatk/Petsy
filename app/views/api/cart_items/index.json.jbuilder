@@ -10,10 +10,9 @@ end
 json.past_purchases do
   @past_purchases.length.times do |idx|
     json.set! idx do
-      json.extract! @past_purchases[idx], :item_id, :user_id, :updated_at, :quantity
+      json.extract! @past_purchases[idx], :id, :item_id, :user_id, :updated_at, :quantity
     end
   end
-  json.length @past_purchases.length
 end
 
 json.items do
