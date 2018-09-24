@@ -59,14 +59,14 @@ end
 
 if @review
   json.review do
-    json.extract! @review, :user_id, :body, :score, :created_at
+    json.extract! @review, :id, :user_id, :body, :score, :updated_at
   end
 end
 
 json.reviews do
   @reviews.each do |review|
     json.set! review.id do
-      json.extract! review, :user_id, :item_id, :body, :score, :created_at
+      json.extract! review, :id, :user_id, :item_id, :body, :score, :updated_at
     end
   end
 end

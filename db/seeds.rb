@@ -48,7 +48,7 @@ i1.save!
 i2=Item.create(
   user_id:u2.id,
   name:"ferret",
-  description:"The is allegedly a normal cat. Things may vary",
+  description:"This allegedly a normal cat. Things may vary",
   quantity:2,
   price:10.55,
   score:5,

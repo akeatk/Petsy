@@ -4,6 +4,7 @@ import {Link,withRouter,Redirect} from 'react-router-dom';
 import {getItem} from '../../actions/item_actions';
 import {createCartItem} from '../../actions/cart_item_actions';
 import {showLogin} from '../../actions/ui_actions';
+import {createReview,updateReview} from '../../actions/review_actions';
 import ReviewStars from '../review_stars';
 import StaticImg from '../static_img';
 
@@ -16,28 +17,57 @@ const mapStateToProps = (state,ownProps) => {
     items,
     item,
     user,
+    users:state.entities.users,
     photos:state.entities.photos,
-    currentUserId:state.session.currentUser
+    currentUserId:state.session.currentUser,
+    currentReviewId:state.entities.reviews.current,
+    reviews:state.entities.reviews,
+    reviewIds:state.entities.reviews.review_ids || [],
+    reviewable:state.entities.reviews.purchase
   };
 };
 
 const MapDispatchToProps = dispatch => ({
   getItem: itemId=>dispatch(getItem(itemId)),
   createCartItem: cart_item=>dispatch(createCartItem(cart_item)),
-  showLogin:()=>dispatch(showLogin())
+  showLogin:()=>dispatch(showLogin()),
+  createReview:review=>dispatch(createReview(review)),
+  updateReview:review=>dispatch(updateReview(review))
 });
 
 class ShowItem extends React.Component{
   constructor(props){
     super(props);
-    this.state={loaded:false,showDescription:false,quantity:1,currentImg:0};
+    this.state={
+      loaded:false,
+      showDescription:false,
+      quantity:1,
+      currentImg:0,
+      editting:false,
+      review:{
+        id:null,
+        item_id:null,
+        body:'',
+        score:3
+      }
+    };
     this.getLeftImg=this.getLeftImg.bind(this);
     this.getRightImg=this.getRightImg.bind(this);
     this.addToCart=this.addToCart.bind(this);
+    this.handleSubmit=this.handleSubmit.bind(this);
+    this.createReview=this.createReview.bind(this);
+    this.updateReview=this.createReview.bind(this);
   }
   componentDidMount(){
     this.props.getItem(this.props.match.params.itemId)
       .then(()=>{
+        if(this.props.currentReviewId){
+          const i = this.props.currentReviewId;
+          this.state.review.id=i;
+          this.state.review.body=this.props.reviews[i].body;
+          this.state.review.score=this.props.reviews[i].score;
+        }
+        this.state.review.item_id=this.props.item.id;
         this.setState({loaded:true});
         window.scrollTo(0, 0);
       },()=>this.props.history.push('/'));
@@ -96,14 +126,35 @@ class ShowItem extends React.Component{
     cart_item['item_id']=this.props.item.id;
     this.props.createCartItem(cart_item).then(()=>this.props.history.push('/cart'));
   }
+  formatDate(date) {
+    const months = {
+      0: 'January',1: 'February',2: 'March',3: 'April',
+      4: 'May',5: 'June',6: 'July',7: 'August',
+      8: 'September',9: 'October',10: 'November',11: 'December',
+    };
+    const daysOfWeek = {
+      0: 'Sunday',1: 'Monday',2: 'Tuesday',3: 'Wednesday',
+      4: 'Thursday',5: 'Friday',6: 'Saturday',
+    };
+    const obj = new Date(date);
+    const month = months[obj.getMonth()];
+    const day = obj.getDate();
+    const year = obj.getFullYear();
+    return `${month} ${day}, ${year}`;
+  }
+  handleSubmit(e){
+    const  func = this.state.editting ? this.props.updateReview : this.props.createReview;
+    func(this.state.review).then(()=>this.setState({editting:false}));
+  }
+  createReview(e){
+    this.props.createReview(this.state.review).then(()=>this.setState({editting:false}));
+  }
+  updateReview(e){
+    this.props.updateReview(this.state.review).then(()=>this.setState({editting:false}));
+  }
   render(){
-    if(!this.state.loaded)
+    if(!this.state.loaded || !this.props.item || !this.props.user || !this.props.user.item_ids)
       return null;
-    if(!this.props.item || !this.props.user || !this.props.user.item_ids)
-      return null;
-    if(parseInt(this.props.match.params.itemId) !== this.props.item.id)
-      this.props.getItem(this.props.match.params.itemId)
-        .then(()=>window.scrollTo(0, 0),()=>this.props.history.push('/'));
     return (
     <div className='show-item'>
       <div className='header'>
@@ -158,7 +209,81 @@ class ShowItem extends React.Component{
               <h5>({this.props.item.num_scores})</h5>
             </div>
             <div className='reviews'>
-              reviews
+              {this.props.currentReviewId && !this.state.editting ?
+                ([0].map((i)=>{
+                  const review = this.props.reviews[this.props.currentReviewId];
+                  const user = this.props.users[review.user_id];
+                  const item = this.props.item;
+                  return (
+                    <div key='o'>
+                      <div className='reviewer-info'>
+                        <StaticImg src={user.photo_url || window.images.profileIcon}
+                          width='50px' height='50px' round={true}
+                          onClick={()=>this.props.history.push(`/people/${user.username}`)}/>
+                         <h1 onClick={()=>this.props.history.push(`/people/${user.username}`)}>{user.name}</h1>
+                      </div>
+                      <div className='review-info'>
+                        <div>
+                          <ReviewStars score={review.score}/>
+                          <h3 onClick={()=>this.setState({editting:true})}>Edit Review</h3>
+                          <p>{this.formatDate(review.updated_at)}</p>
+                        </div>
+                        <p>{review.body}</p>
+                        <div>
+                          <StaticImg src={this.props.photos[this.props.item.photo_ids[0]].photo_url}
+                            width='50px' height='50px'
+                            onClick={()=>this.props.history.push(`/listing/${item.id}`)}/>
+                          <h2 onClick={()=>this.props.history.push(`/listing/${item.id}`)}>{item.name}</h2>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })) :
+                (
+                  this.props.reviewable ?
+                  <form onSubmit={this.handleSubmit}>
+                    <h1>{this.state.editting ? 'Edit your review' : 'Leave a review'}</h1>
+                    <div>
+                      {[1,2,3,4,5].map(i=>{
+                        return this.state.review.score < i ?
+                          <img key={i} src={window.images.noStar}/> :
+                          <img key={i} src={window.images.fullStar}/>
+                      })}
+                    </div>
+                    <textarea value={this.state.review.body} onChange={(e)=>{
+                        this.state.review.body=e.currentTarget.value;
+                        this.setState({});
+                      }}/>
+                    <button type='submit'>Submit Review</button>
+                  </form> : null
+                )
+              }
+              {this.props.reviewIds.map(id=>{
+                const review = this.props.reviews[id];
+                const user = this.props.users[review.user_id];
+                const item = this.props.items[review.item_id];
+                return (
+                  <div key={id}>
+                    <div className='reviewer-info'>
+                      <StaticImg src={user.photo_url || window.images.profileIcon}
+                         width='50px' height='50px' round={true}/>
+                       <h1>{user.name}</h1>
+                    </div>
+                    <div className='review-info'>
+                      <div>
+                        <ReviewStars score={review.score}/>
+                        <p>{this.formatDate(review.updated_at)}</p>
+                      </div>
+                      <p>{review.body}</p>
+                      <div>
+                        <StaticImg src={this.props.photos[item.photo_ids[0]].photo_url}
+                          width='50px' height='50px'/>
+                        <h2>{item.name}</h2>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -176,8 +301,7 @@ class ShowItem extends React.Component{
                   {this.quantityOptions(this.props.item.quantity)}
                 </select>
                 <h5 onClick={()=>this.addToCart()}>Add to Cart</h5>
-              </form> : null
-            }
+              </form> : null }
             {this.props.item.quantity > 0 ? null : <h3>Out of Stock</h3>}
           </div>
           <div className='user-section'>

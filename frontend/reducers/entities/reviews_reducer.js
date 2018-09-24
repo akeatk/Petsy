@@ -12,11 +12,15 @@ export default (state={}, action)=>{
         {current:(action.payload.review ? action.payload.review.id : null)},
         {review_ids: Object.keys(action.payload.reviews || {})},
         action.payload.reviews || {},
-        (action.payload.review ? {[action.payload.review.id]:action.payload.review} : {}),
+        action.payload.review ? {[action.payload.review.id]:action.payload.review} : {},
         {purchase:action.payload.purchase}
       );
     case RECEIVE_REVIEW:
-      return merge(newState, {current:action.payload.review})
+      return merge(
+        newState,
+        {[action.review.id]:action.review},
+        {current:action.review.id}
+      );
     case DELETE_REVIEW:
       delete(newState[current]);
       return newState;
