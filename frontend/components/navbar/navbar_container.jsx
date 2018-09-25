@@ -81,17 +81,18 @@ class Form extends React.Component {
             </div>
           </Link>
 
+          {true ? null :
           <div className='nav-link' onClick={this.test}>
             <div className='fav-nav'>
               <img src={window.images.favIcon}/>
               <p>Favorites</p>
             </div>
-          </div>
+          </div>}
 
           <Link to='/your/listings/create' className='nav-link'>
             <div className='shop-nav'>
               <img src={window.images.shopIcon}/>
-              <p>Your shop</p>
+              <p>Post Listing</p>
             </div>
           </Link>
 
