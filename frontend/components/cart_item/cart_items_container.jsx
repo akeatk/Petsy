@@ -50,6 +50,7 @@ class ShowCartItems extends React.Component{
           this.state.error=true;
           window.scrollTo(0, 0);
         }
+        this.props.cart_ids=[];
         this.setState({verifier:false});
       }
     );
@@ -92,6 +93,7 @@ class ShowCartItems extends React.Component{
                           <h3 onClick={()=>{
                               this.props.deleteCartItem(idx);
                               delete(this.props.cart_items[idx]);
+                              this.props.cart_ids.splice(i,1);
                               this.setState({loaded:true});
                             }}>Remove</h3>
                         </div>

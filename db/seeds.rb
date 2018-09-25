@@ -25,6 +25,53 @@ file=EzDownload.open('https://s3-us-west-1.amazonaws.com/etsyclone-dev/defaults/
 u3.photo.attach(io:file,filename:'chameleon.jpg')
 u3.save!
 
+u4=User.create(
+  email:'as@bc.sdf',
+  first_name:'Jelly',
+  last_name:'Fishness',
+  about:'BLUB BLUb BLub Blub blub lub ub',
+  password:'1234988',
+)
+file=EzDownload.open('https://s3-us-west-1.amazonaws.com/etsyclone-dev/defaults/jellyfish.jpg')
+u4=photo.attach(io:file,filename:'jellyfish.jpg')
+u4.save!
+
+u5=User.create(
+  email:'manta@ray.com',
+  first_name:'Manta',
+  last_name:'Raya',
+  about:'I cannot easily pet things, not because I live in the ocean, but because I have flaps instead of arms.',
+  password:'032814s',
+)
+file=EzDownload.open('https://s3-us-west-1.amazonaws.com/etsyclone-dev/defaults/manta-ray.jpg')
+u5=photo.attach(io:file,filename:'manta-ray.jpg')
+u5.save!manta-ray.jpg
+
+u5=User.create(
+  email:'sea@turtle.com',
+  first_name:'Seymore',
+  last_name:'Turtles',
+  about:"There comes a time in everyone's life when you realize that the best things in life are the little things, for other people and for yourself.
+
+  Travel the world.
+  Meet others likes you.",
+  password:'as;d;kfja;lsd',
+)
+file=EzDownload.open('https://s3-us-west-1.amazonaws.com/etsyclone-dev/defaults/sea-turtle.jpg')
+u5=photo.attach(io:file,filename:'sea-turtle.jpg')
+u5.save!
+
+# u5=User.create(
+#   email:'',
+#   first_name:'',
+#   last_name:'',
+#   about:'',
+#   password:'',
+# )
+# file=EzDownload.open('https://s3-us-west-1.amazonaws.com/etsyclone-dev/defaults/')
+# u5=photo.attach(io:file,filename:'')
+# u5.save!
+
 #===============================================================================
 
 Item.destroy_all

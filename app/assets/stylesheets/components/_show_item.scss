@@ -158,6 +158,54 @@
           }
         }
         >.reviews{
+          >.review-form{
+            border-top:1px solid $border-grey;
+            padding-top:18px;
+            margin:18px 0;
+            display:flex;
+            flex-direction: column;
+            >h1{
+              font-size: 18px;
+              font-weight: 700;
+            }
+            >div{
+              margin-bottom:9px;
+              display:flex;
+              flex-direction: row;
+              justify-content: center;
+              align-items: center;
+              >img{
+                height:35px;
+                width:35px;
+              }
+              >img:hover{
+                cursor: pointer;
+              }
+            }
+            >textarea{
+              padding:6px;
+              border-radius: 6px;
+            }
+            >button{
+              font-size: 18px;
+              padding: 6px 9px;
+              margin-top: 9px;
+              color:white;
+              background-color: $button-orange;
+            }
+            >button:hover{
+              cursor: pointer;
+              background-color: orange;
+            }
+            >.bad-submit{
+              text-decoration: line-through;
+              text-decoration-color: white;
+            }
+            >.bad-submit:hover{
+              background-color: $button-orange;
+              cursor: default;
+            }
+          }
           >div{
             display:flex;
             flex-direction:row;
@@ -201,6 +249,62 @@
                 display:block;
                 padding-bottom: 6px;
                 font-size: 16px;
+                white-space: pre-wrap;
+              }
+              >.review-question{
+                display:flex;
+                flex-direction: column;
+                align-items: center;
+                margin-right: 18px;
+                padding:9px;
+                >h3{
+                  font-size: 17px;
+                  font-weight: 700;
+                  display:block;
+                  padding-bottom: 6px;
+                  color:$text-orange;
+                }
+                >div{
+                  display:flex;
+                  flex-direction: row;
+                  >h4{
+                    display:block;
+                    padding:6px 9px;
+                    border-radius: 3px;
+                    border:1px solid $button-orange;
+                    color:$button-orange;
+                    font-weight: 700;
+                    margin-right:6px;
+                  }
+                  >h4:hover{
+                    cursor: pointer;
+                    border-color: $hover-orange;
+                    color:$hover-orange;
+                    text-decoration: underline;
+                    text-decoration-color: $hover-orange;
+                  }
+                }
+              }
+              >.edits{
+                padding-right: 18px;
+                display:flex;
+                flex-direction: row;
+                justify-content: space-between;
+                >h3{
+                  display:block;
+                  padding:6px 9px;
+                  border-radius: 3px;
+                  border:1px solid $button-orange;
+                  color:$button-orange;
+                  font-weight: 700;
+                }
+                >h3:hover{
+                  cursor: pointer;
+                  border-color: $hover-orange;
+                  color:$hover-orange;
+                  text-decoration: underline;
+                  text-decoration-color: $hover-orange;
+                }
               }
               >:last-child{
                 display:flex;
@@ -213,7 +317,7 @@
                   display:block;
                   box-sizing: border-box;
                   line-height: 18px;
-                  font-size:12px;
+                  font-size:16px;
                   margin-left:9px;
                 }
                 >h2:hover{
@@ -344,8 +448,6 @@
               flex-direction: column;
               >*:first-child{
                 overflow:hidden;
-                height:150px;
-                width:185px;
                 border:2px solid white;
                 display:flex;
                 justify-content: center;
@@ -354,10 +456,12 @@
                 overflow:hidden;
               }
               >h3{
+                padding-left:3px;
                 font-size:14px;
                 padding-top:6px;
               }
               >h4{
+                padding-left:3px;
                 font-size:14px;
                 font-weight:700;
                 padding-top: 6px;

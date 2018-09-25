@@ -84,7 +84,7 @@ class Api::ReviewsController < ApplicationController
 
       user=item.user
       user.score=(user.score * user.num_scores - @review.score)/(user.num_scores-1)
-      user.num_scores = user.num_scores-1
+      user.num_scores = user.num_scores - 1
       user.save
 
       @review.destroy

@@ -50,7 +50,7 @@ class ShowItem extends React.Component{
         id:null,
         item_id:null,
         body:'',
-        score:3
+        score:0
       }
     };
     this.getLeftImg=this.getLeftImg.bind(this);
@@ -148,13 +148,15 @@ class ShowItem extends React.Component{
     return `${month} ${day}, ${year}`;
   }
   handleSubmit(e){
+    if(this.state.review.score == 0)
+      return;
     const  func = this.state.editting ? this.props.updateReview : this.props.createReview;
     console.log(this.state.review.body);
     func(this.state.review).then(()=>this.setState({editting:false}));
   }
   handleRemove(e){
     this.state.review.body='';
-    this.state.review.score=3;
+    this.state.review.score=0;
     this.props.removeReview(this.props.currentReviewId).then(()=>this.setState({loading:false}));
   }
   render(){
@@ -234,16 +236,16 @@ class ShowItem extends React.Component{
                         </div>
                         <p>{review.body.split('\n').join('\r\n')}</p>
                         {this.state.remove ?
-                        <div>
-                          Are you sure you want to delete your review?
+                        <div className='review-question'>
+                          <h3>Are you sure you want to delete your review?</h3>
                           <div>
                             <h4 onClick={this.handleRemove}>Yes</h4>
                             <h4 onClick={()=>this.setState({remove:false})}>No</h4>
                           </div>
                         </div> :
-                        <div>
-                          <h3 onClick={()=>this.setState({remove:true})}>Remove Review</h3>
+                        <div className='edits'>
                           <h3 onClick={()=>this.setState({editting:true})}>Edit Review</h3>
+                          <h3 onClick={()=>this.setState({remove:true})}>Remove Review</h3>
                         </div>}
                         <div>
                           <StaticImg src={this.props.photos[this.props.item.photo_ids[0]].photo_url}
@@ -257,7 +259,7 @@ class ShowItem extends React.Component{
                 })) :
                 (
                   this.props.reviewable ?
-                  <form onSubmit={this.handleSubmit}>
+                  <form className='review-form' onSubmit={this.handleSubmit}>
                     <h1>{this.state.editting ? 'Edit your review' : 'Leave a review'}</h1>
                     <div>
                       {[1,2,3,4,5].map(i=>{
@@ -275,7 +277,7 @@ class ShowItem extends React.Component{
                         this.state.review.body=e.currentTarget.value;
                         this.setState({});
                       }}/>
-                    <button type='submit'>Submit Review</button>
+                    <button className={this.state.review.score > 0 ? '' : 'bad-submit'} type='submit'>Submit Review</button>
                   </form> : null
                 )
               }
