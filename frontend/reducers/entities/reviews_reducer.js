@@ -22,7 +22,8 @@ export default (state={}, action)=>{
         {current:action.review.id}
       );
     case DELETE_REVIEW:
-      delete(newState[current]);
+      delete(newState[newState['current']]);
+      delete(newState['current']);
       return newState;
     default:
       return state;

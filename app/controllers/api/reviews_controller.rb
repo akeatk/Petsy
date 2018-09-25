@@ -71,15 +71,15 @@ class Api::ReviewsController < ApplicationController
   end
 
   def destroy
-    @review= Reviews.find(params[:id])
+    @review= Review.find(params[:id])
     if @review
       unless @review.user_id == current_user.id
         render json: 'error', status:422
         return
       end
       item = @review.item
-      item.score=(item.score * item.num_scores - @review.score)/(item.num_scores-1)
-      item.num_scores = item.num_scores -1
+      item.score= (item.score * item.num_scores - @review.score) / (item.num_scores-1)
+      item.num_scores = item.num_scores - 1
       item.save
 
       user=item.user
@@ -90,6 +90,7 @@ class Api::ReviewsController < ApplicationController
       @review.destroy
     else
       render json:'error', status:422
+      return
     end
   end
 

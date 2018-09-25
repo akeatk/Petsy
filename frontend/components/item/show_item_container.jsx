@@ -4,7 +4,7 @@ import {Link,withRouter,Redirect} from 'react-router-dom';
 import {getItem} from '../../actions/item_actions';
 import {createCartItem} from '../../actions/cart_item_actions';
 import {showLogin} from '../../actions/ui_actions';
-import {createReview,updateReview} from '../../actions/review_actions';
+import {createReview,updateReview,removeReview} from '../../actions/review_actions';
 import ReviewStars from '../review_stars';
 import StaticImg from '../static_img';
 
@@ -32,7 +32,8 @@ const MapDispatchToProps = dispatch => ({
   createCartItem: cart_item=>dispatch(createCartItem(cart_item)),
   showLogin:()=>dispatch(showLogin()),
   createReview:review=>dispatch(createReview(review)),
-  updateReview:review=>dispatch(updateReview(review))
+  updateReview:review=>dispatch(updateReview(review)),
+  removeReview:id=>dispatch(removeReview(id))
 });
 
 class ShowItem extends React.Component{
@@ -44,6 +45,7 @@ class ShowItem extends React.Component{
       quantity:1,
       currentImg:0,
       editting:false,
+      remove:false,
       review:{
         id:null,
         item_id:null,
@@ -55,8 +57,7 @@ class ShowItem extends React.Component{
     this.getRightImg=this.getRightImg.bind(this);
     this.addToCart=this.addToCart.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
-    this.createReview=this.createReview.bind(this);
-    this.updateReview=this.createReview.bind(this);
+    this.handleRemove=this.handleRemove.bind(this);
   }
   componentDidMount(){
     this.props.getItem(this.props.match.params.itemId)
@@ -78,10 +79,14 @@ class ShowItem extends React.Component{
         .then(()=>{
           this.setState({loaded:true});
           window.scrollTo(0, 0);
-        },()=>this.props.history.push('/'));
+        },
+        ()=>{
+          window.scrollTo(0, 0);
+          this.props.history.push('/');
+        });
     }
     if(newProps.match.params.itemId !== this.props.match.params.itemId){
-      this.setState({currentImg:0});
+      this.setState({currentImg:0,remove:false,editting:false});
       this.props.getItem(newProps.match.params.itemId)
         .then(()=>{
             window.scrollTo(0, 0);
@@ -144,13 +149,13 @@ class ShowItem extends React.Component{
   }
   handleSubmit(e){
     const  func = this.state.editting ? this.props.updateReview : this.props.createReview;
+    console.log(this.state.review.body);
     func(this.state.review).then(()=>this.setState({editting:false}));
   }
-  createReview(e){
-    this.props.createReview(this.state.review).then(()=>this.setState({editting:false}));
-  }
-  updateReview(e){
-    this.props.updateReview(this.state.review).then(()=>this.setState({editting:false}));
+  handleRemove(e){
+    this.state.review.body='';
+    this.state.review.score=3;
+    this.props.removeReview(this.props.currentReviewId).then(()=>this.setState({loading:false}));
   }
   render(){
     if(!this.state.loaded || !this.props.item || !this.props.user || !this.props.user.item_ids)
@@ -184,17 +189,17 @@ class ShowItem extends React.Component{
       <div className='body'>
         <div className='left-body'>
           <div className='item-images'>
-            <div>
+            {this.props.item.photo_ids.length > 1 ? <div>
               <div>
                 <p className='arrow' onClick={this.getLeftImg}>{'<'}</p>
               </div>
-            </div>
+            </div> : null}
             <img src={this.props.photos[this.props.item.photo_ids[this.state.currentImg]].photo_url}/>
-            <div className='right-arrow'>
+            {this.props.item.photo_ids.length > 1 ? <div className='right-arrow'>
               <div>
                 <p className='arrow' onClick={this.getRightImg}>{'>'}</p>
               </div>
-            </div>
+            </div> : null}
           </div>
           <div className='item-description'>
             <h3>Description</h3>
@@ -225,10 +230,21 @@ class ShowItem extends React.Component{
                       <div className='review-info'>
                         <div>
                           <ReviewStars score={review.score}/>
-                          <h3 onClick={()=>this.setState({editting:true})}>Edit Review</h3>
                           <p>{this.formatDate(review.updated_at)}</p>
                         </div>
-                        <p>{review.body}</p>
+                        <p>{review.body.split('\n').join('\r\n')}</p>
+                        {this.state.remove ?
+                        <div>
+                          Are you sure you want to delete your review?
+                          <div>
+                            <h4 onClick={this.handleRemove}>Yes</h4>
+                            <h4 onClick={()=>this.setState({remove:false})}>No</h4>
+                          </div>
+                        </div> :
+                        <div>
+                          <h3 onClick={()=>this.setState({remove:true})}>Remove Review</h3>
+                          <h3 onClick={()=>this.setState({editting:true})}>Edit Review</h3>
+                        </div>}
                         <div>
                           <StaticImg src={this.props.photos[this.props.item.photo_ids[0]].photo_url}
                             width='50px' height='50px'
@@ -245,9 +261,14 @@ class ShowItem extends React.Component{
                     <h1>{this.state.editting ? 'Edit your review' : 'Leave a review'}</h1>
                     <div>
                       {[1,2,3,4,5].map(i=>{
-                        return this.state.review.score < i ?
-                          <img key={i} src={window.images.noStar}/> :
-                          <img key={i} src={window.images.fullStar}/>
+                        return (
+                          <img key={i}
+                            onClick={()=>{
+                              this.state.review.score=i;
+                              this.setState({loaded:true});
+                            }}
+                            src={this.state.review.score < i ? window.images.noStar : window.images.fullStar}/>
+                        );
                       })}
                     </div>
                     <textarea value={this.state.review.body} onChange={(e)=>{
