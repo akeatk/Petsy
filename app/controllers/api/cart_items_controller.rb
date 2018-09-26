@@ -79,16 +79,9 @@ class Api::CartItemsController < ApplicationController
 
     errors={}
 
-            10.times{puts 'askdlkfjahs'}
-            p params[:cart_items]
-            p params[:cart_items][13]
-            10.times{puts 'askdlkfjahs'}
     @cart_items.each do |cart_item|
       cart_item.quantity = params[:cart_items][cart_item.id.to_s].to_i
 
-              10.times{puts 'askdlkfjahs'}
-              p cart_item
-              10.times{puts 'askdlkfjahs'}
       return unless cart_item.save
 
       if cart_item.quantity > @items[cart_item.item_id].quantity

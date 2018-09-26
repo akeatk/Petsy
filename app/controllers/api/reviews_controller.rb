@@ -45,9 +45,6 @@ class Api::ReviewsController < ApplicationController
       return
     end
     cuid = current_user ? current_user.id : nil
-    10.times{puts 'laskdjf'}
-    p current_user.reviews
-    10.times{puts 'laskdjf'}
     @review=Review.find_by(user_id:cuid, item_id:params[:review][:item_id])
     unless @review
       render json: 'error', status:422

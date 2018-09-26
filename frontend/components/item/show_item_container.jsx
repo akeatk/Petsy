@@ -151,7 +151,6 @@ class ShowItem extends React.Component{
     if(this.state.review.score == 0)
       return;
     const  func = this.state.editting ? this.props.updateReview : this.props.createReview;
-    console.log(this.state.review.body);
     func(this.state.review).then(()=>this.setState({editting:false}));
   }
   handleRemove(e){
