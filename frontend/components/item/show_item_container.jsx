@@ -60,6 +60,7 @@ class ShowItem extends React.Component{
     this.handleRemove=this.handleRemove.bind(this);
   }
   componentDidMount(){
+    console.log(this.props.getItem(1).then);
     this.props.getItem(this.props.match.params.itemId)
       .then(()=>{
         if(this.props.currentReviewId){
@@ -226,7 +227,7 @@ class ShowItem extends React.Component{
                         <StaticImg src={user.photo_url || window.images.profileIcon}
                           width='50px' height='50px' round={true}
                           onClick={()=>this.props.history.push(`/people/${user.username}`)}/>
-                         <h1 onClick={()=>this.props.history.push(`/people/${user.username}`)}>{user.name}</h1>
+                        <h1 onClick={()=>this.props.history.push(`/people/${user.username}`)}>{user.name}</h1>
                       </div>
                       <div className='review-info'>
                         <div>
@@ -288,8 +289,9 @@ class ShowItem extends React.Component{
                   <div key={id}>
                     <div className='reviewer-info'>
                       <StaticImg src={user.photo_url || window.images.profileIcon}
-                         width='50px' height='50px' round={true}/>
-                       <h1>{user.name}</h1>
+                        width='50px' height='50px' round={true}
+                        onClick={()=>this.props.history.push(`/people/${user.username}`)}/>
+                      <h1 onClick={()=>this.props.history.push(`/people/${user.username}`)}>{user.name}</h1>
                     </div>
                     <div className='review-info'>
                       <div>
@@ -299,8 +301,9 @@ class ShowItem extends React.Component{
                       <p>{review.body}</p>
                       <div>
                         <StaticImg src={this.props.photos[item.photo_ids[0]].photo_url}
-                          width='50px' height='50px'/>
-                        <h2>{item.name}</h2>
+                          width='50px' height='50px'
+                          onClick={()=>this.props.history.push(`/listing/${item.id}`)}/>
+                        <h2 onClick={()=>this.props.history.push(`/listing/${item.id}`)}>{item.name}</h2>
                       </div>
                     </div>
                   </div>
