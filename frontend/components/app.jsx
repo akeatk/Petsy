@@ -30,10 +30,12 @@ const App = (props) => (
       <Redirect to="/"/>
     </Switch>
     <div className='footer'>
-      <h1>Petsy</h1>
       <div>
-        <a href='https://github.com/akeatk'>Github</a>
-        <a href='https://www.linkedin.com/in/alex-kao-556799159/'>LinkedIn</a>
+        <h1>Petsy</h1>
+        <div>
+          <a href='https://github.com/akeatk'>Github</a>
+          <a href='https://www.linkedin.com/in/alex-kao-556799159/'>LinkedIn</a>
+        </div>
       </div>
     </div>
   </div>

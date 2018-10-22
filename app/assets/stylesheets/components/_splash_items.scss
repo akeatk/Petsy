@@ -1,10 +1,13 @@
 .item-index{
   >.show-all-items{
     width:100%;
+    max-width:1366px;
+    margin:auto;
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
     >a{
       >div{
         display:flex;
