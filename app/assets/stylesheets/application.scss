@@ -60,13 +60,16 @@
 }
 body{
   min-width: 800px;
-
+  display: flex;
+  flex-direction: column;
+  justify-content:space-between;
+}
+html, body{
+  height:100%;
 }
 
 .footer{
   border-top: 1px solid $border-grey;
-  position:absolute;
-  bottom:0;
   width:100%;
   margin-top:18px;
 
