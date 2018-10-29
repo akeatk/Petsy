@@ -1,7 +1,7 @@
 
 <h1 align="center">Petsy</h1>
 
-<h2 align="center"><a src="https://etsycloneaa.herokuapp.com/">Live Site</a></h2>
+<h2 align="center"><a href="https://etsycloneaa.herokuapp.com/">Live Site</a></h2>
 
 ------------------------
 ## Overview
