@@ -1,10 +1,10 @@
-# <h1 style="text-align:center">Petsy</div>
 
-### <div style="text-align:center"><a src="https://etsycloneaa.herokuapp.com/">Link to Site</a></div>
+<h1 align="center">Petsy</h1>
 
+<h2 align="center"><a src="https://etsycloneaa.herokuapp.com/">Live Site</a></h2>
 
 ------------------------
-### Overview
+## Overview
 
 This app is a clone of etsy. It allows users to view listings from all users, purchase listings of other users, and create accounts and listings of their own.
 
